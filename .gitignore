@@ -1,3 +1,6 @@
+# Visual Studio files and folders
+.vs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
