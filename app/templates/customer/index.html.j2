@@ -1,0 +1,72 @@
+{% extends 'base.html.j2' %}
+
+
+{% block content %}
+<span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
+<div class="content">
+    <table id= "customer-table" border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Customer Address</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for customer in customers %}
+        <div class="customer">
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.address }}</td>
+            </tr>
+        </div>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+
+<!-- Add new customer form -->
+<div class = "row">
+    <div class = "column">
+        <form method="POST" id="add-customer-form">
+            <h3>Add New Customer</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-name">Name: </label>
+                    <input type="text" name="input-name" id="input-name" required="required" placeholder="Required">
+                </div>
+
+                <div>
+                    <label for="input-address">Address: </label>
+                    <input type="text" name="input-address" id="input-address">
+                </div>
+
+{#               <div>
+                    <label for="input-street">Street: </label>
+                    <input type="text" name="input-street" id="input-street">                    
+                </div>  
+
+                <div>
+                    <label for="input-city">City: </label>
+                    <input type="text" name="input-city" id="input-city">
+                </div>
+
+                <div>
+                    <label for="input-state">State: </label>
+                    <input type="text" name="input-state" id="input-state">
+                </div>
+
+                <div>
+                    <label for="input-zip">Zip: </label>
+                    <input type="number" name="input-zip" id="input-zip">
+                </div> #}
+
+                <input type="submit" value="Add Customer">
+            </div>
+        </form>
+    </div> <!-- End of Add Customer Column -->
+</div>
+
+{% endblock %}
