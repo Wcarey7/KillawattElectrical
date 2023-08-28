@@ -1,0 +1,62 @@
+{% extends 'base.html.j2' %}
+
+
+{% block content %}
+<span class="title"><h1>{% block title %} The {{ customer.name }} Detail Page {% endblock %}</h1></span>
+<div class="content">
+    <table id= "customer-table" border="1" cellpadding="5">
+        <thead>
+            <tr>
+                {% for column_name in column_names.keys() %}
+                    <th>{{ column_name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+    <tbody>
+        <div class="customer">
+            <tr>
+                <td>{{ customer_address.id }}</td>
+                <td>{{ customer_address.street }}</td>
+                <td>{{ customer_address.city }}</td>
+                <td>{{ customer_address.state }}</td>
+                <td>{{ customer_address.zip }}</td>
+                <td>{{ customer_address.customer_id }}</td>
+            </tr>
+        </div>
+    </tbody>
+    </table>
+</div>
+
+
+<!-- Update customer form -->
+<div class = "row">
+<div class = "column">
+        <form method="POST" action="{{ url_for('customer.edit', Id=customer.id) }}" id="update-customer-form-ajax">
+        <h3>Update a Customer</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-update-street">Street: </label>
+                    <input type="text" name="input-update-street" value="{{ customer_address.street |safe}}">                  
+                </div>
+
+                <div>
+                    <label for="input-update-city">City: </label>
+                    <input type="text" name="input-update-city" value="{{ customer_address.city |safe}}">                    
+                </div>
+
+                <div>
+                    <label for="input-update-state">State: </label>
+                    <input type="text" name="input-update-state" value={{ customer_address.state }}>
+                </div>
+                
+                <div>
+                    <label for="input-update-zip">Zip: </label>
+                    <input type="text" name="input-update-zip" value={{ customer_address.zip }}>
+                </div>
+                <input type="submit" value= "Update Customer">
+            </div>
+        </form>
+</div> <!-- End of update Customer Column -->
+</div> <!-- End of Row -->
+
+{% endblock %}
