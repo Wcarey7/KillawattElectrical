@@ -16,4 +16,10 @@ class Address(db.Model):
     }
     
     def __repr__(self):
-        return f'<id: {self.id!r}, street: {self.street!r}, city: {self.city!r}, state: {self.state!r}, zip: {self.zip!r}, customer_id: {self.customer_id!r}>'
+        return {f"<id: {self.id!r},"
+                f"street: {self.street!r}, "
+                f"city: {self.city!r}, "
+                f"state: {self.state!r}, "
+                f"zip: {self.zip!r}, "
+                f"customer_id: {self.customer_id!r}>"}
+        

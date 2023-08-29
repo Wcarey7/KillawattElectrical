@@ -1,5 +1,6 @@
 from app.extensions import db
 from app.extensions import login_manager
+from app.extensions import migrate
 from app.models.user import User
 from flask import Flask
 from config import Config
@@ -10,7 +11,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-
+    migrate.init_app(app, db)
+    
     ###################################################
     #### Login Manager
     ###################################################
