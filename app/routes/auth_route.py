@@ -13,13 +13,13 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=username).first()
 
         if not username:
             flash('Username is required.')
         elif not password:
             flash('Password is required.')
             
+        user = db.session.execute(db.select(User)).first()
         if user:
             flash(f'The username, {username}, is already registered')
             return redirect(url_for('auth.register'))
@@ -39,7 +39,7 @@ def login():
         password = request.form['password']
         remember = True if request.form.get('remember') else False
         
-        user = User.query.filter_by(username=username).first()
+        user = db.session.execute(db.select(User).filter_by(username=username)).scalar()
 
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database

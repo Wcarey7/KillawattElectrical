@@ -8,7 +8,7 @@ from sqlalchemy import select, text
 bp = Blueprint('customer', __name__)
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     customer = db.session.execute(db.select(Customer)).scalars()
