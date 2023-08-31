@@ -1,6 +1,8 @@
 from app.extensions import db
 from app.extensions import login_manager
 from app.extensions import migrate
+from app.extensions import marshmallow
+from app.extensions import bootstrap
 from app.models.user import User
 from flask import Flask
 from config import Config
@@ -10,15 +12,20 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+
+    ###################################################
+    #### Init Extensions
+    ###################################################
     db.init_app(app)
+    login_manager.init_app(app)
     migrate.init_app(app, db)
+    marshmallow.init_app(app)
+    bootstrap.init_app(app)
     
     ###################################################
     #### Login Manager
     ###################################################
     login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
-
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
