@@ -54,7 +54,7 @@ def create_app(config_class=Config):
 
 
     ###################################################
-    #### Error Logging
+    #### Error Logging - For Production
     ###################################################
     if not app.debug and not app.testing:
         if not os.path.exists('logs'):

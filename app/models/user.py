@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String)
     security_permissions = db.Column(db.String, default="Admin") # TODO: make user types(i.e. Admin, Regular)
-    create_date = db.Column(db.DateTime)
+    create_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     
@@ -27,6 +27,3 @@ class User(UserMixin, db.Model):
         
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
-    def set_create_date(self):
-        self.create_date = datetime.utcnow
