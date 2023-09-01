@@ -1,9 +1,10 @@
 from app.extensions import db
 from app.models.customer import Customer
 from app.models.address import Address
+from app.customer.forms import AddCustomerForm
 from flask import render_template, request, url_for, redirect, Blueprint
 from flask_login import login_required, current_user
-from sqlalchemy import select, text
+from sqlalchemy import text
 
 bp = Blueprint('customer', __name__)
 
@@ -13,25 +14,28 @@ bp = Blueprint('customer', __name__)
 def index():
     customer = db.session.execute(db.select(Customer)).scalars()
     column_names = db.session.execute(text("SELECT * FROM Customer"))
+    form = AddCustomerForm()
     
     if request.method == 'POST':
-        new_customer = Customer(name=request.form['input-name'])
-        db.session.add(new_customer)
-        db.session.commit()
-        
-        new_address = Address(street=request.form['input-street'], 
-                                city=request.form['input-city'],
-                                state=request.form['input-state'],
-                                zip=request.form['input-zip'],
-                                customer_id = new_customer.id)
-                
-        db.session.add(new_address)
-        db.session.commit()
-        return redirect(url_for('customer.index'))
+        if form.validate_on_submit():
+            new_customer = Customer(name=form.name.data)
+            db.session.add(new_customer)
+            db.session.commit()
+            
+            new_address = Address(street=form.street.data, 
+                                    city=form.city.data,
+                                    state=form.state.data,
+                                    zip=form.zip.data,
+                                    customer_id = new_customer.id)
+                    
+            db.session.add(new_address)
+            db.session.commit()
+            return redirect(url_for('customer.index'))
     
     return render_template('customer/index.html.j2', 
                             customer=customer, 
-                            column_names=column_names, 
+                            column_names=column_names,
+                            form=form, 
                             username=current_user.username) 
 
 
