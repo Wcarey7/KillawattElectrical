@@ -43,5 +43,7 @@ def create_app(config_class=Config):
     from app.routes.auth_route import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
+    from app.routes.user_profile_route import bp as user_profile_bp
+    app.register_blueprint(user_profile_bp, url_prefix='/user')
     
     return app

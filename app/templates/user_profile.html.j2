@@ -1,0 +1,20 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+  <p>&nbsp;</p>
+  <h1 class="title">
+    Welcome, {{user.username}}! This is your profile page.
+  </h1>
+
+    <table>
+        <tr valign="top">
+            <td>
+                <h1>User: {{ user.username }}</h1>
+                <p>Email: {{ user.email }}</p>
+                <p>Security Permissions: {{ user.security_permissions }}</p>
+                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

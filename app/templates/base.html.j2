@@ -9,8 +9,8 @@
    <li><a href="{{ url_for('customer.index') }}">Customers</a>
 
     {% if current_user.is_authenticated %}
-      <li><span>Logged in as: <b>{{ username }}</b></span>
-      <li><a href="{{ url_for('home.profile') }}">Profile</a>
+      <li><span>Logged in as: <b>{{ current_user.username }}</b></span>
+      <li><a href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
