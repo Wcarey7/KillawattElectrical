@@ -7,10 +7,6 @@
 
 
 {% block content %}
-  <body>
-    <h3>if no account please <a href="{{ url_for('auth.register') }}">Register</a></h3>
-    <p>&nbsp;</p>
-  </body>
 
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
@@ -31,4 +27,6 @@
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
+    
+    <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
 {% endblock %}

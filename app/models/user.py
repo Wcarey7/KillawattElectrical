@@ -27,3 +27,6 @@ class User(UserMixin, db.Model):
         
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def set_create_date(self):
+        self.create_date = datetime.utcnow

@@ -12,6 +12,7 @@
                 <h1>User: {{ user.username }}</h1>
                 <p>Email: {{ user.email }}</p>
                 <p>Security Permissions: {{ user.security_permissions }}</p>
+                <p>User Created Date: {{ user.create_date }}</p>
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
             </td>
         </tr>

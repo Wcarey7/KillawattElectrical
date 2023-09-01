@@ -2,8 +2,7 @@ from app import db
 from app.models.user import User
 from app.auth.forms import LoginForm, RegistrationForm
 from flask import render_template, request, url_for, redirect, flash, Blueprint
-from flask_login import login_user, login_required, logout_user, current_user
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import login_user, logout_user, current_user
 from werkzeug.urls import url_parse
 
 bp = Blueprint('auth', __name__)
@@ -18,6 +17,7 @@ def register():
     if form.validate_on_submit():              
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
+        user.set_create_date()
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user!')
@@ -53,7 +53,6 @@ def login():
 
 
 @bp.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('home.index'))
