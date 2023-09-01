@@ -1,6 +1,6 @@
 # Database
 app.db
-migrations/
+#migrations/
 
 # Visual Studio files and folders
 .vs/
