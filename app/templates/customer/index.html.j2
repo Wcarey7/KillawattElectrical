@@ -1,7 +1,7 @@
 {% extends 'base.html.j2' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-
-{% block content %}
+{% block app_content %}
 <span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
 <div class="content">
     <table id= "customer-table" border="1" cellpadding="5">
@@ -72,6 +72,7 @@
             </p>
             <p>{{ form.submit() }}</p>
         </form>
+        {# {{ wtf.quick_form(form) }} #}
     </div> <!-- End of Add Customer Column -->
 </div> <!-- End of Add Customer Row -->
 

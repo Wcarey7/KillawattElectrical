@@ -1,30 +1,52 @@
-<!doctype html>
-<title>{% block title %}{% endblock %} - Kill-A-Watt Electrical Inc.</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1>Kill-A-Watt Electrical Inc.</h1>
-  <a href="{{ url_for('home.index') }}">Home</a>
- 
-  <ul>
-   <li><a href="{{ url_for('customer.index') }}">Customers</a>
+{% extends 'bootstrap/base.html' %}
 
-    {% if current_user.is_authenticated %}
-      <li><span>Logged in as: <b>{{ current_user.username }}</b></span>
-      <li><a href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-    {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
-    {% endif %}
-  </ul>
+{# <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> #}
+
+<title>{% block title %}{% endblock %} Kill-A-Watt Electrical Inc.</title>
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('home.index') }}">Kill-A-Watt Electrical Inc.</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('customer.index') }}">Customers</a>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+          <li>Logged in as: <b>{{ current_user.username }}</b>
+          <li><a href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
+          <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% else %}
+          <li><a href="{{ url_for('auth.register') }}">Register</a>
+          <li><a href="{{ url_for('auth.login') }}">Log In</a>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
 </nav>
+{% endblock %}
 
-<section class="content">
-  <header>
-  {% block header %}{% endblock %}
-  </header>
-    {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
-  {% block content %}{% endblock %}
-</section>
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

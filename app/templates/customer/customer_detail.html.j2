@@ -1,7 +1,7 @@
 {% extends 'base.html.j2' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-
-{% block content %}
+{% block app_content %}
 <span class="title"><h1>{% block title %} The {{ customer.name }} Detail Page {% endblock %}</h1></span>
 <div class="content">
     <table id= "customer-table" border="1" cellpadding="5">
@@ -31,31 +31,40 @@
 <!-- Update customer form -->
 <div class = "row">
 <div class = "column">
-        <form method="POST" action="{{ url_for('customer.edit', Id=customer.id) }}" id="update-customer-form-ajax">
+        <form action="{{ url_for('customer.edit', Id=customer.id) }}" method="POST">
         <h3>Update a Customer</h3>
-            <div class = "form-inputs">
-                <div>
-                    <label for="input-update-street">Street: </label>
-                    <input type="text" name="input-update-street" value="{{ customer_address.street |safe}}">                  
-                </div>
-
-                <div>
-                    <label for="input-update-city">City: </label>
-                    <input type="text" name="input-update-city" value="{{ customer_address.city |safe}}">                    
-                </div>
-
-                <div>
-                    <label for="input-update-state">State: </label>
-                    <input type="text" name="input-update-state" value={{ customer_address.state }}>
-                </div>
-                
-                <div>
-                    <label for="input-update-zip">Zip: </label>
-                    <input type="text" name="input-update-zip" value={{ customer_address.zip }}>
-                </div>
-                <input type="submit" value= "Update Customer">
-            </div>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.street.label }}<br>
+                {{ form.street(size=32) }}<br>
+                {% for error in form.street.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.city.label }}<br>
+                {{ form.city(size=32) }}<br>
+                {% for error in form.city.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.state.label }}<br>
+                {{ form.state(size=32) }}<br>
+                {% for error in form.state.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.zip.label }}<br>
+                {{ form.zip(size=32) }}<br>
+                {% for error in form.zip.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
         </form>
+        {# {{ wtf.quick_form(form) }} #}
 </div> <!-- End of update Customer Column -->
 </div> <!-- End of Row -->
 
