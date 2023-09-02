@@ -12,8 +12,8 @@
                 <h1>User: {{ user.username }}</h1>
                 <p>Email: {{ user.email }}</p>
                 <p>Security Permissions: {{ user.security_permissions }}</p>
-                <p>User Created Date: {{ user.create_date }}</p>
-                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+                <p>User Create Date: {{ moment(user.create_date).format('LLL') }}</p>
+                {% if user.last_seen %}<p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
             </td>
         </tr>
     </table>
