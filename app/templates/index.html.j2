@@ -1,8 +1,10 @@
 {% extends 'base.html.j2' %}
 
-{% block app_content %}
+
+{% block content %}
     <span class="title"><h1>{% block title %} The Home Page of Kill-A-Watt Electrical Inc. {% endblock %}</h1></span>
     <div class="content">
           <a href="{{ url_for('customer.index') }}">Customers</a>
     </div>
 {% endblock %}
+

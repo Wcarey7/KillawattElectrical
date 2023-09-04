@@ -1,57 +1,40 @@
-{% extends 'bootstrap/base.html' %}
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/utils.html' import render_messages %}
 
-{# <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> #}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Kill-A-Watt Electrical Inc.</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- CUSTOM CSS -->
 
-<title>{% block title %}{% endblock %} Kill-A-Watt Electrical Inc.</title>
+      {# Bootstrap 5 Style CSS #}
+      {{ bootstrap.load_css() }}
+  </head>
 
-{% block navbar %}
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{ url_for('home.index') }}">Kill-A-Watt Electrical Inc.</a>
+  <body>
+    <div class="mainParentContent">
+      <div class="innerParentContent">
+        <header>
+          {% include "include_navbar.html.j2" %}
+        </header>
+
+        {# Main Application ContentBlock #}
+        <main class="container">
+            {{ render_messages(container=False, dismissible=True, dismiss_animate=True) }}
+
+            {% block content %}
+                {# application content needs to be provided in the content block #}
+            {% endblock %}
+        </main>
+
+        {# Date/Time formatting #}
+        {{ moment.include_moment() }}
+
+        {# Bootstrap 5 JavaScript #}
+        {{ bootstrap.load_js() }}
+      </div>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('customer.index') }}">Customers</a>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
-          <li>Logged in as: <b>{{ current_user.username }}</b>
-          <li><a href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
-          <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-        {% else %}
-          <li><a href="{{ url_for('auth.register') }}">Register</a>
-          <li><a href="{{ url_for('auth.login') }}">Log In</a>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav>
-{% endblock %}
-
-
-{% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
-    </div>
-{% endblock %}
-
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-{% endblock %}
+  </body>
+</html>

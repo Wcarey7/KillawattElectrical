@@ -4,6 +4,7 @@ from app.extensions import migrate
 from app.extensions import marshmallow
 from app.extensions import bootstrap
 from app.extensions import moment
+from app.extensions import csrf
 from app.models.user import User
 from flask import Flask
 from config import Config
@@ -26,6 +27,7 @@ def create_app(config_class=Config):
     marshmallow.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+    csrf.init_app(app)
     
     ###################################################
     #### Login Manager

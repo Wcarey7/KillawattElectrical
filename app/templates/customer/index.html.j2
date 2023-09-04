@@ -1,78 +1,35 @@
 {% extends 'base.html.j2' %}
-{% import 'bootstrap/wtf.html' as wtf %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+{% from 'bootstrap5/table.html' import render_table %}
 
-{% block app_content %}
+
+{% block content %}
 <span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
-<div class="content">
-    <table id= "customer-table" border="1" cellpadding="5">
-        <thead>
-            <tr>
-                {% for column_name in column_names.keys() %}
-                    <th>{{ column_name }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-    <tbody>
-        {% for customer in customer %}
-        <div class="customer">
-            <tr>
-                <td><a href="{{ url_for('customer.detail', Id=customer.id)}}">{{ customer.id }}</a></td>
-                <td>{{ customer.name }}</td>
-                <td><form method="POST" action="{{ url_for('customer.delete_customer', Id=customer.id) }}">
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this customer?')"></form>
-                </td>
-            </tr>
-        </div>
-        {% endfor %}
-    </tbody>
-    </table>
-</div>
+
+{{ render_table(customer, 
+                table_classes="table table-striped table-hover table-bordered", 
+                urlize_columns=('id'), 
+                show_actions=True, 
+                actions_title="View / Delete", 
+                model=Customer, 
+                view_url=('customer.detail', [('Id', ':id')]),
+                delete_url=('customer.delete_customer', [('Id', ':id')]), 
+                ) }}
 
 
 <!-- Add new customer form -->
 <div class = "row">
     <div class = "column">
         <h3>Add New Customer</h3>
-        <form action="" method="post">
+        <form action="" method="POST">
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.name.label }}<br>
-                {{ form.name(size=32) }}<br>
-                {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.street.label }}<br>
-                {{ form.street(size=32) }}<br>
-                {% for error in form.street.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.city.label }}<br>
-                {{ form.city(size=32) }}<br>
-                {% for error in form.city.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.state.label }}<br>
-                {{ form.state(size=32) }}<br>
-                {% for error in form.state.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.zip.label }}<br>
-                {{ form.zip(size=32) }}<br>
-                {% for error in form.zip.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>{{ form.submit() }}</p>
+            {{ render_form_row([form.name], col_map={'name': 'col-md-4'}) }}
+            {{ render_form_row([form.street], col_map={'street': 'col-md-4'}) }}
+            {{ render_form_row([form.city], col_map={'city': 'col-md-4'}) }}
+            {{ render_form_row([form.state], col_map={'state': 'col-md-4'}) }}
+            {{ render_form_row([form.zip], col_map={'zip': 'col-md-4'}) }}
+            {{ render_field(form.submit) }}
         </form>
-        {# {{ wtf.quick_form(form) }} #}
     </div> <!-- End of Add Customer Column -->
 </div> <!-- End of Add Customer Row -->
 

@@ -1,12 +1,13 @@
 alembic==1.11.3
 blinker==1.6.2
+Bootstrap-Flask==2.3.0
 click==8.1.7
 colorama==0.4.6
 dnspython==2.4.2
 dominate==2.8.0
 email-validator==2.0.0.post2
 Flask==2.3.3
-Flask-Bootstrap==3.3.7.1
+Flask-BS4==5.3.1.0
 Flask-Login==0.6.2
 flask-marshmallow==0.15.0
 Flask-Migrate==4.0.4
