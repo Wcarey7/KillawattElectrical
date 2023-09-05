@@ -1,0 +1,23 @@
+{% extends 'base.html.j2' %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+
+
+{% block content %}
+<span class="title"><h1>{% block title %} Add New Customer {% endblock %}</h1></span>
+
+<!-- Add new customer form -->
+<div class = "row">
+    <div class = "column">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_form_row([form.name], col_map={'name': 'col-md-4'}) }}
+            {{ render_form_row([form.street], col_map={'street': 'col-md-4'}) }}
+            {{ render_form_row([form.city], col_map={'city': 'col-md-4'}) }}
+            {{ render_form_row([form.state], col_map={'state': 'col-md-4'}) }}
+            {{ render_form_row([form.zip], col_map={'zip': 'col-md-4'}) }}
+            {{ render_field(form.submit) }}
+        </form>
+    </div> <!-- End of Add Customer Column -->
+</div> <!-- End of Add Customer Row -->
+
+{% endblock %}

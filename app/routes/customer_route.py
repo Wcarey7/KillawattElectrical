@@ -13,30 +13,38 @@ bp = Blueprint('customer', __name__)
 @login_required
 def index():
     customer = db.session.execute(db.select(Customer)).scalars().all()
-    form = AddCustomerForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            new_customer = Customer(name=form.name.data)
-            db.session.add(new_customer)
-            db.session.commit()
-
-            new_address = Address(street=form.street.data, 
-                                    city=form.city.data,
-                                    state=form.state.data,
-                                    zip=form.zip.data,
-                                    customer_id = new_customer.id)
-                    
-            db.session.add(new_address)
-            db.session.commit()
-            return redirect(url_for('customer.index'))
     
     return render_template('customer/index.html.j2', 
                             customer=customer, 
-                            form=form, 
                             Customer=Customer,
                             username=current_user.username) 
 
 
+@bp.route('/add/', methods=['GET', 'POST'])
+@login_required
+def add_customer():
+    form = AddCustomerForm()
+    if form.validate_on_submit():
+        new_customer = Customer(name=form.name.data)
+        db.session.add(new_customer)
+        db.session.commit()
+
+        new_address = Address(street=form.street.data, 
+                                city=form.city.data,
+                                state=form.state.data,
+                                zip=form.zip.data,
+                                customer_id = new_customer.id)
+                
+        db.session.add(new_address)
+        db.session.commit()
+        return redirect(url_for('customer.index'))
+        
+    return render_template('customer/new_customer.html.j2', 
+                            form=form, 
+                            Customer=Customer,
+                            username=current_user.username) 
+
+    
 @bp.route('/<int:Id>/')
 @login_required
 def detail(Id):

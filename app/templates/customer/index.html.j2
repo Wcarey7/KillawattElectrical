@@ -10,27 +10,11 @@
                 table_classes="table table-striped table-hover table-bordered", 
                 urlize_columns=('id'), 
                 show_actions=True, 
-                actions_title="View / Delete", 
+                actions_title="Add Customer", 
                 model=Customer, 
                 view_url=('customer.detail', [('Id', ':id')]),
                 delete_url=('customer.delete_customer', [('Id', ':id')]), 
+                new_url=url_for(('customer.add_customer'))
                 ) }}
-
-
-<!-- Add new customer form -->
-<div class = "row">
-    <div class = "column">
-        <h3>Add New Customer</h3>
-        <form action="" method="POST">
-            {{ form.hidden_tag() }}
-            {{ render_form_row([form.name], col_map={'name': 'col-md-4'}) }}
-            {{ render_form_row([form.street], col_map={'street': 'col-md-4'}) }}
-            {{ render_form_row([form.city], col_map={'city': 'col-md-4'}) }}
-            {{ render_form_row([form.state], col_map={'state': 'col-md-4'}) }}
-            {{ render_form_row([form.zip], col_map={'zip': 'col-md-4'}) }}
-            {{ render_field(form.submit) }}
-        </form>
-    </div> <!-- End of Add Customer Column -->
-</div> <!-- End of Add Customer Row -->
 
 {% endblock %}
