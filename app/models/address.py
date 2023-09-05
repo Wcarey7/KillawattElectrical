@@ -1,5 +1,5 @@
-from app.extensions import db
-
+from app import db
+from flask import current_app
 
 class Address(db.Model):
     __tablename__ = 'address'

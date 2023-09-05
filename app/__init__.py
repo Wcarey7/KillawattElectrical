@@ -6,7 +6,7 @@ from app.extensions import bootstrap
 from app.extensions import moment
 from app.extensions import csrf
 from app.models.user import User
-from flask import Flask
+from flask import Flask, request, current_app
 from config import Config
 import logging
 from logging.handlers import RotatingFileHandler
