@@ -1,11 +1,10 @@
 from app import db
+from app.user_profile import bp
 from app.models.user import User
 from datetime import datetime
-from flask import render_template, request, url_for, redirect, Blueprint
+from flask import render_template, request, url_for, redirect
 from flask_login import login_required, current_user
 
-
-bp = Blueprint('user_profile', __name__)
 
 
 @bp.before_request

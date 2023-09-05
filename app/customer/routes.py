@@ -1,12 +1,11 @@
 from app import db
+from app.customer import bp
 from app.models.customer import Customer
 from app.models.address import Address
 from app.customer.forms import AddCustomerForm
 from flask import render_template, current_app, request, url_for, redirect, flash, Blueprint
 from flask_login import login_required, current_user
 from sqlalchemy import text
-
-bp = Blueprint('customer', __name__)
 
 
 @bp.route('/', methods=['GET', 'POST'])

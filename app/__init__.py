@@ -41,19 +41,19 @@ def create_app(config_class=Config):
     ###################################################
     #### Register Blueprints
     ###################################################
-    from app.routes.home_route import bp as home_bp
+    from app.home import bp as home_bp
     app.register_blueprint(home_bp)
 
     from app.errors.handlers import bp as errors_bp
     app.register_blueprint(errors_bp)
 
-    from app.routes.customer_route import bp as customer_bp
+    from app.customer import bp as customer_bp
     app.register_blueprint(customer_bp, url_prefix='/customer')
 
-    from app.routes.auth_route import bp as auth_bp
+    from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
-    from app.routes.user_profile_route import bp as user_profile_bp
+    from app.user_profile import bp as user_profile_bp
     app.register_blueprint(user_profile_bp, url_prefix='/user')
 
 
