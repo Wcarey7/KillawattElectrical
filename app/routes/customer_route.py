@@ -2,7 +2,7 @@ from app import db
 from app.models.customer import Customer
 from app.models.address import Address
 from app.customer.forms import AddCustomerForm
-from flask import render_template, request, url_for, redirect, flash, Blueprint
+from flask import render_template, current_app, request, url_for, redirect, flash, Blueprint
 from flask_login import login_required, current_user
 from sqlalchemy import text
 
@@ -12,10 +12,14 @@ bp = Blueprint('customer', __name__)
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    customer = db.session.execute(db.select(Customer)).scalars().all()
+    #customer = db.session.execute(db.select(Customer)).scalars().all()
+    page = request.args.get('page', 1, type=int)
+    pagination = db.paginate(db.select(Customer), page=page, per_page=current_app.config['CUSTOMERS_PER_PAGE'])
+    customers = pagination.items
     
     return render_template('customer/index.html.j2', 
-                            customer=customer, 
+                            customers=customers,
+                            pagination=pagination, 
                             Customer=Customer,
                             username=current_user.username) 
 
