@@ -12,7 +12,13 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
-          <li class="nav-item nav-link"><span class="navbar-brand me-auto"><p class="fs-6">Logged in as: <b>{{ current_user.username }}</b></p></span>
+          <li class="nav-item nav-link">
+            <span class="navbar-brand me-auto">
+              <p class="fs-6">
+                {{ 'Logged in as: %s' % username.replace(current_user.username,"<b>{}</b>".format(current_user.username)) | safe }}
+              </p>
+            </span>
+            
           <li class="nav-item"><a class="nav-link" href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
         {% else %}
