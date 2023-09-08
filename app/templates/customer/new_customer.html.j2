@@ -16,6 +16,7 @@
             {{ render_form_row([form.state], col_map={'state': 'col-md-4'}) }}
             {{ render_form_row([form.zip], col_map={'zip': 'col-md-4'}) }}
             {{ render_field(form.submit) }}
+            <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
         </form>
     </div> <!-- End of Add Customer Column -->
 </div> <!-- End of Add Customer Row -->
