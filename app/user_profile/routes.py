@@ -17,4 +17,4 @@ def before_request():
 @login_required
 def user(username):
     user = db.one_or_404(db.select(User).filter_by(username=username))
-    return render_template('user_profile.html.j2', user=user)
+    return render_template('user_profile.html.j2', user=user, username=current_user.username)

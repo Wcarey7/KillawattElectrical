@@ -1,9 +1,9 @@
 from app import db
 from app.customer import bp
-from app.models.customer import Customer
+from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
 from app.customer.forms import AddCustomerForm
-from flask import render_template, current_app, request, url_for, redirect, flash, Blueprint
+from flask import render_template, current_app, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from sqlalchemy import text
 
@@ -11,15 +11,19 @@ from sqlalchemy import text
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    #customer = db.session.execute(db.select(Customer)).scalars().all()
     page = request.args.get('page', 1, type=int)
-    pagination = db.paginate(db.select(Customer), page=page, per_page=current_app.config['CUSTOMERS_PER_PAGE'])
-    customers = pagination.items
+    customers = db.paginate(db.select(Customer), page=page, per_page=current_app.config['CUSTOMERS_PER_PAGE'])
+
+    next_url = url_for('customer.index', page=customers.next_num) \
+        if customers.has_next else None
+
+    prev_url = url_for('customer.index', page=customers.prev_num) \
+        if customers.has_prev else None
     
-    return render_template('customer/index.html.j2', 
+    return render_template('customer/index.html.j2',
+                            next_url=next_url,
+                            prev_url=prev_url,
                             customers=customers,
-                            pagination=pagination, 
-                            Customer=Customer,
                             username=current_user.username) 
 
 
@@ -37,8 +41,11 @@ def add_customer():
                                 state=form.state.data,
                                 zip=form.zip.data,
                                 customer_id = new_customer.id)
-                
-        db.session.add(new_address)
+        
+        new_phone = Telephone(phoneNumber=form.phoneNum.data, customer_id = new_customer.id)
+        new_email = Email(email=form.email.data, customer_id = new_customer.id)
+        
+        db.session.add_all([new_address, new_phone, new_email])
         db.session.commit()
         return redirect(url_for('customer.index'))
         
@@ -53,11 +60,10 @@ def add_customer():
 def detail(Id):
     customer = db.get_or_404(Customer, Id)
     customer_address = db.one_or_404(db.select(Address).filter_by(customer_id=Id))
-    column_names = db.session.execute(text("SELECT * FROM Address"))
+    
     return render_template('customer/customer_detail.html.j2', 
                            customer=customer, 
-                           customer_address=customer_address,
-                           column_names=column_names, 
+                           customer_address=customer_address, 
                            username=current_user.username)
 
 

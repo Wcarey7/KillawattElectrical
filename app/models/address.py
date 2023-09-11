@@ -10,16 +10,17 @@ class Address(db.Model):
     zip = db.Column(db.String)
     
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
-
+    customers = db.relationship("Customer", back_populates="addresses")
+    
     __mapper_args__ = {
         "polymorphic_identity": "address"
     }
-    
+
     def __repr__(self):
-        return {f"<id: {self.id!r},"
+        return (f"<id: {self.id!r},"
                 f"street: {self.street!r}, "
                 f"city: {self.city!r}, "
                 f"state: {self.state!r}, "
                 f"zip: {self.zip!r}, "
-                f"customer_id: {self.customer_id!r}>"}
+                f"customer_id: {self.customer_id!r}>")
         

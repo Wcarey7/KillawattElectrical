@@ -23,7 +23,7 @@ def create_app(config_class=Config):
     ###################################################
     db.init_app(app)
     login_manager.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     marshmallow.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)

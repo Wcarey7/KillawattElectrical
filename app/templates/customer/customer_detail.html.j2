@@ -3,16 +3,18 @@
 
 
 {% block content %}
+{% include "customer/include_customer_navbar.html.j2" %}
 <span class="title"><h1>{% block title %} The {{ customer.name }} Detail Page {% endblock %}</h1></span>
 <div class="content">
     <table id= "customer-table" border="1" cellpadding="5">
         <thead>
             <tr>
-
-                {% for column_name in column_names.keys() %}
-                    <th>{{ column_name }}</th>
-                {% endfor %}
-
+                <th>ID</th>
+                <th>Name</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
             </tr>
         </thead>
     <tbody>
