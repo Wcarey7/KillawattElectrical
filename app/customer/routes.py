@@ -83,10 +83,6 @@ def edit(Id):
     form = AddCustomerForm()
     customer = db.get_or_404(Customer, Id)
     if form.validate_on_submit():
-        # street = request.form['input-update-street']
-        # city = request.form['input-update-city']
-        # state = request.form['input-update-state']
-        # zip = request.form['input-update-zip']
         
         customer.name = form.name.data
         customer.addresses[0].street = form.street.data

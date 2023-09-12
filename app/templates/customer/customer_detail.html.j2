@@ -7,7 +7,7 @@
     <span class="title"><h1>{% block title %} The {{ customer.name }} Detail Page {% endblock %}</h1></span>
 </div>
 
-{% include "customer/include_customer_navbar.html.j2" %}
+    {% include "customer/include_customer_navbar.html.j2" %}
 
 
 <div class="container-md text-center">
@@ -47,10 +47,9 @@
     </div>
 </div>
 
-
-<a href="{{ url_for('customer.edit', Id=customer.id) }}" class="btn btn-primary">Update</a>
-
-
+<div class="container text-center">
+    <a href="{{ url_for('customer.edit', Id=customer.id) }}" class="btn btn-primary">Update</a>
+</div>
 
 
 {% endblock %}
