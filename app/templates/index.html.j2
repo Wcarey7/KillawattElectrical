@@ -2,9 +2,14 @@
 
 
 {% block content %}
+
+<div class="container text-center">
     <span class="title"><h1>{% block title %} The Home Page of Kill-A-Watt Electrical Inc. {% endblock %}</h1></span>
-    <div class="content">
-          <a href="{{ url_for('customer.index') }}">Customers</a>
-    </div>
+</div>
+
+<div class="container text-center">
+        <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Search Customers</a>
+</div>
+
 {% endblock %}
 

@@ -6,8 +6,9 @@
 
 {% block content %}
 
-<span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
-
+<div class="container text-center">
+    <span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
+</div>
 
 <p><a href="{{ url_for('customer.add_customer')}}">
     <button type="button" class="btn btn-primary">New Customer</button>

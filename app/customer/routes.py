@@ -5,7 +5,7 @@ from app.models.address import Address
 from app.customer.forms import AddCustomerForm
 from flask import render_template, current_app, request, url_for, redirect, flash
 from flask_login import login_required, current_user
-from sqlalchemy import text
+
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -42,8 +42,11 @@ def add_customer():
                                 zip=form.zip.data,
                                 customer_id = new_customer.id)
         
-        new_phone = Telephone(phoneNumber=form.phoneNum.data, customer_id = new_customer.id)
-        new_email = Email(email=form.email.data, customer_id = new_customer.id)
+        new_phone = Telephone(phoneNumber=form.phoneNum.data, 
+                              customer_id = new_customer.id)
+        
+        new_email = Email(email=form.email.data, 
+                          customer_id = new_customer.id)
         
         db.session.add_all([new_address, new_phone, new_email])
         db.session.commit()
@@ -59,11 +62,9 @@ def add_customer():
 @login_required
 def detail(Id):
     customer = db.get_or_404(Customer, Id)
-    customer_address = db.one_or_404(db.select(Address).filter_by(customer_id=Id))
-    
+  
     return render_template('customer/customer_detail.html.j2', 
                            customer=customer, 
-                           customer_address=customer_address, 
                            username=current_user.username)
 
 
@@ -79,24 +80,38 @@ def delete_customer(Id):
 @bp.route('/<int:Id>/edit/', methods=["POST", "GET"])
 @login_required
 def edit(Id):
-    customer = db.one_or_404(db.select(Address).filter_by(customer_id=Id))
-    
-    if request.method == 'POST':
-        street = request.form['input-update-street']
-        city = request.form['input-update-city']
-        state = request.form['input-update-state']
-        zip = request.form['input-update-zip']
-
-        customer.street = street
-        customer.city = city
-        customer.state = state
-        customer.zip = zip
-
+    form = AddCustomerForm()
+    customer = db.get_or_404(Customer, Id)
+    if form.validate_on_submit():
+        # street = request.form['input-update-street']
+        # city = request.form['input-update-city']
+        # state = request.form['input-update-state']
+        # zip = request.form['input-update-zip']
+        
+        customer.name = form.name.data
+        customer.addresses[0].street = form.street.data
+        customer.addresses[0].city = form.city.data
+        customer.addresses[0].state = form.state.data
+        customer.addresses[0].zip = form.zip.data
+        customer.phoneNum[0].phoneNumber = form.phoneNum.data
+        customer.email[0].email = form.email.data
+        
         db.session.add(customer)
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('customer.detail', Id=customer.customer_id))
-
-    return render_template('customer/customer_detail.html.j2', 
+        return redirect(url_for('customer.detail', Id=customer.id))
+    
+    elif request.method == 'GET':
+        # Pre-fill forms
+        form.name.data = customer.name
+        form.street.data = customer.addresses[0].street
+        form.city.data = customer.addresses[0].city
+        form.state.data = customer.addresses[0].state
+        form.zip.data = customer.addresses[0].zip
+        form.phoneNum.data = customer.phoneNum[0].phoneNumber
+        form.email.data = customer.email[0].email
+        
+    return render_template('customer/update_customer.html.j2',
+                           form=form, 
                            customer=customer, 
                            username=current_user.username)

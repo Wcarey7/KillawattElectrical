@@ -4,10 +4,11 @@
 
 {% block content %}
 <div class="container text-center">
-    <span class="title"><h1>{% block title %} Add New Customer {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %} Update Customer {% endblock %}</h1></span>
 </div>
 
-<!-- Add new customer form -->
+
+<!-- Update customer form -->
 <div class = "row">
     <div class = "column">
         <form action="" method="POST">
@@ -20,9 +21,9 @@
             {{ render_form_row([form.phoneNum], col_map={'Phone Number': 'col-md-4'}) }}
             {{ render_form_row([form.email], col_map={'Email': 'col-md-4'}) }}
             {{ render_field(form.submit) }}
-            <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
+            <a href="{{ url_for('customer.detail', Id=customer.id) }}" class="btn btn-primary">Cancel</a>
         </form>
-    </div> <!-- End of Add Customer Column -->
-</div> <!-- End of Add Customer Row -->
+    </div> <!-- End of Update Customer Column -->
+</div> <!-- End of Update Customer Row -->
 
 {% endblock %}
