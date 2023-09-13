@@ -1,6 +1,6 @@
-from app.home import bp
 from flask import render_template
 from flask_login import login_required, current_user
+from app.home import bp
 
 
 @bp.route('/')

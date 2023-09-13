@@ -1,3 +1,8 @@
+from flask import Flask, current_app
+from config import Config
+from logging.handlers import RotatingFileHandler
+import logging
+import os
 from app.extensions import db
 from app.extensions import login_manager
 from app.extensions import migrate
@@ -6,11 +11,6 @@ from app.extensions import bootstrap
 from app.extensions import moment
 from app.extensions import csrf
 from app.models.user import User
-from flask import Flask, request, current_app
-from config import Config
-import logging
-from logging.handlers import RotatingFileHandler
-import os
 
 
 def create_app(config_class=Config):
@@ -28,6 +28,7 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     csrf.init_app(app)
+
     
     ###################################################
     #### Login Manager
@@ -43,7 +44,7 @@ def create_app(config_class=Config):
     ###################################################
     from app.home import bp as home_bp
     app.register_blueprint(home_bp)
-
+    
     from app.errors.handlers import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -58,7 +59,7 @@ def create_app(config_class=Config):
 
 
     ###################################################
-    #### Error Logging - For Production
+    #### Error Logging to File - For Production
     ###################################################
     if not app.debug and not app.testing:
         if not os.path.exists('logs'):

@@ -1,10 +1,10 @@
+from flask import render_template, request, url_for, redirect, flash
+from flask_login import login_user, logout_user, current_user
+from werkzeug.urls import url_parse
 from app import db
 from app.auth import bp
 from app.models.user import User
 from app.auth.forms import LoginForm, RegistrationForm
-from flask import render_template, request, url_for, redirect, flash
-from flask_login import login_user, logout_user, current_user
-from werkzeug.urls import url_parse
 
 
 @bp.route('/register', methods=['GET', 'POST'])

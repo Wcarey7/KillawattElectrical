@@ -5,9 +5,14 @@ from flask_marshmallow import Marshmallow       # https://flask-marshmallow.read
 from flask_bootstrap import Bootstrap5          # https://bootstrap-flask.readthedocs.io/en/stable/
 from flask_moment import Moment                 # https://flask-moment.readthedocs.io/en/latest/
 from flask_wtf.csrf import CSRFProtect          # https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+from sqlalchemy.orm import DeclarativeBase
 
 
-db = SQLAlchemy()
+class Base(DeclarativeBase):
+  pass
+
+
+db = SQLAlchemy(model_class=Base)
 login_manager = LoginManager()
 migrate = Migrate()
 marshmallow = Marshmallow()

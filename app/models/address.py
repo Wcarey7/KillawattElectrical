@@ -1,5 +1,5 @@
-from app import db
 from flask import current_app
+from app import db
 
 
 # Connects to Customer Model on it's attribute field 'addresses'

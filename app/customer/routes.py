@@ -1,10 +1,10 @@
+from flask import render_template, current_app, request, url_for, redirect, flash
+from flask_login import login_required, current_user
 from app import db
 from app.customer import bp
 from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
 from app.customer.forms import AddCustomerForm
-from flask import render_template, current_app, request, url_for, redirect, flash
-from flask_login import login_required, current_user
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -40,11 +40,11 @@ def add_customer():
         db.session.commit()
 
         new_address = Address(street=form.street.data, 
-                                city=form.city.data,
-                                state=form.state.data,
-                                zip=form.zip.data,
-                                customer_id=new_customer.id,
-                                )
+                              city=form.city.data,
+                              state=form.state.data,
+                              zip=form.zip.data,
+                              customer_id=new_customer.id,
+                              )
         
         new_phone = Telephone(phoneNumber=form.phoneNum.data, 
                               customer_id=new_customer.id,
@@ -83,6 +83,7 @@ def delete_customer(Id):
     customerID = db.get_or_404(Customer, Id)
     db.session.delete(customerID)
     db.session.commit()
+    flash('Customer deleted')
     return redirect(url_for('customer.index'))
 
 
