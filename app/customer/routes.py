@@ -7,24 +7,27 @@ from flask import render_template, current_app, request, url_for, redirect, flas
 from flask_login import login_required, current_user
 
 
-
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     page = request.args.get('page', 1, type=int)
-    customers = db.paginate(db.select(Customer), page=page, per_page=current_app.config['CUSTOMERS_PER_PAGE'])
+    customers = db.paginate(db.select(Customer), 
+                            page=page, 
+                            per_page=current_app.config['CUSTOMERS_PER_PAGE'],
+                            )
 
-    next_url = url_for('customer.index', page=customers.next_num) \
-        if customers.has_next else None
+    next_url = (url_for('customer.index', page=customers.next_num)
+        if customers.has_next else None)
 
-    prev_url = url_for('customer.index', page=customers.prev_num) \
-        if customers.has_prev else None
+    prev_url = (url_for('customer.index', page=customers.prev_num)
+        if customers.has_prev else None)
     
     return render_template('customer/index.html.j2',
                             next_url=next_url,
                             prev_url=prev_url,
                             customers=customers,
-                            username=current_user.username) 
+                            username=current_user.username,
+                            ) 
 
 
 @bp.route('/add/', methods=['GET', 'POST'])
@@ -40,13 +43,16 @@ def add_customer():
                                 city=form.city.data,
                                 state=form.state.data,
                                 zip=form.zip.data,
-                                customer_id = new_customer.id)
+                                customer_id=new_customer.id,
+                                )
         
         new_phone = Telephone(phoneNumber=form.phoneNum.data, 
-                              customer_id = new_customer.id)
+                              customer_id=new_customer.id,
+                              )
         
         new_email = Email(email=form.email.data, 
-                          customer_id = new_customer.id)
+                          customer_id=new_customer.id,
+                          )
         
         db.session.add_all([new_address, new_phone, new_email])
         db.session.commit()
@@ -55,9 +61,11 @@ def add_customer():
     return render_template('customer/new_customer.html.j2', 
                             form=form, 
                             Customer=Customer,
-                            username=current_user.username) 
+                            username=current_user.username,
+                            ) 
 
-    
+
+# Customer detail view 
 @bp.route('/<int:Id>/')
 @login_required
 def detail(Id):
@@ -65,10 +73,11 @@ def detail(Id):
   
     return render_template('customer/customer_detail.html.j2', 
                            customer=customer, 
-                           username=current_user.username)
+                           username=current_user.username,
+                           )
 
 
-@bp.route('/<int:Id>/delete/', methods=["POST"])
+@bp.route('/<int:Id>/delete/', methods=['POST'])
 @login_required
 def delete_customer(Id):
     customerID = db.get_or_404(Customer, Id)
@@ -77,7 +86,8 @@ def delete_customer(Id):
     return redirect(url_for('customer.index'))
 
 
-@bp.route('/<int:Id>/edit/', methods=["POST", "GET"])
+# Edit route within the customer detail view
+@bp.route('/<int:Id>/edit/', methods=['POST', 'GET'])
 @login_required
 def edit(Id):
     form = AddCustomerForm()
@@ -110,4 +120,6 @@ def edit(Id):
     return render_template('customer/update_customer.html.j2',
                            form=form, 
                            customer=customer, 
-                           username=current_user.username)
+                           username=current_user.username,
+                           )
+    

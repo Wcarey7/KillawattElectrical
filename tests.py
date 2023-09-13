@@ -14,7 +14,7 @@ class TestConfig(Config):
     WTF_CSRF_ENABLED = False                # no CSRF during tests
 
 
-class TestCase(unittest.TestCase):
+class UserAuthTest(unittest.TestCase):
     def setUp(self):
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
@@ -30,10 +30,6 @@ class TestCase(unittest.TestCase):
         self.client = None
 
 
-    def test_app(self):
-        assert self.app is not None
-        assert current_app == self.app
-
     def populate_db(self):
         user = User(username='wade', email='wade@example.com')
         user.set_password('foo')
@@ -43,9 +39,14 @@ class TestCase(unittest.TestCase):
 
     def login(self):
         self.client.post('/auth/login', data={
-            'username': 'susan',
+            'username': 'wade',
             'password': 'foo',
         })
+
+        
+    def test_app(self):
+        assert self.app is not None
+        assert current_app == self.app
 
 
     # Home page requires User to be logged in, 

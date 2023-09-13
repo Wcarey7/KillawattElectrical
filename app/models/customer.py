@@ -2,6 +2,7 @@ from app import db
 from flask import current_app
 from datetime import datetime
 
+
 class Customer(db.Model):
     __tablename__ = 'customer'
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +17,6 @@ class Customer(db.Model):
         
     def __repr__(self):
         return f'<id: {self.id!r}, name: {self.name!r}>'
-
 
 
 class Telephone(db.Model):

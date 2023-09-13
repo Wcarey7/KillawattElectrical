@@ -17,11 +17,11 @@ class User(UserMixin, db.Model):
 
     
     def __repr__(self):
-        return {f"<User id: {self.id!r}, "
+        return (f"<User id: {self.id!r}, "
                 f"username: {self.username!r}, "
                 f"email: {self.email!r}, "
                 f"security_permissions: {self.security_permissions}, "
-                f"create_date: {self.create_date!r}>" }
+                f"create_date: {self.create_date!r}>" )
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

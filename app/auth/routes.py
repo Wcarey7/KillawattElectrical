@@ -19,7 +19,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user!')
-        return redirect(url_for("auth.login"))
+        return redirect(url_for('auth.login'))
     
     return render_template('auth/register.html.j2', form=form)
 
@@ -28,6 +28,7 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home.index'))
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(username=form.username.data)).scalar()

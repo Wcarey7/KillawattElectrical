@@ -1,6 +1,8 @@
 from app import db
 from flask import current_app
 
+
+# Connects to Customer Model on it's attribute field 'addresses'
 class Address(db.Model):
     __tablename__ = 'address'
     id = db.Column(db.Integer, primary_key=True)
