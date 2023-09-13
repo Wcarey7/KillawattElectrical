@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy         # https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/
+from flask_sqlalchemy import SQLAlchemy         # https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/
 from flask_login import LoginManager            # https://flask-login.readthedocs.io/en/latest/
 from flask_migrate import Migrate               # https://flask-migrate.readthedocs.io/en/latest/
 from flask_marshmallow import Marshmallow       # https://flask-marshmallow.readthedocs.io/en/latest/
