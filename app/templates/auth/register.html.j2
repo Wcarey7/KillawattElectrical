@@ -1,20 +1,66 @@
 {% extends 'base.html.j2' %}
-{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+{% from "form_macros.html.j2" import render_field %}
 
 
 {% block content %}
-    <h1>Register</h1>
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
     <div class="row">
-        <div class="col-md-4">
-            <form action="" method="POST">
-                {{ form.hidden_tag() }}
-                {{ render_form_row([form.username], col_map={'username': 'col-md-4'}) }}
-                {{ render_form_row([form.email], col_map={'email': 'col-md-4'}) }}
-                {{ render_form_row([form.password], col_map={'password': 'col-md-4'}) }}
-                {{ render_form_row([form.password2], col_map={'Repeat Password': 'col-md-4'}) }}
-                {{ render_field(form.submit) }}
-            </form>
+        <div class="card shadow ">
+            <div class="card-header text-center">
+                <h5>Register</h5>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" class="needs-validation" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ render_field(form.username)}}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ render_field(form.email)}}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ render_field(form.password)}}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ render_field(form.password2)}}
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                        {{ form.submit(class="btn btn-primary") }}    
+                    </div>     
+                </form>
+            </div>
         </div>
     </div>
+</div>
+
+
+<script>
+    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields
+    (() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+    })
+    })()
+</script>
+
 
 {% endblock %}
