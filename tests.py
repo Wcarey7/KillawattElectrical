@@ -93,7 +93,7 @@ class UserAuthTest(unittest.TestCase):
         })
         assert response.status_code == 200
         html = response.get_data(as_text=True)
-        assert 'Field must be equal to password.' in html
+        assert 'Please provide a valid password.' in html
 
 
 if __name__ == '__main__':
