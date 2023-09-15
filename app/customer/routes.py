@@ -16,15 +16,21 @@ def index():
                             per_page=current_app.config['CUSTOMERS_PER_PAGE'],
                             )
 
-    next_url = (url_for('customer.index', page=customers.next_num)
-        if customers.has_next else None)
-
-    prev_url = (url_for('customer.index', page=customers.prev_num)
-        if customers.has_prev else None)
+    if request.method == 'POST' and 'tag' in request.form:
+        tag = request.form["tag"]
+        search = "%{}%".format(tag)
+        customers = db.paginate(db.select(Customer).where(Customer.name.like(search)), 
+                                page=page, 
+                                per_page=current_app.config['CUSTOMERS_PER_PAGE'],
+                                )
+        
+        return render_template('customer/index.html.j2', 
+                               customers=customers, 
+                               tag=tag, 
+                               username=current_user.username,
+                               )
     
     return render_template('customer/index.html.j2',
-                            next_url=next_url,
-                            prev_url=prev_url,
                             customers=customers,
                             username=current_user.username,
                             ) 
@@ -93,8 +99,8 @@ def delete_customer(Id):
 def edit(Id):
     form = AddCustomerForm()
     customer = db.get_or_404(Customer, Id)
+    
     if form.validate_on_submit():
-        
         customer.name = form.name.data
         customer.addresses[0].street = form.street.data
         customer.addresses[0].city = form.city.data
