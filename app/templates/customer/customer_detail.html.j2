@@ -1,5 +1,4 @@
 {% extends 'base.html.j2' %}
-{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
 
 
 {% block content %}
@@ -7,7 +6,7 @@
     <span class="title"><h1>{% block title %} The {{ customer.name }} Detail Page {% endblock %}</h1></span>
 </div>
 
-    {% include "customer/include_customer_navbar.html.j2" %}
+    {% include "customer/_customer_navbar.html.j2" %}
 
 
 <div class="container-md text-center">
