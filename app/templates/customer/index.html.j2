@@ -39,7 +39,7 @@
 <div class="content">
     <table id= "customer-table" class="table table-striped table-hover table-bordered">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>ID</th>
                 <th>Name</th>
                 <th>Street</th>
@@ -50,7 +50,7 @@
         </thead>
         <tbody>
             {% for customer in customers.items %}
-                <tr>
+                <tr class="text-center">
                     <td>{{ customer.id }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.addresses[0].street }}</td>

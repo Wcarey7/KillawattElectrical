@@ -16,38 +16,38 @@
     </div>
     <div class="row">
         <div class="col-sm fw-bold">Name</div>
-        <div class="col-sm">{{ customer.name }}</div>
+        <div class="col-sm text-start">{{ customer.name }}</div>
         <div class="col-sm fw-bold">Phone</div>
-        <div class="col-sm">{{ customer.phoneNum[0].phoneNumber }}</div>
+        <div class="col-sm text-start">{{ customer.phoneNum[0].phoneNumber }}</div>
     </div>
     <div class="row">
         <div class="col-sm fw-bold">Street</div>
-        <div class="col-sm">{{ customer.addresses[0].street }}</div>
+        <div class="col-sm text-start">{{ customer.addresses[0].street }}</div>
         <div class="col-sm fw-bold">Email</div>
-        <div class="col-sm">{{ customer.email[0].email }}</div>
+        <div class="col-sm text-start">{{ customer.email[0].email }}</div>
     </div>
     <div class="row">
         <div class="col-sm fw-bold">City</div>
-        <div class="col-sm">{{ customer.addresses[0].city }}</div>
+        <div class="col-sm text-start">{{ customer.addresses[0].city }}</div>
         <div class="col-sm fw-bold"></div>
         <div class="col-sm"></div>
     </div>
     <div class="row">
         <div class="col-sm fw-bold">State</div>
-        <div class="col-sm">{{ customer.addresses[0].state }}</div>
+        <div class="col-sm text-start">{{ customer.addresses[0].state }}</div>
         <div class="col-sm"></div>
         <div class="col-sm"></div>
     </div>
     <div class="row">
         <div class="col-sm fw-bold">Zip</div>
-        <div class="col-sm">{{ customer.addresses[0].zip }}</div>
+        <div class="col-sm text-start">{{ customer.addresses[0].zip }}</div>
         <div class="col-sm"></div>
         <div class="col-sm"></div>
     </div>
 </div>
 
 <div class="container text-center">
-    <a href="{{ url_for('customer.edit', Id=customer.id) }}" class="btn btn-primary">Update</a>
+    <a href="{{ url_for('customer.edit', Id=customer.id) }}" class="btn btn-primary">Edit</a>
 </div>
 
 
