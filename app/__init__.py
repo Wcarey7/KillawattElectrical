@@ -43,7 +43,7 @@ def create_app(config_class=Config):
     from app.home import bp as home_bp
     app.register_blueprint(home_bp)
     
-    from app.errors.handlers import bp as errors_bp
+    from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
     from app.customer import bp as customer_bp
