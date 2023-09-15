@@ -124,7 +124,7 @@ def edit(Id):
         form.phoneNum.data = customer.phoneNum[0].phoneNumber
         form.email.data = customer.email[0].email
         
-    return render_template('customer/update_customer.html.j2',
+    return render_template('customer/edit_customer.html.j2',
                            form=form, 
                            customer=customer, 
                            username=current_user.username,

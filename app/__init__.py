@@ -7,7 +7,6 @@ from app.extensions import db
 from app.extensions import login_manager
 from app.extensions import migrate
 from app.extensions import marshmallow
-from app.extensions import bootstrap
 from app.extensions import moment
 from app.extensions import csrf
 from app.models.user import User
@@ -25,7 +24,6 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     marshmallow.init_app(app)
-    bootstrap.init_app(app)
     moment.init_app(app)
     csrf.init_app(app)
 

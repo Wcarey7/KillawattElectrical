@@ -1,6 +1,5 @@
 alembic==1.11.3
 blinker==1.6.2
-Bootstrap-Flask==2.3.0
 click==8.1.7
 colorama==0.4.6
 coverage==7.3.1

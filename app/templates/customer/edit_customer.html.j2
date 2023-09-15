@@ -4,12 +4,11 @@
 
 {% block content %}
 
-
 <div class="container d-flex justify-content-center align-items-center mt-5">
     <div class="row">
         <div class="card shadow ">
             <div class="card-header text-center">
-                <h5>Add New Customer</h5>
+                <h5>Edit Customer {{ customer.name }} </h5>
             </div>
             <div class="card-body">
                 <form action="" method="POST" class="needs-validation" novalidate>
@@ -48,7 +47,7 @@
                     </div>
 
                     <div class="d-grid gap-2 mb-3">
-                        <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
+                        <a href="{{ url_for('customer.detail', Id=customer.id) }}" class="btn btn-primary">Cancel</a>
                     </div> 
 
                 </form>

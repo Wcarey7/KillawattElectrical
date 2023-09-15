@@ -46,6 +46,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home.index')
+        flash('You are now logged in!')
         return redirect(next_page)
     
     return render_template('auth/login.html.j2', form=form)

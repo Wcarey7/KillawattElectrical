@@ -1,5 +1,5 @@
-{% from 'bootstrap5/nav.html' import render_nav_item %}
-{% from 'bootstrap5/utils.html' import render_messages %}
+{% from "form_macros.html.j2" import render_flash_message %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,9 +9,9 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- CUSTOM CSS -->
       
       <title>Kill-A-Watt Electrical Inc.</title>
+      
       {# Bootstrap 5 Style CSS #}
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-      {{ bootstrap.load_css() }}
   </head>
 
   <body>
@@ -23,7 +23,7 @@
 
         {# Main Application ContentBlock #}
         <main class="container">
-            {{ render_messages(container=False, dismissible=True, dismiss_animate=True) }}
+          {{ render_flash_message() }}
 
             {% block content %}
                 {# application content needs to be provided in the content block #}
@@ -35,7 +35,6 @@
 
         {# Bootstrap 5 JavaScript #}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        {{ bootstrap.load_js() }}
       </div>
     </div>
   </body>
