@@ -129,4 +129,29 @@ def edit(Id):
                            customer=customer, 
                            username=current_user.username,
                            )
+
+
+# WORK IN PROGRESS
+@bp.route('/search')
+@login_required
+def search_customer():
+    page = request.args.get('page', 1, type=int)
+    q = request.args.get("q")
+    search = "%{}%".format(q)
+
+    if q:
+        #customers = Customer.query.filter(Customer.name.icontains(q) | Customer.id.icontains(q)).all()
+        customers = db.paginate(db.select(Customer).where(Customer.name.like(search) | Customer.id.like(search)), 
+                                page=page, 
+                                per_page=current_app.config['CUSTOMERS_PER_PAGE'],
+                                )
+        
+    else:
+        customers = db.paginate(db.select(Customer), 
+                            page=page, 
+                            per_page=current_app.config['CUSTOMERS_PER_PAGE'],
+                            )
+
+
+    return render_template('customer/search_results.html.j2', customers=customers,  username=current_user.username)
     

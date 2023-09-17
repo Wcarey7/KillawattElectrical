@@ -34,10 +34,14 @@
   </div>
 </form>
 
-
+<div class="row">
+    <div class="columns">
+         <input type="text" class="input" name='q' placeholder="Search" hx-get='search' hx-trigger="keyup changed delay:500ms" hx-target="#customers">
+    </div>
+</div>
 
 <div class="content">
-    <table id= "customer-table" class="table table-striped table-hover table-bordered">
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr class="text-center">
                 <th>ID</th>
@@ -46,9 +50,11 @@
                 <th>City</th>
                 <th>State</th>
                 <th>Zip</th>
+                <th>View</th>
+                <th>Delete</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="customers">
             {% for customer in customers.items %}
                 <tr class="text-center">
                     <td>{{ customer.id }}</td>

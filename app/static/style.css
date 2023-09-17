@@ -14,13 +14,6 @@
   box-shadow: 3px 5px 9px 5px darkgrey;
 }
 
-.Content {
-  background-color: white;
-  text-align: center;  
-  overflow: hidden;
-  margin: 0 auto;
-}
-
 /* .nav-link:hover {
   color:#006400;
   border-bottom-color: rgba(22, 20, 20, 0.5);

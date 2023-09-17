@@ -1,0 +1,15 @@
+{% for customer in customers %}
+    <tr class="text-center">
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.addresses[0].street }}</td>
+        <td>{{ customer.addresses[0].city }}</td>
+        <td>{{ customer.addresses[0].state }}</td>
+        <td>{{ customer.addresses[0].zip }}</td>
+        <td><a href="{{ url_for('customer.detail', Id=customer.id)}}"><button type="button" class="btn btn-primary">View</button></a></td>
+        <td><form method="POST" action="{{ url_for('customer.delete_customer', Id=customer.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this customer?')"></form>
+        </td>
+    </tr>
+{% endfor %}
