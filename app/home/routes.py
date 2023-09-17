@@ -4,6 +4,9 @@ from app.home import bp
 
 
 @bp.route('/')
-@login_required
 def index():
+    if current_user.is_authenticated:
+        username = current_user.username
+    else:
+        current_user.username = "Guest"
     return render_template('index.html.j2', username=current_user.username)
