@@ -49,10 +49,10 @@ class UserAuthTest(unittest.TestCase):
         assert current_app == self.app
 
 
-    # Home page requires User to be logged in, 
+    # Any page but Home requires User to be logged in, 
     # path after redirect should be to login page.  
-    def test_home_page_redirect(self):
-        response = self.client.get('/', follow_redirects=True)
+    def test_customer_page_redirect(self):
+        response = self.client.get('/customer', follow_redirects=True)
         assert response.status_code == 200
         assert response.request.path == '/auth/login'
 
