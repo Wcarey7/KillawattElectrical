@@ -4,7 +4,7 @@ app.db
 logs/
 # Visual Studio files and folders
 .vs/
-.vscode/
+# .vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

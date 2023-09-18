@@ -52,7 +52,7 @@ def add_customer():
                               customer_id=new_customer.id,
                               )
         
-        new_phone = Telephone(phoneNumber=form.phoneNum.data, 
+        new_phone = Telephone(phone_number=form.phone_number.data, 
                               customer_id=new_customer.id,
                               )
         
@@ -106,8 +106,8 @@ def edit(Id):
         customer.addresses[0].city = form.city.data
         customer.addresses[0].state = form.state.data
         customer.addresses[0].zip = form.zip.data
-        customer.phoneNum[0].phoneNumber = form.phoneNum.data
-        customer.email[0].email = form.email.data
+        customer.phone_numbers[0].phone_number = form.phone_number.data
+        customer.emails[0].email = form.email.data
         
         db.session.add(customer)
         db.session.commit()
@@ -121,8 +121,8 @@ def edit(Id):
         form.city.data = customer.addresses[0].city
         form.state.data = customer.addresses[0].state
         form.zip.data = customer.addresses[0].zip
-        form.phoneNum.data = customer.phoneNum[0].phoneNumber
-        form.email.data = customer.email[0].email
+        form.phone_number.data = customer.phone_numbers[0].phone_number
+        form.email.data = customer.emails[0].email
         
     return render_template('customer/edit_customer.html.j2',
                            form=form, 

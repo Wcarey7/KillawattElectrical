@@ -1,19 +1,20 @@
 from flask_login import UserMixin
-from flask import current_app
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String, DateTime
 from app import db
 
 
 class User(UserMixin, db.Model):
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.String)
-    security_permissions = db.Column(db.String, default="Admin") # TODO: make user types(i.e. Admin, Regular)
-    create_date = db.Column(db.DateTime, default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    __tablename__ = "user"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    username: Mapped[str] = mapped_column(String(64), index=True, unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String, index=True, unique=True)
+    security_permissions: Mapped[str] = mapped_column(String, default="Admin") # TODO: make user types(i.e. Admin, Regular)
+    create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    last_seen: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     
     def __repr__(self):

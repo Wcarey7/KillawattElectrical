@@ -10,6 +10,6 @@ class AddCustomerForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     state = StringField('State', validators=[DataRequired()])
     zip = StringField('Zip', validators=[DataRequired()])
-    phoneNum = StringField('Phone Number', validators=[DataRequired()])
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     submit = SubmitField('Submit')

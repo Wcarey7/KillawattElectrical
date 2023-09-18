@@ -1,28 +1,28 @@
-from flask import current_app
+from typing import TYPE_CHECKING
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Integer, String, ForeignKey
 from app import db
 
+if TYPE_CHECKING:
+    from app.models.customer import Customer
 
-# Connects to Customer Model on it's attribute field 'addresses'
+
 class Address(db.Model):
-    __tablename__ = 'address'
-    id = db.Column(db.Integer, primary_key=True)
-    street = db.Column(db.String)
-    city = db.Column(db.String)
-    state = db.Column(db.String)
-    zip = db.Column(db.String)
+    __tablename__ = "address"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    street: Mapped[str] = mapped_column(String)
+    city: Mapped[str] = mapped_column(String)
+    state: Mapped[str] = mapped_column(String)
+    zip: Mapped[int] = mapped_column(Integer)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
     
-    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
-    customers = db.relationship("Customer", back_populates="addresses")
+    customer: Mapped["Customer"] = relationship("Customer", back_populates="addresses")
     
-    __mapper_args__ = {
-        "polymorphic_identity": "address"
-    }
-
     def __repr__(self):
-        return (f"<id: {self.id!r},"
+        return (f"<Address id: {self.id!r},"
                 f"street: {self.street!r}, "
                 f"city: {self.city!r}, "
                 f"state: {self.state!r}, "
                 f"zip: {self.zip!r}, "
                 f"customer_id: {self.customer_id!r}>")
-        
+         
