@@ -57,7 +57,7 @@ def add_customer():
 
         db.session.add(new_customer)
         db.session.commit()
-
+        flash('New customer added')
         return redirect(url_for('customer.index'))
 
     return render_template('customer/new_customer.html.j2',
