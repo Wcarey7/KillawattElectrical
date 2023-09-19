@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from app import db
-from app.models.user import User
+from wtforms import Form, StringField, SubmitField
+from wtforms.validators import ValidationError, DataRequired, Email
+
 
 class AddCustomerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])

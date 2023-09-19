@@ -15,9 +15,9 @@ class Address(db.Model):
     state: Mapped[str] = mapped_column(String)
     zip: Mapped[int] = mapped_column(Integer)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
-    
+
     customer: Mapped["Customer"] = relationship("Customer", back_populates="addresses")
-    
+
     def __repr__(self):
         return (f"<Address id: {self.id!r},"
                 f"street: {self.street!r}, "
@@ -25,4 +25,3 @@ class Address(db.Model):
                 f"state: {self.state!r}, "
                 f"zip: {self.zip!r}, "
                 f"customer_id: {self.customer_id!r}>")
-         

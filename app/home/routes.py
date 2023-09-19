@@ -9,5 +9,5 @@ def index():
         pass
     else:
         current_user.username = "Guest"
-        
+
     return render_template('index.html.j2', username=current_user.username)

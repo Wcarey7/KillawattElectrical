@@ -11,16 +11,16 @@ from app.auth.forms import LoginForm, RegistrationForm
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home.index'))
-    
+
     form = RegistrationForm()
-    if form.validate_on_submit():              
+    if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user!')
         return redirect(url_for('auth.login'))
-    
+
     return render_template('auth/register.html.j2', form=form)
 
 
@@ -28,7 +28,7 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home.index'))
-    
+
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(username=form.username.data)).scalar()
@@ -48,7 +48,7 @@ def login():
             next_page = url_for('home.index')
         flash('You are now logged in!')
         return redirect(next_page)
-    
+
     return render_template('auth/login.html.j2', form=form)
 
 

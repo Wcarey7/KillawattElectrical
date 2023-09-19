@@ -2,9 +2,8 @@ from app import db
 from app.user_profile import bp
 from app.models.user import User
 from datetime import datetime
-from flask import render_template, request, url_for, redirect
+from flask import render_template
 from flask_login import login_required, current_user
-
 
 
 @bp.before_request
@@ -12,6 +11,7 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+
 
 @bp.route('/<username>/')
 @login_required

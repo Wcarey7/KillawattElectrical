@@ -1,4 +1,4 @@
-from flask import Flask, current_app
+from flask import Flask
 from config import Config
 from logging.handlers import RotatingFileHandler
 import logging
@@ -16,7 +16,6 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-
     ###################################################
     #### Init Extensions
     ###################################################
@@ -27,22 +26,21 @@ def create_app(config_class=Config):
     moment.init_app(app)
     csrf.init_app(app)
 
-    
     ###################################################
     #### Login Manager
     ###################################################
     login_manager.login_view = 'auth.login'
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    
     ###################################################
     #### Register Blueprints
     ###################################################
     from app.home import bp as home_bp
     app.register_blueprint(home_bp)
-    
+
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -55,7 +53,6 @@ def create_app(config_class=Config):
     from app.user_profile import bp as user_profile_bp
     app.register_blueprint(user_profile_bp, url_prefix='/user')
 
-
     ###################################################
     #### Error Logging to File - For Production
     ###################################################
@@ -63,7 +60,7 @@ def create_app(config_class=Config):
         if not os.path.exists('logs'):
             os.mkdir('logs')
         file_handler = RotatingFileHandler('logs/Killawatt.log',
-                                            maxBytes=10240, backupCount=10)
+                                           maxBytes=10240, backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s '
             '[in %(pathname)s:%(lineno)d]'))
@@ -73,5 +70,4 @@ def create_app(config_class=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info('Killawatt startup')
 
-                    
     return app
