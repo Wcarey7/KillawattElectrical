@@ -42,26 +42,22 @@ def add_customer():
     form = AddCustomerForm()
     if form.validate_on_submit():
         new_customer = Customer(name=form.name.data)
-        db.session.add(new_customer)
-        db.session.commit()
-
         new_address = Address(street=form.street.data,
                               city=form.city.data,
                               state=form.state.data,
                               zip=form.zip.data,
-                              customer_id=new_customer.id,
                               )
 
-        new_phone = Telephone(phone_number=form.phone_number.data,
-                              customer_id=new_customer.id,
-                              )
+        new_phone = Telephone(phone_number=form.phone_number.data)
+        new_email = Email(email=form.email.data)
 
-        new_email = Email(email=form.email.data,
-                          customer_id=new_customer.id,
-                          )
+        new_customer.addresses.append(new_address)
+        new_customer.phone_numbers.append(new_phone)
+        new_customer.emails.append(new_email)
 
-        db.session.add_all([new_address, new_phone, new_email])
+        db.session.add(new_customer)
         db.session.commit()
+
         return redirect(url_for('customer.index'))
 
     return render_template('customer/new_customer.html.j2',
