@@ -1,4 +1,5 @@
 {% extends 'base.html.j2' %}
+{% from "macros.html.j2" import render_pagination %}
 
 
 {% block content %}
@@ -7,6 +8,8 @@
     <span class="title"><h1>{% block title %} The Customer Page {% endblock %}</h1></span>
 </div>
 
+
+{# New Customer Button #}
 <div class="col-md-4 mb-3">
     <a href="{{ url_for('customer.add_customer')}}">
         <button type="button" class="btn btn-primary">New Customer</button>
@@ -14,13 +17,7 @@
 </div>
 
 
-
-
-<div class="col mb-3">
-    <strong>Searching for: {{tag}} </strong>
-</div>
-
-
+{# Search Bar and Button #}
 <form action="" method="POST" class="row mb-3">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <div class="col-sm-4 mb-3">
@@ -34,12 +31,8 @@
   </div>
 </form>
 
-<div class="row">
-    <div class="columns">
-         <input type="text" class="input" name='q' placeholder="Search" hx-get='search' hx-trigger="keyup changed delay:500ms" hx-target="#customers">
-    </div>
-</div>
 
+{# Customer Results Table #}
 <div class="content">
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -75,32 +68,9 @@
 </div>
 
 
+{# PAGINATION MACRO #}
 <ul class="pagination justify-content-center">
-    {% if customers.has_prev %}
-        <li class="page-item"><a class="page-link" href="{{ url_for('customer.index', page=customers.prev_num) }}">Previous</a></li>
-    {% else %}
-        <li class="page-item"><a class="page-link btn disabled" href="#">Previous</a></li>
-    {% endif %}
-
-    {% for page in customers.iter_pages(left_edge=3, right_edge=3) %}
-        {% if page %}
-            {% if page==customers.page %}
-                <li class="page-item active"><a class="page-link" href="{{ url_for('customer.index', page=page, tag=tag)}}"> {{ page }}</a></li>
-            {% else %}
-                <li class="page-item"><a class="page-link" href="{{ url_for('customer.index', page=page, tag=tag)}}"> {{ page }}</a></li>
-            {% endif %}
-
-        {% else %}
-            <li class="page-item disabled" id="example_ellipsis"><a href="#" class="page-link"> ...</a></li>
-        {% endif %}
-    {% endfor %}
-
-    {% if customers.has_next %}
-        <li class="page-item"><a class="page-link" href="{{ url_for('customer.index', page=customers.next_num) }}">Next</a></li>
-    {% else %}
-        <li class="page-item"><a class="page-link btn disabled" href="#">Next</a></li>
-    {% endif %}
+    {{ render_pagination(customers, 'customer.index' )}}
 </ul>
-
 
 {% endblock %}

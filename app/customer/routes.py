@@ -132,11 +132,10 @@ def edit(Id):
 @login_required
 def search_customer():
     page = request.args.get('page', 1, type=int)
-    q = request.args.get("q")
-    search = "%{}%".format(q)
+    tag = request.args.get("tag")
+    search = "%{}%".format(tag)
 
-    if q:
-        # Customers = Customer.query.filter(Customer.name.icontains(q) | Customer.id.icontains(q)).all()
+    if tag:
         customers = db.paginate(db.select(Customer).where(Customer.name.like(search) | Customer.id.like(search)),
                                 page=page,
                                 per_page=current_app.config['CUSTOMERS_PER_PAGE'],
