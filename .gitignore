@@ -1,5 +1,6 @@
 # Database
 app.db
+flask_session/
 #migrations/
 logs/
 # Visual Studio files and folders

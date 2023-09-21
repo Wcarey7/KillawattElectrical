@@ -1,4 +1,4 @@
-from flask import render_template, current_app, request, url_for, redirect, flash
+from flask import render_template, current_app, request, url_for, redirect, flash, session
 from flask_login import login_required, current_user
 from app import db
 from app.customer import bp
@@ -10,28 +10,21 @@ from app.customer.forms import AddCustomerForm
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
+    # Reset search query.
+    session.pop('search_tag', default=None)
+
     page = request.args.get('page', 1, type=int)
     customers = db.paginate(db.select(Customer),
                             page=page,
                             per_page=current_app.config['CUSTOMERS_PER_PAGE'],
                             )
 
-    if request.method == 'POST' and 'tag' in request.form:
-        tag = request.form["tag"]
-        search = "%{}%".format(tag)
-        customers = db.paginate(db.select(Customer).where(Customer.name.like(search)),
-                                page=page,
-                                per_page=current_app.config['CUSTOMERS_PER_PAGE'],
-                                )
-
-        return render_template('customer/index.html.j2',
-                               customers=customers,
-                               tag=tag,
-                               username=current_user.username,
-                               )
+    # Pagination endpoint for macro
+    endpoint = 'customer.index'
 
     return render_template('customer/index.html.j2',
                            customers=customers,
+                           endpoint=endpoint,
                            username=current_user.username,
                            )
 
@@ -127,24 +120,26 @@ def edit(Id):
                            )
 
 
-# WORK IN PROGRESS
-@bp.route('/search')
+@bp.route('/search', methods=['POST', 'GET'])
 @login_required
-def search_customer():
+def search():
+    if 'search_tag' in session:
+        search_tag = session['search_tag']  # Perist search item across pagination.
+    elif request.method == 'POST':
+        search_tag = request.form['search_tag']
+        session['search_tag'] = search_tag
+
     page = request.args.get('page', 1, type=int)
-    tag = request.args.get("tag")
-    search = "%{}%".format(tag)
+    customers = db.paginate(db.select(Customer).where(Customer.name.like('%' + search_tag + '%')),
+                            page=page,
+                            per_page=current_app.config['CUSTOMERS_PER_PAGE'],
+                            )
 
-    if tag:
-        customers = db.paginate(db.select(Customer).where(Customer.name.like(search) | Customer.id.like(search)),
-                                page=page,
-                                per_page=current_app.config['CUSTOMERS_PER_PAGE'],
-                                )
+    # Pagination endpoint for macro
+    endpoint = 'customer.search'
 
-    else:
-        customers = db.paginate(db.select(Customer),
-                                page=page,
-                                per_page=current_app.config['CUSTOMERS_PER_PAGE'],
-                                )
-
-    return render_template('customer/search_results.html.j2', customers=customers, username=current_user.username)
+    return render_template('customer/index.html.j2',
+                           customers=customers,
+                           endpoint=endpoint,
+                           username=current_user.username,
+                           )

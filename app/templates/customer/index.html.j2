@@ -18,16 +18,16 @@
 
 
 {# Search Bar and Button #}
-<form action="" method="POST" class="row mb-3">
+<form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <div class="col-sm-4 mb-3">
     <div class="input-group">
-      <input type="text" class="form-control" name="tag" id="tag" placeholder="Search By Name">
+      <input type="text" class="form-control" name="search_tag" id="search_tag" placeholder="Search By Name">
     </div>
   </div>
 
   <div class="col-sm-2 mb-3">
-    <button type="submit" class="btn btn-primary">Submit Search</button>
+    <button type="submit" class="btn btn-primary">Search</button>
   </div>
 </form>
 
@@ -70,7 +70,9 @@
 
 {# PAGINATION MACRO #}
 <ul class="pagination justify-content-center">
-    {{ render_pagination(customers, 'customer.index' )}}
+    {# Endpoint passed in from route. Either, 'customer.index' or 'customer.search'. #}
+    {{ render_pagination(customers, endpoint )}}
 </ul>
+
 
 {% endblock %}

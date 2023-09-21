@@ -9,6 +9,7 @@ from app.extensions import migrate
 from app.extensions import marshmallow
 from app.extensions import moment
 from app.extensions import csrf
+from app.extensions import session
 from app.models.user import User
 
 
@@ -25,6 +26,7 @@ def create_app(config_class=Config):
     marshmallow.init_app(app)
     moment.init_app(app)
     csrf.init_app(app)
+    session.init_app(app)
 
     ###################################################
     #### Login Manager
