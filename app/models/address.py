@@ -16,7 +16,7 @@ class Address(db.Model):
     zip: Mapped[int] = mapped_column(Integer)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
 
-    customer: Mapped["Customer"] = relationship("Customer", back_populates="addresses")
+    customer: Mapped["Customer"] = relationship("Customer", lazy="joined", back_populates="addresses")
 
     def __repr__(self):
         return (f"<Address id: {self.id!r},"

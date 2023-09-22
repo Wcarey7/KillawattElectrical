@@ -2,20 +2,26 @@
 
 
 {% block content %}
-  <p>&nbsp;</p>
-  <h1 class="title">
+
+<div class="container text-center mb-5 mt-5">
+  <h1 class="title text-center">
     Welcome, {{user.username}}! This is your profile page.
   </h1>
+</div>
 
-  <table>
-      <tr valign="top">
-          <td>
-              <h1>User: {{ user.username }}</h1>
-              <p>Email: {{ user.email }}</p>
-              <p>Security Permissions: {{ user.security_permissions }}</p>
-              <p>User Create Date: {{ moment(user.create_date).format('LLL') }}</p>
-              {% if user.last_seen %}<p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
-          </td>
-      </tr>
-  </table>
+
+<div class="row mt-5">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>User:</b> {{ user.username }}</li>
+      <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
+      <li class="list-group-item"><b>Security Permissions:</b> {{ user.security_permissions }}</li>
+      <li class="list-group-item"><b>User Create Date:</b> {{ moment(user.create_date).format('LLL') }}</li>
+      <li class="list-group-item">
+        {% if user.last_seen %}<b>Last seen on:</b> {{ moment(user.last_seen).format('LLL') }}{% endif %}
+      </li>
+    </ul>
+  </div>
+</div>
+
 {% endblock %}
