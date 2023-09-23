@@ -66,7 +66,7 @@ def add_customer():
 def detail(Id):
     customer = db.get_or_404(Customer, Id)
 
-    return render_template('customer/customer_detail.html.j2',
+    return render_template('customer/customer_navbar.html.j2',
                            customer=customer,
                            username=current_user.username,
                            )
