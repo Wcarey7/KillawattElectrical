@@ -8,4 +8,7 @@ Customer database for Killawatt Electrical Inc.
 2. python -m venv venv
 3. venv\Scripts\activate
 4. python -m pip install -r requirements.txt
-5. flask --app app run --debug  
+5. flask db init
+6. flask db migrate
+7. flask db upgrade
+8. flask run --debug
