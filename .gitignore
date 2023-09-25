@@ -2,8 +2,8 @@
 app.db
 flask_session/
 migrations/
-#migrations/
 logs/
+
 # Visual Studio files and folders
 .vs/
 # .vscode/

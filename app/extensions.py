@@ -5,6 +5,7 @@ from flask_marshmallow import Marshmallow       # https://flask-marshmallow.read
 from flask_moment import Moment                 # https://flask-moment.readthedocs.io/en/latest/
 from flask_wtf.csrf import CSRFProtect          # https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
 from flask_session import Session               # https://flask-session.readthedocs.io/en/latest/
+from flask_seeder import FlaskSeeder            # https://github.com/diddi-/flask-seeder
 from sqlalchemy.orm import DeclarativeBase
 
 
@@ -19,3 +20,4 @@ marshmallow = Marshmallow()
 moment = Moment()
 csrf = CSRFProtect()
 session = Session()
+seeder = FlaskSeeder()

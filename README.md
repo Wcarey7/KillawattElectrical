@@ -12,3 +12,8 @@ Customer database for Killawatt Electrical Inc.
 6. flask db migrate
 7. flask db upgrade
 8. flask run --debug
+
+
+# Seed database with Customers
+
+1. flask seed run

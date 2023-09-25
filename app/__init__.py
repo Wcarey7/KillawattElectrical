@@ -10,6 +10,7 @@ from app.extensions import marshmallow
 from app.extensions import moment
 from app.extensions import csrf
 from app.extensions import session
+from app.extensions import seeder
 from app.models.user import User
 
 
@@ -27,6 +28,7 @@ def create_app(config_class=Config):
     moment.init_app(app)
     csrf.init_app(app)
     session.init_app(app)
+    seeder.init_app(app, db)
 
     ###################################################
     #### Login Manager
