@@ -11,6 +11,7 @@ from app.extensions import moment
 from app.extensions import csrf
 from app.extensions import session
 from app.extensions import seeder
+from app.extensions import debug_toolbar
 from app.models.user import User
 
 
@@ -29,6 +30,7 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     session.init_app(app)
     seeder.init_app(app, db)
+    debug_toolbar.init_app(app)
 
     ###################################################
     #### Login Manager
