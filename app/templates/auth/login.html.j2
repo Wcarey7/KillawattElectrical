@@ -1,24 +1,64 @@
 {% extends 'base.html.j2' %}
-
-{% block header %}
-  <h1>{% block title %}Log In{% endblock %}</h1>
-{% endblock %}
-
+{% from "macros.html.j2" import render_field %}
 
 
 {% block content %}
-  <body>
-    <h3>if no account please <a href="{{ url_for('auth.register') }}">Register</a></h3>
-    <p>&nbsp;</p>
-  </body>
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="card shadow ">
+            <div class="card-header text-center">
+                <h5>Login</h5>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" class="needs-validation" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ render_field(form.username)}}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ render_field(form.password)}}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.remember_me }}
+                        {{ form.remember_me.label(class="form-label") }}
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                        {{ form.submit(class="btn btn-primary") }}    
+                    </div>     
+                </form>
+                <p class="text-center">New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
-  </form>
+
+<script>
+    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields
+    (() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+    })
+    })()
+</script>
+
 {% endblock %}
-

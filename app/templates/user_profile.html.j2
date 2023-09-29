@@ -1,0 +1,27 @@
+{% extends "base.html.j2" %}
+
+
+{% block content %}
+
+<div class="container text-center mb-5 mt-5">
+  <h1 class="title text-center">
+    Welcome, {{user.username}}! This is your profile page.
+  </h1>
+</div>
+
+
+<div class="row mt-5">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>User:</b> {{ user.username }}</li>
+      <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
+      <li class="list-group-item"><b>Security Permissions:</b> {{ user.security_permissions }}</li>
+      <li class="list-group-item"><b>User Create Date:</b> {{ moment(user.create_date).format('LLL') }}</li>
+      <li class="list-group-item">
+        {% if user.last_seen %}<b>Last seen on:</b> {{ moment(user.last_seen).format('LLL') }}{% endif %}
+      </li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

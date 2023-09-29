@@ -1,0 +1,48 @@
+{% block content %}
+
+<div class="container text-center mb-5 mt-5">
+    <span class="title"><h1>{% block title %} Summary {% endblock %}</h1></span>
+</div>
+
+
+<div class="row mt-5">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card">
+        <div class="card-header text-center">
+            <h5><b>Name & Address</b></h5>
+        </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Name:</b> {{ customer.name }}</li>
+            <li class="list-group-item"><b>Street:</b> {{ customer.addresses[0].street }}</li>
+            <li class="list-group-item"><b>City:</b> {{ customer.addresses[0].city }}</li>
+            <li class="list-group-item"><b>State:</b> {{ customer.addresses[0].state }}</li>
+            <li class="list-group-item"><b>Zip:</b> {{ customer.addresses[0].zip }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {# Second card #}
+  <div class="col-sm-6">
+    <div class="card">
+        <div class="card-header text-center">
+            <h5><b>Contact</b></h5>
+        </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Phone Number:</b> {{ customer.phone_numbers[0].phone_number }}</li>
+            <li class="list-group-item"><b>Email:</b> {{ customer.emails[0].email }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{# End Row #}
+</div>
+
+
+<div class="container text-center mt-5">
+    <a href="{{ url_for('customer.edit', Id=customer.id) }}" class="btn btn-primary">Edit</a>
+</div>
+
+
+{% endblock %}

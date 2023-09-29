@@ -1,9 +1,12 @@
 # Database
 app.db
-
+flask_session/
+migrations/
+logs/
 
 # Visual Studio files and folders
 .vs/
+# .vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
