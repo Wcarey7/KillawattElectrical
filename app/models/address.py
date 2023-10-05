@@ -14,7 +14,7 @@ class Address(db.Model):
     city: Mapped[str] = mapped_column(String)
     state: Mapped[str] = mapped_column(String)
     zip: Mapped[int] = mapped_column(Integer)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", lazy="joined", back_populates="addresses")
 

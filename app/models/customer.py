@@ -25,7 +25,7 @@ class Telephone(db.Model):
     __tablename__ = "telephone"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     phone_number: Mapped[int] = mapped_column(Integer)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="phone_numbers")
 
@@ -37,7 +37,7 @@ class Email(db.Model):
     __tablename__ = "email"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="emails")
 
