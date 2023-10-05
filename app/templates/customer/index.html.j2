@@ -4,42 +4,49 @@
 
 {% block content %}
 
-<div class="container text-center mb-5 mt-5">
-    <span class="title"><h1>{% block title %} Search Customers {% endblock %}</h1></span>
+<div class="wrapper">
+
+<div class="search-page-title">
+    <div class="container text-center mb-5 mt-5">
+        <span class="title"><h1>{% block title %} Search Customers {% endblock %}</h1></span>
+    </div> 
 </div>
 
 
 {# New Customer Button #}
-<div class="col-md-4 mb-3">
+<div class="new-customer-button">
     <a href="{{ url_for('customer.add_customer')}}">
         <button type="button" class="btn btn-primary">New Customer</button>
     </a>
-</div>
+</div> 
+
 
 
 {# Search Bar and Button #}
-<form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-  <div class="col-sm-4 mb-3">
-    <div class="input-group">
-      <input type="text" class="form-control" name="search_tag" id="search_tag" placeholder="Search By Name">
-    </div>
-  </div>
-
-  <div class="col-sm-2 mb-3">
-    <button type="submit" class="btn btn-primary">Search</button>
-  </div>
-
+<div class="search-input-field">
+    <form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="col-sm-4 mb-3">
-        <a href="{{ url_for('customer.index')}}">
-            <button type="button" class="btn btn-primary">Reset Search</button>
-        </a>
+        <div class="input-group">
+        <input type="text" class="form-control" name="search_tag" id="search_tag" placeholder="Search By Name">
+        </div>
     </div>
-</form>
+
+    <div class="col-sm-2 mb-3">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+        <div class="col-sm-4 mb-3">
+            <a href="{{ url_for('customer.index')}}">
+                <button type="button" class="btn btn-primary">Reset Search</button>
+            </a>
+        </div>
+    </form> 
+</div>
 
 
 {# Customer Results Table #}
-<div class="content">
+<div class="customer-search-table">
     <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr class="text-center">
@@ -53,9 +60,9 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody id="customers">
+        <tbody>
             {% for customer in customers.items %}
-                <tr class="text-center">
+                <tr class="text-center align-middle">
                     <td>{{ customer.id }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.addresses[0].street }}</td>
@@ -75,10 +82,13 @@
 
 
 {# PAGINATION MACRO #}
-<ul class="pagination justify-content-center">
-    {# Endpoint passed in from route. Either, 'customer.index' or 'customer.search'. #}
-    {{ render_pagination(customers, endpoint )}}
-</ul>
+<div class="pagination-table">
+    <ul class="pagination justify-content-center">
+        {# Endpoint passed in from route. Either, 'customer.index' or 'customer.search'. #}
+        {{ render_pagination(customers, endpoint )}}
+    </ul>
+</div>
 
+</div>
 
 {% endblock %}
