@@ -27,6 +27,11 @@ class CustomerSeeder(Seeder):
         So the 'customer_id' is manually set on the many to one relationships.
         """
 
+        customers = db.session.execute(db.select(Customer)).scalars().all()
+        for customer in customers:
+            db.session.delete(customer)
+        db.session.commit()
+
         customer_faker = FlaskFaker(
             cls=Customer,
             init={
