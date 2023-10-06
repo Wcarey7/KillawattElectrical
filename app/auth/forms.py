@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask import flash
 from wtforms import Form, StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app import db
@@ -22,9 +23,16 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = db.session.execute(db.select(User).filter_by(username=username.data)).scalar()
         if user is not None:
+            flash('Username already in use. Please choose a different username.')
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
         user = db.session.execute(db.select(User).filter_by(email=email.data)).scalar()
         if user is not None:
+            flash('Email already registered. Please use a different email.')
             raise ValidationError('Please use a different email address.')
+
+    def validate_password2(self, password2):
+        if password2 != self.password:
+            flash('Passwords do not match')
+            raise ValidationError('Passwords do not match')
