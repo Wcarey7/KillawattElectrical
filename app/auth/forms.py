@@ -33,6 +33,6 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
     def validate_password2(self, password2):
-        if password2 != self.password:
+        if self.password.data != password2.data:
             flash('Passwords do not match')
             raise ValidationError('Passwords do not match')
