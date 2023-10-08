@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, session
 from flask_login import login_user, logout_user, current_user
 from werkzeug.urls import url_parse
 from app import db
@@ -24,6 +24,12 @@ def register():
     return render_template('auth/register.html.j2', form=form)
 
 
+@bp.before_request
+def before_request():
+    session.permanent = True
+    session.modified = True
+
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -39,6 +45,7 @@ def login():
             flash('Incorrect username or password, try again.')
             return redirect(url_for('auth.login'))
 
+        # Remember cookie duration set in config
         login_user(user, remember=form.remember_me.data)
 
         # Next redirects user back to previous page.

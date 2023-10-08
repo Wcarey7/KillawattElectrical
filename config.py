@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from dotenv import load_dotenv
 
 
@@ -8,6 +9,8 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
     SESSION_TYPE = "filesystem"
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
+    REMEMBER_COOKIE_DURATION = timedelta(hours=24)
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')\
         or 'sqlite:///' + os.path.join(basedir, 'app.db')
