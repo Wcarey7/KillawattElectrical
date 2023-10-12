@@ -61,7 +61,7 @@ def add_customer():
 
 
 # Customer detail view
-@bp.route('/<int:Id>/')
+@bp.route('/<int:Id>/', methods=['POST', 'GET'])
 @login_required
 def detail(Id):
     customer = db.get_or_404(Customer, Id)
