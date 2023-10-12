@@ -8,7 +8,9 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 
 class Config(object):
-    SESSION_TYPE = "filesystem"
+    TESTING = False
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_THRESHOLD = 50
     PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
     REMEMBER_COOKIE_DURATION = timedelta(hours=24)
     DEBUG_TB_INTERCEPT_REDIRECTS = False
@@ -16,5 +18,12 @@ class Config(object):
         or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
-    SECRET_KEY = os.environ.get('SECRET_KEY') or "dev"
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev'
     CUSTOMERS_PER_PAGE = 5
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'   # use an in-memory database for tests
+    WTF_CSRF_ENABLED = False                # no CSRF during tests
+    SESSION_FILE_THRESHOLD = 10

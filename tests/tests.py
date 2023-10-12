@@ -2,14 +2,8 @@
 import unittest
 from app import create_app, db
 from app.models.user import User
-from config import Config
+from config import TestConfig
 from flask import current_app
-
-
-class TestConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'   # use an in-memory database for tests
-    WTF_CSRF_ENABLED = False                # no CSRF during tests
 
 
 class UserAuthTest(unittest.TestCase):
@@ -83,7 +77,7 @@ class UserAuthTest(unittest.TestCase):
         })
         assert response.status_code == 200
         html = response.get_data(as_text=True)
-        assert 'Please provide a valid password.' in html
+        assert 'Passwords do not match' in html
 
 
 if __name__ == '__main__':
