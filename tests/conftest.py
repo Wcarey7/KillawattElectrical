@@ -2,6 +2,8 @@ import pytest
 from werkzeug.security import generate_password_hash
 from app import create_app, db
 from app.models.user import User
+from app.models.customer import Customer, Telephone, Email
+from app.models.address import Address
 from config import TestConfig
 
 
@@ -18,8 +20,28 @@ def app():
     # Set _password to pre-generated hashes, since hashing for each test is slow
     with app.app_context():
         db.create_all()
+
+        # Create initial test User and insert into test database
         user = User(username="test", email="test@example.com", password=user1_pass)
         db.session.add(user)
+        db.session.commit()
+
+        # Create initial test Customer and insert into test database
+        test_customer = Customer(name="Test Customer")
+        test_address = Address(street="3333 West",
+                               city="Palmdale",
+                               state="CA",
+                               zip="93536",
+                               )
+
+        test_phone = Telephone(phone_number="6618934876")
+        test_email = Email(email="testcustomer@example.com")
+
+        test_customer.addresses.append(test_address)
+        test_customer.phone_numbers.append(test_phone)
+        test_customer.emails.append(test_email)
+
+        db.session.add(test_customer)
         db.session.commit()
 
     yield app
