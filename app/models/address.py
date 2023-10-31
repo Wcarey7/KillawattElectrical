@@ -10,9 +10,9 @@ if TYPE_CHECKING:
 class Address(db.Model):
     __tablename__ = "address"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    street: Mapped[str] = mapped_column(String)
-    city: Mapped[str] = mapped_column(String)
-    state: Mapped[str] = mapped_column(String)
+    street: Mapped[str] = mapped_column(String(255))
+    city: Mapped[str] = mapped_column(String(255))
+    state: Mapped[str] = mapped_column(String(255))
     zip: Mapped[int] = mapped_column(Integer)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
