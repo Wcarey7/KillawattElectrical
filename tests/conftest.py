@@ -4,7 +4,6 @@ from app import create_app, db
 from app.models.user import User
 from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
-from config import TestConfig
 
 
 user1_pass = generate_password_hash("test")
@@ -14,7 +13,7 @@ user1_pass = generate_password_hash("test")
 def app():
     """Create and configure a new app instance for each test."""
     # Create the app with common test config
-    app = create_app(TestConfig)
+    app = create_app('testing')
 
     # Create the database and load test data
     # Set _password to pre-generated hashes, since hashing for each test is slow

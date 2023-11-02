@@ -1,5 +1,5 @@
 from flask import Flask
-from config import Config
+from config import config
 from logging.handlers import RotatingFileHandler
 import logging
 import os
@@ -15,9 +15,10 @@ from app.extensions import debug_toolbar
 from app.models.user import User
 
 
-def create_app(config_class=Config):
+def create_app(config_class):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+
+    app.config.from_object(config[config_class])
 
     ###################################################
     #### Init Extensions
