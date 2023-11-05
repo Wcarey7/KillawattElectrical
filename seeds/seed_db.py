@@ -27,6 +27,7 @@ class CustomerSeeder(Seeder):
         So the 'customer_id' is manually set on the many to one relationships.
         """
 
+        # Delete all existing customers in database before seeding
         customers = db.session.execute(db.select(Customer)).scalars().all()
         for customer in customers:
             db.session.delete(customer)
@@ -61,7 +62,7 @@ class CustomerSeeder(Seeder):
         telephone_faker = FlaskFaker(
             cls=Telephone,
             init={
-                "phone_number": FakerGenerator(fake.phone_number),
+                "phone_number": FakerGenerator(fake.basic_phone_number),
                 "customer_id": generator.Sequence()
             }
         )
@@ -84,6 +85,9 @@ class CustomerSeeder(Seeder):
             self.db.session.add(email)
 
         # Create Telephone
+        char_to_remove = ["(", ")", "-"]
         for telephone in telephone_faker.create(num_to_create):
+            for char in char_to_remove:
+                telephone.phone_number = telephone.phone_number.replace(char, "")
             print("Adding telephone: %s" % telephone)
             self.db.session.add(telephone)
