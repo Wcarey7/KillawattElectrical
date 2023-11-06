@@ -30,7 +30,10 @@
         </div>
       <div class="card-body">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Phone Number:</b> {{ customer.phone_numbers[0].phone_number }}</li>
+            <li class="list-group-item">
+              <b>Phone Number:</b> 
+              <span id="summary_phone_num">{{ customer.phone_numbers[0].phone_number }}</span>
+            </li>
             <li class="list-group-item"><b>Email:</b> {{ customer.emails[0].email }}</li>
         </ul>
       </div>
@@ -46,3 +49,16 @@
 
 
 {% endblock %}
+
+
+<script>
+
+function formatPhoneNumber() {
+  phone_num = document.getElementById('summary_phone_num').textContent;
+  phone_num_formatted = phone_num.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
+  document.getElementById('summary_phone_num').textContent = phone_num_formatted;
+}
+
+formatPhoneNumber();
+
+</script>
