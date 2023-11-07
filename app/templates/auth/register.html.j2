@@ -42,50 +42,16 @@
 
 <script>
 
-    function usernameValidate() {
-        const username = document.getElementById('username');
-        const minLength = 2;
-
-        const isValid = username.value.length === 0 || username.textLength >= minLength;
-
-        if(!isValid) {
-            username.setCustomValidity('Invalid');
-            username.nextElementSibling.textContent = 'Username is too short'
-        }
-        else {
-            username.setCustomValidity('');
-        }
-
-        return isValid;
-    }
-
-
-    function emailValidate() {
-        const email = document.getElementById('email');
-        const emailRegExp =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-        const isValid = email.value.length === 0 || emailRegExp.test(email.value);
-
-        if(!isValid) {
-            email.setCustomValidity('Invalid');
-            email.nextElementSibling.textContent = 'Not a valid email format'
-        }
-        else {
-            email.setCustomValidity('');
-        }
-
-        return isValid;
-    }
-
-
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     (() => {
     'use strict'
 
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
         const forms = document.querySelectorAll('.needs-validation')
 
-        // Loop over them and prevent submission
+        // Loop over forms, call validate functions, and prevent submission if needed.
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
                 emailValidate();
@@ -101,7 +67,46 @@
         })
     })()
 
-</script>
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Make sure length of the username is at least 2 characters.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function usernameValidate() {
+        const username = document.getElementById('username');
+        const minLength = 2;
+        const isValid = username.value.length === 0 || username.textLength >= minLength;
+
+        if(!isValid) {
+            username.setCustomValidity('Invalid');
+            username.nextElementSibling.textContent = 'Username is too short'
+        }
+        else {
+            username.setCustomValidity('');
+        }
+        return isValid;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Make sure the entered email address is a vaild email format
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function emailValidate() {
+        const email = document.getElementById('email');
+        const emailRegExp =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+        const isValid = email.value.length === 0 || emailRegExp.test(email.value);
+
+        if(!isValid) {
+            email.setCustomValidity('Invalid');
+            email.nextElementSibling.textContent = 'Not a valid email format'
+        }
+        else {
+            email.setCustomValidity('');
+        }
+        return isValid;
+    }
+
+</script>
 
 {% endblock %}
