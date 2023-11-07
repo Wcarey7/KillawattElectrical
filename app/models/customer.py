@@ -24,13 +24,20 @@ class Customer(db.Model):
 class Telephone(db.Model):
     __tablename__ = "telephone"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    phone_number: Mapped[int] = mapped_column(Integer)
+    phone_number: Mapped[str] = mapped_column(String(255))
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="phone_numbers")
 
     def __repr__(self):
         return f"<Telephone id: {self.id!r}, phone_number: {self.phone_number!r}, customer_id: {self.customer_id!r}>"
+
+    # Strip paranthesis and dashes.
+    def format_set_phone_number(self, phone_num):
+        char_to_remove = ["(", ")", "-"]
+        for char in char_to_remove:
+            phone_num = phone_num.replace(char, "")
+        self.phone_number = phone_num
 
 
 class Email(db.Model):

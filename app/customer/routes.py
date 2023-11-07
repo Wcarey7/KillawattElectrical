@@ -41,7 +41,8 @@ def add_customer():
                               zip=form.zip.data,
                               )
 
-        new_phone = Telephone(phone_number=form.phone_number.data)
+        new_phone = Telephone()
+        new_phone.format_set_phone_number(form.phone_number.data)
         new_email = Email(email=form.email.data)
 
         new_customer.addresses.append(new_address)
@@ -95,7 +96,7 @@ def edit(Id):
         customer.addresses[0].city = form.city.data
         customer.addresses[0].state = form.state.data
         customer.addresses[0].zip = form.zip.data
-        customer.phone_numbers[0].phone_number = form.phone_number.data
+        customer.phone_numbers[0].format_set_phone_number(form.phone_number.data)
         customer.emails[0].email = form.email.data
 
         db.session.add(customer)

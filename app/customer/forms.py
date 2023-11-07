@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, StringField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email
+from wtforms import StringField, SubmitField, TelField
+from wtforms.validators import ValidationError, DataRequired, Email, Length
 
 
 class AddCustomerForm(FlaskForm):
@@ -9,6 +9,6 @@ class AddCustomerForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     state = StringField('State', validators=[DataRequired()])
     zip = StringField('Zip', validators=[DataRequired()])
-    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=13, max=13)])
     email = StringField('Email', validators=[DataRequired()])
     submit = SubmitField('Submit')

@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="mb-3">
-                        {{ render_field(form.phone_number)}}
+                        {{ render_field(form.phone_number, maxlength="13")}}
                     </div>
 
                     <div class="mb-3">
@@ -59,6 +59,8 @@
 
 
 <script>
+
+
     // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields
     (() => {
     'use strict'
@@ -78,6 +80,24 @@
         }, false)
     })
     })()
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Format phone number as user types. (XXX)XXX-XXXX
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    $( "#phone_number" ).on( "keyup change", function( event ) {
+
+        // '/\D/' Matches any character that is not a digit.
+        // 'g' global match modifier. Finds all matches not just the first.
+        var num = $(this).val().replace(/\D/g,''); 
+
+        // Do nothing if backspace key is pressed.
+        if ( event.which != 8) {
+            $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
+        }
+    });
+
+
 </script>
 
 

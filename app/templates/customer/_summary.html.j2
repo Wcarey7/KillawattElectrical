@@ -53,12 +53,16 @@
 
 <script>
 
-function formatPhoneNumber() {
-  phone_num = document.getElementById('summary_phone_num').textContent;
-  phone_num_formatted = phone_num.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
-  document.getElementById('summary_phone_num').textContent = phone_num_formatted;
-}
 
-formatPhoneNumber();
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Format phone number as: (XXX)XXX-XXXX
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  function formatPhoneNumber() {
+    phone_num = document.getElementById('summary_phone_num').textContent;
+    phone_num_formatted = phone_num.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
+    document.getElementById('summary_phone_num').textContent = phone_num_formatted;
+  }
+  formatPhoneNumber();
+
 
 </script>
