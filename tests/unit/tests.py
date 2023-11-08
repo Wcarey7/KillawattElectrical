@@ -2,13 +2,12 @@
 import unittest
 from app import create_app, db
 from app.models.user import User
-from config import TestConfig
 from flask import current_app
 
 
 class UserAuthTest(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(TestConfig)
+        self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()

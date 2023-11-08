@@ -9,10 +9,10 @@ from app import db
 class User(UserMixin, db.Model):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(64), index=True, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String, index=True, unique=True)
-    security_permissions: Mapped[str] = mapped_column(String, default="Admin")  # TODO: make user types(i.e. Admin, Regular)
+    username: Mapped[str] = mapped_column(String(255), index=True, unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    email: Mapped[str] = mapped_column(String(255), index=True, unique=True)
+    security_permissions: Mapped[str] = mapped_column(String(255), default="Admin")  # TODO: make user types(i.e. Admin, Regular)
     create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     last_seen: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 

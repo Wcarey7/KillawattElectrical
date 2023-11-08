@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 class Customer(db.Model):
     __tablename__ = "customer"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
 
     addresses: Mapped[List["Address"]] = relationship("Address", back_populates="customer", cascade="all, delete")
     phone_numbers: Mapped[List["Telephone"]] = relationship("Telephone", back_populates="customer", cascade="all, delete")
@@ -36,7 +36,7 @@ class Telephone(db.Model):
 class Email(db.Model):
     __tablename__ = "email"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(String)
+    email: Mapped[str] = mapped_column(String(255))
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="emails")
