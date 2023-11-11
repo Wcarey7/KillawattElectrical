@@ -60,6 +60,9 @@ def create_app(config_class):
     from app.user_profile import bp as user_profile_bp
     app.register_blueprint(user_profile_bp, url_prefix='/user')
 
+    from app.fts_search import bp as fts_search_bp
+    app.register_blueprint(fts_search_bp, url_prefix='/fts_search')
+
     ###################################################
     #### Error Logging to File - For Production
     ###################################################
