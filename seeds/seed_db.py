@@ -36,6 +36,7 @@ class CustomerSeeder(Seeder):
         customer_faker = FlaskFaker(
             cls=Customer,
             init={
+                "id": generator.Sequence(),
                 "name": FakerGenerator(fake.name),
             }
         )
