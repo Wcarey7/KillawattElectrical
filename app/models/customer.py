@@ -1,7 +1,8 @@
+import os
 from typing import TYPE_CHECKING
 from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey, Index
 from app import db
 
 if TYPE_CHECKING:
@@ -16,6 +17,10 @@ class Customer(db.Model):
     addresses: Mapped[List["Address"]] = relationship("Address", back_populates="customer", cascade="all, delete")
     phone_numbers: Mapped[List["Telephone"]] = relationship("Telephone", back_populates="customer", cascade="all, delete")
     emails: Mapped[List["Email"]] = relationship("Email", back_populates="customer", cascade="all, delete")
+
+    db_uri = os.environ.get('DATABASE_URI')
+    if db_uri is not None and "mysql" in db_uri.lower():
+        Index('ix_name', name, mysql_prefix = 'FULLTEXT')
 
     def __repr__(self):
         return f"<Customer id: {self.id!r}, name: {self.name!r}>"
@@ -40,6 +45,10 @@ class Email(db.Model):
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="emails")
+
+    db_uri = os.environ.get('DATABASE_URI')
+    if db_uri is not None and "mysql" in db_uri.lower():
+        Index('ix_email', email, mysql_prefix = 'FULLTEXT')
 
     def __repr__(self):
         return f"<Email id: {self.id!r}, email: {self.email!r}, customer_id: {self.customer_id!r}>"
