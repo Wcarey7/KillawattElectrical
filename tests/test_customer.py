@@ -16,7 +16,7 @@ def test_add_customer(client, auth, app):
         "city": "Lancaster",
         "state": "CA",
         "zip": "93536",
-        "phone_number": "6618108496",
+        "phone_number": "(661)810-8496",
         "email": "dev@example.com",
     }, follow_redirects=True)
 

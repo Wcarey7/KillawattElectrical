@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
 <div class="container d-flex justify-content-center align-items-center mt-5">
     <div class="row">
         <div class="card shadow ">
@@ -36,7 +35,7 @@
                     </div>
 
                     <div class="mb-3">
-                        {{ render_field(form.phone_number)}}
+                        {{ render_field(form.phone_number, maxlength="13")}}
                     </div>
 
                     <div class="mb-3">
@@ -59,26 +58,87 @@
 
 
 <script>
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     (() => {
     'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
+        const forms = document.querySelectorAll('.needs-validation')
 
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-        }
+        // Loop over forms, call validate functions, and prevent submission if needed.
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                phoneNumberValidate();
+                emailValidate();
 
-        form.classList.add('was-validated')
-        }, false)
-    })
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
     })()
-</script>
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Format phone number as user types: (XXX)XXX-XXXX
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    $( "#phone_number" ).on( "keyup change", function( event ) {
+
+        // '/\D/' Matches any character that is not a digit.
+        // 'g' global match modifier. Finds all matches not just the first.
+        var num = $(this).val().replace(/\D/g,''); 
+
+        // Do nothing if backspace, left and right arrow keys are pressed.
+        if ( event.which != 8 && event.which != 37 && event.which != 39) {
+            $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
+        }
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Make sure length of phone number is 13 characters.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function phoneNumberValidate() {
+        const phone_num = document.getElementById('phone_number');
+        const isValid = phone_num.textLength === 13;
+
+        if(!isValid) {
+            phone_num.setCustomValidity('Invalid');
+            phone_num.nextElementSibling.textContent = 'Phone Number is too short.'
+        }
+        else {
+            phone_num.setCustomValidity('');
+        }
+        return isValid;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Make sure the entered email address is a vaild email format
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function emailValidate() {
+        const email = document.getElementById('email');
+        const emailRegExp =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+        const isValid = email.value.length === 0 || emailRegExp.test(email.value);
+
+        if(!isValid) {
+            email.setCustomValidity('Invalid');
+            email.nextElementSibling.textContent = 'Not a valid email format'
+        }
+        else {
+            email.setCustomValidity('');
+        }
+        return isValid;
+    }
+
+</script>
 
 {% endblock %}
