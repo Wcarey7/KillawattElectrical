@@ -117,7 +117,7 @@
     function phoneNumberValidate() {
         const phone_num = document.getElementById('phone_number');
 
-        const isValid = phone_num.textLength === 13;
+        const isValid = phone_num.value.length === 13;
 
         if(!isValid) {
             phone_num.setCustomValidity('Invalid');

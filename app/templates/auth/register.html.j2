@@ -74,7 +74,7 @@
     function usernameValidate() {
         const username = document.getElementById('username');
         const minLength = 2;
-        const isValid = username.value.length === 0 || username.textLength >= minLength;
+        const isValid = username.value.length === 0 || username.value.length >= minLength;
 
         if(!isValid) {
             username.setCustomValidity('Invalid');
