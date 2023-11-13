@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TelField, SelectField
-from wtforms.validators import ValidationError, DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length
 
 
 def select_field_choices():
-    choices = [("", "Select a State"), ("AL", "AL"), ("AK", "AK"), ("AZ", "AZ"), ("AR", "AR"), ("CA", "CA"),
+    choices = [("", ""), ("AL", "AL"), ("AK", "AK"), ("AZ", "AZ"), ("AR", "AR"), ("CA", "CA"),
                ("CO", "CO"), ("CT", "CT"), ("DE", "DE"), ("DC", "DC"), ("FL", "FL"), ("GA", "GA"), ("HI", "HI"),
                ("ID", "ID"), ("IL", "IL"), ("IN", "IN"), ("IA", "IA"), ("KS", "KS"), ("KY", "KY"), ("LA", "LA"),
                ("ME", "ME"), ("MD", "MD"), ("MA", "MA"), ("MI", "MI"), ("MN", "MN"), ("MS", "MS"), ("MO", "MO"),
