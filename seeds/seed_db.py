@@ -9,6 +9,10 @@ from app.models.address import Address
 fake = Faker()
 
 
+def fake_state():
+    return fake.state_abbr(include_territories=False, include_freely_associated_states=False)
+
+
 # flask-seeder Generator subclass to return Faker methods.
 class FakerGenerator(generator.Generator):
     def __init__(self, method, **kwargs):
@@ -32,7 +36,8 @@ class CustomerSeeder(Seeder):
         for customer in customers:
             db.session.delete(customer)
         db.session.commit()
-
+        print(fake.state_abbr(include_territories=False))
+        print(fake.state_abbr())
         customer_faker = FlaskFaker(
             cls=Customer,
             init={
@@ -46,7 +51,7 @@ class CustomerSeeder(Seeder):
             init={
                 "street": FakerGenerator(fake.street_address),
                 "city": FakerGenerator(fake.city),
-                "state": generator.String("(CA)"),
+                "state": FakerGenerator(fake_state),
                 "zip": FakerGenerator(fake.postcode),
                 "customer_id": generator.Sequence(),
             }
