@@ -53,3 +53,9 @@
   grid-row-start: 8;
   grid-row-end: 8;
 }
+
+.navbar-brand {
+  padding-top: 0px;
+  padding-bottom: 3px;
+  padding-right: 285px;
+}
