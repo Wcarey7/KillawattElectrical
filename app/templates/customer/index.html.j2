@@ -4,8 +4,11 @@
 
 {% block content %}
 
+{# Display grid wrapper #}
 <div class="wrapper">
 
+
+{# Page title #}
 <div class="search-page-title">
     <div class="container text-center mb-5 mt-5">
         <span class="title"><h1>{% block title %} Search Customers {% endblock %}</h1></span>
@@ -15,11 +18,20 @@
 
 {# New Customer Button #}
 <div class="new-customer-button">
-    <a href="{{ url_for('customer.add_customer')}}">
-        <button type="button" class="btn btn-primary">New Customer</button>
-    </a>
+    <button type="button" class="btn btn-primary" data-route="{{ url_for('customer.add_customer')}}" 
+        id="newCustomerBtn" data-bs-target="#Modal">New Customer
+    </button>
 </div> 
 
+
+{# Modal for New Customer #}
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="FormModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+         <!-- loads content here -->
+        </div>
+    </div>
+</div>
 
 
 {# Search Bar and Button #}
@@ -89,6 +101,60 @@
     </ul>
 </div>
 
-</div>
+</div> {# End of display grid wrapper #}
+
+
+<script>
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    (() => {
+    'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over forms, call validate functions, and prevent submission if needed.
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                phoneNumberValidate();
+                emailValidate();
+
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Load Modal
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $('#newCustomerBtn').click(function () {
+            var url = $(this).data('route');
+            $.get(url, function (data) {
+                $('#Modal .modal-content').html(data);
+                $('#Modal').modal('toggle');
+
+                $('#submit').click(function (event) {
+                    event.preventDefault();
+                    $.post(url, data = $('#ModalForm').serialize(), function (
+                        data) {
+                        if (data.status == '200 OK') {
+                            $('#Modal').modal('hide');
+                            location.reload()};
+                    })
+                });
+            })
+        });
+    });
+
+</script>
 
 {% endblock %}

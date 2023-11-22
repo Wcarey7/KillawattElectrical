@@ -1,4 +1,4 @@
-from flask import render_template, current_app, request, url_for, redirect, flash, session
+from flask import render_template, current_app, request, url_for, redirect, flash, session, jsonify
 from flask_login import login_required, current_user
 from app import db
 from app.customer import bp
@@ -51,8 +51,8 @@ def add_customer():
 
         db.session.add(new_customer)
         db.session.commit()
-        flash('New customer added')
-        return redirect(url_for('customer.index'))
+        flash('New Customer Added')
+        return jsonify(status='200 OK')
 
     return render_template('customer/new_customer.html.j2',
                            form=form,

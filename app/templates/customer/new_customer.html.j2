@@ -1,60 +1,51 @@
-{% extends 'base.html.j2' %}
 {% from "macros.html.j2" import render_field %}
 
+    <form action="" method="POST" class="needs-validation" id="ModalForm" novalidate>
 
-{% block content %}
+        <div class="modal-body">
+        {{ form.hidden_tag() }}
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row">
-        <div class="card shadow ">
-            <div class="card-header text-center">
-                <h5>Add New Customer</h5>
-            </div>
-            <div class="card-body">
-                <form action="" method="POST" class="needs-validation" novalidate>
-                    {{ form.hidden_tag() }}
-
-                    <div class="mb-3">
-                        {{ render_field(form.name)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.street)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.city)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.state)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.zip)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.phone_number, maxlength="13")}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.email)}}
-                    </div>
-
-                    <div class="d-grid gap-2 mb-3">
-                        {{ form.submit(class="btn btn-primary") }}    
-                    </div>
-
-                    <div class="d-grid gap-2 mb-3">
-                        <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
-                    </div> 
-
-                </form>
-            </div>
+        <div class="mb-3">
+            {{ render_field(form.name)}}
         </div>
-    </div>
-</div>
+
+        <div class="mb-3">
+            {{ render_field(form.street)}}
+        </div>
+
+        <div class="mb-3">
+            {{ render_field(form.city)}}
+        </div>
+
+        <div class="mb-3">
+            {{ render_field(form.state)}}
+        </div>
+
+        <div class="mb-3">
+            {{ render_field(form.zip)}}
+        </div>
+
+        <div class="mb-3">
+            {{ render_field(form.phone_number, maxlength="13")}}
+        </div>
+
+        <div class="mb-3">
+            {{ render_field(form.email)}}
+        </div>
+
+        <div class="d-grid gap-2 mb-3">
+            {{ form.submit(class="btn btn-primary") }}    
+        </div>
+
+        <div class="d-grid gap-2 mb-3">
+            <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
+        </div> 
+        </div>
+
+        <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+    </form>
 
 
 <script>
@@ -140,5 +131,3 @@
     }
 
 </script>
-
-{% endblock %}
