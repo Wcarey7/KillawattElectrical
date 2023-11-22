@@ -1,8 +1,14 @@
 {% from "macros.html.j2" import render_field %}
 
-    <form action="" method="POST" class="needs-validation" id="ModalForm" novalidate>
 
+    <div class="modal-header">
+        <h1 class="modal-title fs-5 w-100 text-center" id="modalTitle">New Customer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <form action="" method="POST" class="needs-validation" id="ModalForm" novalidate>
         <div class="modal-body">
+
         {{ form.hidden_tag() }}
 
         <div class="mb-3">
@@ -40,12 +46,13 @@
         <div class="d-grid gap-2 mb-3">
             <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
         </div> 
-        </div>
 
-        <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
         </div>
     </form>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+    </div>
 
 
 <script>
