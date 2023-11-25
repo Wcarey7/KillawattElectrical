@@ -1,5 +1,6 @@
 from flask import render_template, current_app, request, url_for, redirect, flash, session
 from flask_login import login_required, current_user
+from sqlalchemy import or_
 from app import db
 from app.customer import bp
 from app.models.customer import Customer, Telephone, Email
@@ -131,7 +132,8 @@ def search():
         session['search_tag'] = search_tag
 
     page = request.args.get('page', 1, type=int)
-    customers = db.paginate(db.select(Customer).where(Customer.name.like('%' + search_tag + '%')),
+    #customers = db.paginate(db.select(Customer).where(Customer.name.like('%' + search_tag + '%')),
+    customers = db.paginate(db.select(Customer, Email).where(or_(Customer.name.match(search_tag), Email.email.match(search_tag))), ## WORKS KIND OF
                             page=page,
                             per_page=current_app.config['CUSTOMERS_PER_PAGE'],
                             )
