@@ -44,44 +44,14 @@
         </div>
 
         <div class="d-grid gap-2 mb-3">
-            <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
         </div> 
 
         </div>
     </form>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-    </div>
-
 
 <script>
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    (() => {
-    'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-        const forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over forms, call validate functions, and prevent submission if needed.
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                phoneNumberValidate();
-                emailValidate();
-
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Format phone number as user types: (XXX)XXX-XXXX
@@ -93,7 +63,7 @@
         var num = $(this).val().replace(/\D/g,''); 
 
         // Do nothing if backspace, left and right arrow keys are pressed.
-        if ( event.which != 8 && event.which != 37 && event.which != 39) {
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
             $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
         }
     });

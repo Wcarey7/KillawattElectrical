@@ -74,7 +74,7 @@
                 phoneNumberValidate();
                 emailValidate();
 
-                if (!form.checkValidity()) {
+                if(!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
                 }
@@ -94,11 +94,12 @@
         // 'g' global match modifier. Finds all matches not just the first.
         var num = $(this).val().replace(/\D/g,''); 
 
-        // Do nothing if backspace key is pressed.
-        if ( event.which != 8) {
+        // Do nothing if backspace key, left and right arrow keys are pressed.
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
             $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
         }
     });
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Format phone number when input field is pre-filled with data: (XXX)XXX-XXXX

@@ -28,7 +28,7 @@
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="FormModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-         <!-- loads content here -->
+         <!-- Script loads modal content here -->
         </div>
     </div>
 </div>
@@ -109,50 +109,51 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    (() => {
+    (validateForm = () => {
     'use strict'
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to.
         const forms = document.querySelectorAll('.needs-validation')
+        let formValid = true;
 
         // Loop over forms, call validate functions, and prevent submission if needed.
         Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                phoneNumberValidate();
-                emailValidate();
+            phoneNumberValidate();
+            emailValidate();
 
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
+            if(!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                formValid = false;
+            }
+            form.classList.add('was-validated')
         })
-    })()
+        return formValid;
+    })
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Load Modal
+    // Load new customer form in a modal
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $(document).ready(function () {
-        $('#newCustomerBtn').click(function () {
-            var url = $(this).data('route');
-            $.get(url, function (data) {
-                $('#Modal .modal-content').html(data);
-                $('#Modal').modal('toggle');
+    $('#newCustomerBtn').on("click", function () {
+        const url = $(this).data('route');
+        $.get(url, function (data) {
+            $('#Modal .modal-content').html(data);
+            $('#Modal').modal('toggle');
 
-                $('#submit').click(function (event) {
-                    event.preventDefault();
-                    $.post(url, data = $('#ModalForm').serialize(), function (
-                        data) {
-                        if (data.status == '200 OK') {
+            $('#customer_form_button').on("click", function (event) {
+                event.preventDefault();
+                let isValid = validateForm();
+
+                if(isValid == true) {
+                    $.post(url, data = $('#ModalForm').serialize(), function (data) {
+                        if(data.status == '200 OK') {
                             $('#Modal').modal('hide');
                             location.reload()};
                     })
-                });
-            })
-        });
+                }
+            });
+        })
     });
 
 </script>
