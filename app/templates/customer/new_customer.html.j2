@@ -2,50 +2,50 @@
 
 
     <div class="modal-header">
-        <h1 class="modal-title fs-5 w-100 text-center" id="modalTitle">New Customer</h1>
+        <h1 class="modal-title fs-5 fw-semibold w-100 text-center" id="modalTitle">New Customer</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
     <form action="" method="POST" class="needs-validation" id="ModalForm" novalidate>
-        <div class="modal-body">
+        <div class="modal-body mt-3">
 
-        {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-        <div class="mb-3">
-            {{ render_field(form.name)}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.name)}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.street)}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.street)}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.city)}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.city)}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.state)}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.state)}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.zip)}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.zip)}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.phone_number, maxlength="13")}}
-        </div>
+            <div class="mb-3">
+                {{ render_field(form.phone_number, maxlength="13")}}
+            </div>
 
-        <div class="mb-3">
-            {{ render_field(form.email)}}
-        </div>
+            <div class="mb-4">
+                {{ render_field(form.email)}}
+            </div>
 
-        <div class="d-grid gap-2 mb-3">
-            {{ form.submit(class="btn btn-primary") }}    
-        </div>
+            <div class="d-grid gap-2 mb-3">
+                {{ form.submit(class="btn btn-primary") }}    
+            </div>
 
-        <div class="d-grid gap-2 mb-3">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-        </div> 
+            <div class="d-grid gap-2 mb-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div> 
 
         </div>
     </form>

@@ -16,7 +16,7 @@
 </div>
 
 
-{# New Customer Button #}
+{# New customer button. Activates modal #}
 <div class="new-customer-button">
     <button type="button" class="btn btn-primary" data-route="{{ url_for('customer.add_customer')}}" 
         id="newCustomerBtn" data-bs-target="#Modal">New Customer
@@ -24,7 +24,7 @@
 </div> 
 
 
-{# Modal for New Customer #}
+{# Modal for new customer #}
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="FormModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -34,7 +34,7 @@
 </div>
 
 
-{# Search Bar and Button #}
+{# Search bar and button #}
 <div class="search-input-field">
     <form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -57,7 +57,7 @@
 </div>
 
 
-{# Customer Results Table #}
+{# Customer results table #}
 <div class="customer-search-table">
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -136,7 +136,9 @@
     // Load new customer form in a modal
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     $('#newCustomerBtn').on("click", function () {
+        // Route specified in button attribute "data-route".
         const url = $(this).data('route');
+
         $.get(url, function (data) {
             $('#Modal .modal-content').html(data);
             $('#Modal').modal('toggle');
