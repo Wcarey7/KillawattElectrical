@@ -1,4 +1,4 @@
-{% extends 'base.html.j2' %}
+{% extends "base.html.j2" %}
 {% from "macros.html.j2" import render_field %}
 
 
@@ -86,22 +86,6 @@
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Format phone number as user types: (XXX)XXX-XXXX
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $( "#phone_number" ).on( "keyup", function( event ) {
-
-        // '/\D/' Matches any character that is not a digit.
-        // 'g' global match modifier. Finds all matches not just the first.
-        var num = $(this).val().replace(/\D/g,''); 
-
-        // Do nothing if backspace key, left and right arrow keys are pressed.
-        if(event.which != 8 && event.which != 37 && event.which != 39) {
-            $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
-        }
-    });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Format phone number when input field is pre-filled with data: (XXX)XXX-XXXX
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     function formatPhoneNumber() {
@@ -119,7 +103,6 @@
         const phone_num = document.getElementById('phone_number');
 
         const isValid = phone_num.value.length === 13;
-
         if(!isValid) {
             phone_num.setCustomValidity('Invalid');
             phone_num.nextElementSibling.textContent = 'Phone Number is too short.'
@@ -133,14 +116,15 @@
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Make sure the entered email address is a vaild email format
+    // emailRegExp source: https://www.w3resource.com/javascript/form/email-validation.php
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     function emailValidate() {
         const email = document.getElementById('email');
+
         const emailRegExp =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        /^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         const isValid = email.value.length === 0 || emailRegExp.test(email.value);
-
         if(!isValid) {
             email.setCustomValidity('Invalid');
             email.nextElementSibling.textContent = 'Not a valid email format'
@@ -150,6 +134,26 @@
         }
         return isValid;
     }
+    $( '#email' ).on( 'keyup change', function( event ) {
+        emailValidate()
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Format phone number as user types: (XXX)XXX-XXXX
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    $( '#phone_number' ).on( 'keyup', function( event ) {
+
+        // '/\D/' Matches any character that is not a digit.
+        // 'g' global match modifier. Finds all matches not just the first.
+        var num = $(this).val().replace(/\D/g,''); 
+
+        // Do nothing if backspace key, left and right arrow keys are pressed.
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
+            $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
+        }
+        phoneNumberValidate()
+    });
 
 </script>
 

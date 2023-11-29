@@ -6,7 +6,6 @@ from flask_moment import Moment                         # https://flask-moment.r
 from flask_wtf.csrf import CSRFProtect                  # https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
 from flask_session import Session                       # https://flask-session.readthedocs.io/en/latest/
 from flask_seeder import FlaskSeeder                    # https://github.com/diddi-/flask-seeder
-from flask_debugtoolbar import DebugToolbarExtension    # https://flask-debugtoolbar.readthedocs.io/en/latest/
 from sqlalchemy.orm import DeclarativeBase
 
 
@@ -22,4 +21,3 @@ moment = Moment()
 csrf = CSRFProtect()
 session = Session()
 seeder = FlaskSeeder()
-debug_toolbar = DebugToolbarExtension()

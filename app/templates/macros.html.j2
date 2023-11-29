@@ -38,7 +38,7 @@
     {% endif %}
 
     {# Individual page links #}
-    {% for page in pagination.iter_pages(left_edge=3, right_edge=3) %}
+    {% for page in pagination.iter_pages(left_edge=0, left_current=2, right_current=2, right_edge=0) %}
         {% if page %}
             {% if page != pagination.page %}
                 <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=page, search_tag=search_tag)}}"> {{ page }}</a></li>

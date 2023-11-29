@@ -1,7 +1,12 @@
 {% extends "base.html.j2" %}
 
+
 {% block content %}
+
+<div class="container text-center mb-5 mt-5">
     <h1>An unexpected error has occurred</h1>
     <p>Sorry for the inconvenience!</p>
-    <p><a href="{{ url_for('home.index') }}">Back</a></p>
+    <a href="{{ url_for('home.index') }}">Back to Home</a>
+</div>
+
 {% endblock %}

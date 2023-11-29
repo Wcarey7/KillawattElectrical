@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TelField, SelectField
+from wtforms import StringField, SubmitField, TelField, SelectField, EmailField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -15,12 +15,12 @@ def select_field_choices():
     return choices
 
 
-class AddCustomerForm(FlaskForm):
+class CustomerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     street = StringField('Street', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
     state = SelectField('State', choices=select_field_choices(), validators=[DataRequired()])
     zip = StringField('Zip', validators=[DataRequired()])
     phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=13, max=13)])
-    email = StringField('Email', validators=[DataRequired()])
-    submit = SubmitField('Submit', id='customer_form_button')
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit', id='customerFormButton')
