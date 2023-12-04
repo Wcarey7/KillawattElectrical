@@ -1,89 +1,57 @@
-{% extends 'base.html.j2' %}
 {% from "macros.html.j2" import render_field %}
 
 
-{% block content %}
-
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row">
-        <div class="card shadow ">
-            <div class="card-header text-center">
-                <h5>Add New Customer</h5>
-            </div>
-            <div class="card-body">
-                <form action="" method="POST" class="needs-validation" novalidate>
-                    {{ form.hidden_tag() }}
-
-                    <div class="mb-3">
-                        {{ render_field(form.name)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.street)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.city)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.state)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.zip)}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.phone_number, maxlength="13")}}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ render_field(form.email)}}
-                    </div>
-
-                    <div class="d-grid gap-2 mb-3">
-                        {{ form.submit(class="btn btn-primary") }}    
-                    </div>
-
-                    <div class="d-grid gap-2 mb-3">
-                        <a href="{{ url_for('customer.index') }}" class="btn btn-primary">Cancel</a>
-                    </div> 
-
-                </form>
-            </div>
-        </div>
+    <div class="modal-header">
+        <h1 class="modal-title fs-5 fw-semibold w-100 text-center" id="modalTitle">New Customer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-</div>
+
+    <form action="" method="POST" class="needs-validation" id="ModalForm" novalidate>
+        <div class="modal-body mt-3">
+
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ render_field(form.name)}}
+            </div>
+
+            <div class="mb-3">
+                {{ render_field(form.street)}}
+            </div>
+
+            <div class="mb-3">
+                {{ render_field(form.city)}}
+            </div>
+
+            <div class="mb-3">
+                {{ render_field(form.state)}}
+            </div>
+
+            <div class="mb-3">
+                {{ render_field(form.zip)}}
+            </div>
+
+            <div class="mb-3">
+                {{ render_field(form.phone_number, maxlength="13")}}
+            </div>
+
+            <div class="mb-4">
+                {{ render_field(form.email)}}
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+                {{ form.submit(class="btn btn-primary") }}    
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div> 
+
+        </div>
+    </form>
 
 
 <script>
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    (() => {
-    'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-        const forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over forms, call validate functions, and prevent submission if needed.
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                phoneNumberValidate();
-                emailValidate();
-
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Format phone number as user types: (XXX)XXX-XXXX
@@ -95,7 +63,7 @@
         var num = $(this).val().replace(/\D/g,''); 
 
         // Do nothing if backspace, left and right arrow keys are pressed.
-        if ( event.which != 8 && event.which != 37 && event.which != 39) {
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
             $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
         }
     });
@@ -140,5 +108,3 @@
     }
 
 </script>
-
-{% endblock %}

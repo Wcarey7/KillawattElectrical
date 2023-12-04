@@ -21,7 +21,7 @@ def test_add_customer(client, auth, app):
     }, follow_redirects=True)
 
     # Test that successful add customer redirects to the customer home
-    assert response.request.path == "/customer/"
+    assert response.status == "200 OK"
 
     # Test that the customer was inserted into the database
     with app.app_context():
