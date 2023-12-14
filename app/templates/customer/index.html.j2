@@ -1,4 +1,4 @@
-{% extends 'base.html.j2' %}
+{% extends "base.html.j2" %}
 {% from "macros.html.j2" import render_pagination %}
 
 
@@ -135,7 +135,7 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Load new customer form in a modal
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('#newCustomerBtn').on("click", function () {
+    $('#newCustomerBtn').on('click', function () {
         // Route specified in button attribute "data-route".
         const url = $(this).data('route');
 
@@ -143,7 +143,7 @@
             $('#Modal .modal-content').html(data);
             $('#Modal').modal('toggle');
 
-            $('#customer_form_button').on("click", function (event) {
+            $('#customer_form_button').on('click', function (event) {
                 event.preventDefault();
                 let isValid = validateForm();
 
