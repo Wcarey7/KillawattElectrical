@@ -4,7 +4,7 @@ from app import db
 from app.customer import bp
 from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
-from app.customer.forms import AddCustomerForm
+from app.customer.forms import customerForm
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -32,7 +32,7 @@ def index():
 @bp.route('/add/', methods=['GET', 'POST'])
 @login_required
 def add_customer():
-    form = AddCustomerForm()
+    form = customerForm()
     if form.validate_on_submit():
         new_customer = Customer(name=form.name.data)
         new_address = Address(street=form.street.data,
@@ -87,7 +87,7 @@ def delete_customer(Id):
 @bp.route('/<int:Id>/edit/', methods=['POST', 'GET'])
 @login_required
 def edit(Id):
-    form = AddCustomerForm()
+    form = customerForm()
     customer = db.get_or_404(Customer, Id)
 
     if form.validate_on_submit():
