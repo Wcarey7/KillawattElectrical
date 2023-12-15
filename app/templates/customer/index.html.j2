@@ -19,34 +19,60 @@
 {# New customer button. Activates modal #}
 <div class="new-customer-button">
     <button type="button" class="btn btn-primary" data-route="{{ url_for('customer.add_customer')}}" 
-        id="newCustomerBtn" data-bs-target="#Modal">New Customer
+        id="newCustomerBtn" data-bs-target="#newCustomerModal">New Customer
     </button>
 </div> 
 
 
 {# Modal for new customer #}
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="FormModal" aria-hidden="true">
+<div class="modal fade" id="newCustomerModal" tabindex="-1" role="dialog" 
+    aria-labelledby="modalLabel" aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-         <!-- Script loads modal content here -->
+            {# Script loads modal content here #}
         </div>
     </div>
+</div>
+
+
+{# Delete customer modal #}
+<div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title" id="modalLabel">Delete Customer Confirmation</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you would like to delete this customer?
+      </div>
+
+      <div class="modal-footer mx-auto">
+        <button id="deleteCustomerModalBtn" type="button" class="btn btn-primary">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
 {# Search bar and button #}
 <div class="search-input-field">
     <form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <div class="col-sm-4 mb-3">
-        <div class="input-group">
-        <input type="text" class="form-control" name="search_tag" id="search_tag" placeholder="Search By Name">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="col-sm-4 mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search_tag" id="search_tag" placeholder="Search By Name">
+            </div>
         </div>
-    </div>
 
-    <div class="col-sm-2 mb-3">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
+        <div class="col-sm-2 mb-3">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
 
         <div class="col-sm-4 mb-3">
             <a href="{{ url_for('customer.index')}}">
@@ -72,7 +98,7 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody>
+     <tbody>
             {% for customer in customers.items %}
                 <tr class="text-center align-middle">
                     <td>{{ customer.id }}</td>
@@ -81,11 +107,21 @@
                     <td>{{ customer.addresses[0].city }}</td>
                     <td>{{ customer.addresses[0].state }}</td>
                     <td>{{ customer.addresses[0].zip }}</td>
-                    <td><a href="{{ url_for('customer.detail', Id=customer.id)}}"><button type="button" class="btn btn-primary">View</button></a></td>
-                    <td><form method="POST" action="{{ url_for('customer.delete_customer', Id=customer.id) }}">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                        <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this customer?')"></form>
+
+                    <td id="viewBtnTD">
+                        <a href="{{ url_for('customer.detail', Id=customer.id)}}">
+                            <button type="button" id="viewCustomerBtn" class="btn btn-primary">View</button>
+                        </a>
                     </td>
+
+                    <td id="deleteBtnTD">
+                        <button type="button" class="btn btn-secondary" 
+                            data-deleting="{{ url_for('customer.delete_customer', Id=customer.id)}}" 
+                            id="deleteCustomerBtn" data-bs-toggle="modal" 
+                            data-bs-target="#deleteCustomerModal">Delete
+                        </button>
+                    </td>
+
                 </tr>
             {% endfor %}
         </tbody>
@@ -135,27 +171,57 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Load new customer form in a modal
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('#newCustomerBtn').on('click', function () {
+     $('#newCustomerBtn').on('click', function () {
         // Route specified in button attribute "data-route".
         const url = $(this).data('route');
 
         $.get(url, function (data) {
-            $('#Modal .modal-content').html(data);
-            $('#Modal').modal('toggle');
+            $('#newCustomerModal .modal-content').html(data);
+            $('#newCustomerModal').modal('toggle');
 
-            $('#customer_form_button').on('click', function (event) {
+            $('#customerFormButton').on('click', function (event) {
                 event.preventDefault();
                 let isValid = validateForm();
 
                 if(isValid == true) {
-                    $.post(url, data = $('#ModalForm').serialize(), function (data) {
+                    $.post(url, data = $('#newCustomerModalForm').serialize(), function (data) {
                         if(data.status == '200 OK') {
-                            $('#Modal').modal('hide');
+                            $('#newCustomerModal').modal('hide');
                             location.reload()};
                     })
                 }
             });
         })
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Delete customer modal confirmation
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    let rowIndex = $('tr').length;
+    let currentBaseUrl = {{ request.base_url|tojson }};
+    let currentArgs = {{ request.args|tojson }};
+    let currentPage = currentArgs['page'];
+    let pageNum = currentPage-1;
+    let prevPageUrl = `${currentBaseUrl}?page=${pageNum}&search_tag=`;
+
+    $('#deleteBtnTD button').on('click', function () {
+        // Route specified in button attribute "data-deleting".
+        const url = $(this).data('deleting');
+
+        $('#deleteCustomerModalBtn').on('click', function (event) {
+            $.post(url, function (data) {
+                if(data.status == '200 OK') {
+                    $('#deleteCustomerModal').modal('hide');
+                    if(rowIndex > 2 || currentPage == 1 || currentPage === undefined) {
+                        location.reload();
+                    }
+                    else {
+                        location.replace(prevPageUrl);
+                    };  
+                };
+            });
+        });
     });
 
 </script>

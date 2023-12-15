@@ -14,6 +14,12 @@
   box-shadow: 3px 5px 9px 5px darkgrey;
 }
 
+.navbar-brand {
+  padding-top: 0px;
+  padding-bottom: 3px;
+  padding-right: 285px;
+}
+
 .wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -21,41 +27,33 @@
 }
 
 .search-page-title {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 1;
+  grid-column: 2 / 3;
+  grid-row: 1 / 1;
 }
 
 .new-customer-button {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
 }
 
 .search-input-field {
-  grid-column-start: 2;
-  grid-column-end: 4;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
 }
+
 .customer-search-table {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: 4;
-  grid-row-end: 8;
+  grid-column: 1 / 4;
+  grid-row: 4 / 8;
 }
 
 .pagination-table {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 8;
-  grid-row-end: 8;
+  grid-column: 2 / 3;
+  grid-row: 8 / 8;
 }
 
-.navbar-brand {
-  padding-top: 0px;
-  padding-bottom: 3px;
-  padding-right: 285px;
+.modal-title {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.25rem;
 }

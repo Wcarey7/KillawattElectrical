@@ -80,7 +80,7 @@ def delete_customer(Id):
     db.session.delete(customerID)
     db.session.commit()
     flash('Customer deleted')
-    return redirect(url_for('customer.index'))
+    return jsonify(status='200 OK')
 
 
 # Edit route within the customer detail view
@@ -126,7 +126,7 @@ def edit(Id):
 def search():
     if 'search_tag' in session:
         search_tag = session['search_tag']  # Perist search item across pagination.
-    elif request.method == 'POST':
+    else:
         search_tag = request.form['search_tag']
         session['search_tag'] = search_tag
 

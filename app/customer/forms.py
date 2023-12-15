@@ -23,4 +23,4 @@ class customerForm(FlaskForm):
     zip = StringField('Zip', validators=[DataRequired()])
     phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=13, max=13)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Submit', id='customer_form_button')
+    submit = SubmitField('Submit', id='customerFormButton')
