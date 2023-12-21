@@ -71,12 +71,12 @@
         </div>
 
         <div class="col-sm-2 mb-3">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
         </div>
 
         <div class="col-sm-4 mb-3">
             <a href="{{ url_for('customer.index')}}">
-                <button type="button" class="btn btn-primary">Reset Search</button>
+                <button type="button" class="btn btn-primary" id="resetSearchButton">Reset Search</button>
             </a>
         </div>
     </form> 
@@ -187,9 +187,10 @@
                     $.post(url, data = $('#newCustomerModalForm').serialize(), function (data) {
                         if(data.status == '200 OK') {
                             $('#newCustomerModal').modal('hide');
-                            location.reload()};
-                    })
-                }
+                            location.replace({{request.full_path|tojson}});
+                        };
+                    });
+                };
             });
         })
     });
@@ -214,14 +215,34 @@
                 if(data.status == '200 OK') {
                     $('#deleteCustomerModal').modal('hide');
                     if(rowIndex > 2 || currentPage == 1 || currentPage === undefined) {
-                        location.reload();
-                    }
-                    else {
+                        location.replace({{request.full_path|tojson}});
+                    } else {
                         location.replace(prevPageUrl);
                     };  
                 };
             });
         });
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Keep user input text in search field
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    let thisUrl = {{ request.base_url|tojson }};
+    if(!thisUrl.toLowerCase().includes('search')) {
+        sessionStorage.removeItem('text');
+    };
+
+    let savedInputText = sessionStorage.getItem('text');
+    document.getElementById('search_tag').value = savedInputText;
+
+    $('#searchButton').on('click', function () {
+        let inputText = document.getElementById('search_tag').value;
+        sessionStorage.setItem('text', inputText);
+    });
+
+    $('#resetSearchButton').on('click', function () {
+        sessionStorage.removeItem('text');
     });
 
 </script>
