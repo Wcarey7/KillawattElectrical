@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask import flash
-from wtforms import Form, StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app import db
 from app.models.user import User
@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])           # Email() validator removed, was raising an error during Unit Tests
+    email = EmailField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')

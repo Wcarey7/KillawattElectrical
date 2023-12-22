@@ -51,7 +51,7 @@ def test_delete_customer(client, auth, app):
     auth.login()
 
     response = client.post("/customer/1/delete/", follow_redirects=True)
-    assert response.request.path == "/customer/"
+    assert response.status == "200 OK"
 
     with app.app_context():
         assert db.session.get(Customer, 1) is None

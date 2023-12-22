@@ -4,7 +4,7 @@ from app import db
 from app.customer import bp
 from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
-from app.customer.forms import AddCustomerForm
+from app.customer.forms import customerForm
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -32,7 +32,7 @@ def index():
 @bp.route('/add/', methods=['GET', 'POST'])
 @login_required
 def add_customer():
-    form = AddCustomerForm()
+    form = customerForm()
     if form.validate_on_submit():
         new_customer = Customer(name=form.name.data)
         new_address = Address(street=form.street.data,
@@ -80,14 +80,14 @@ def delete_customer(Id):
     db.session.delete(customerID)
     db.session.commit()
     flash('Customer deleted')
-    return redirect(url_for('customer.index'))
+    return jsonify(status='200 OK')
 
 
 # Edit route within the customer detail view
 @bp.route('/<int:Id>/edit/', methods=['POST', 'GET'])
 @login_required
 def edit(Id):
-    form = AddCustomerForm()
+    form = customerForm()
     customer = db.get_or_404(Customer, Id)
 
     if form.validate_on_submit():
@@ -126,7 +126,7 @@ def edit(Id):
 def search():
     if 'search_tag' in session:
         search_tag = session['search_tag']  # Perist search item across pagination.
-    elif request.method == 'POST':
+    else:
         search_tag = request.form['search_tag']
         session['search_tag'] = search_tag
 
