@@ -96,7 +96,7 @@ def delete_customer(Id):
 
 
 # Edit route within the customer detail view
-@bp.route('/<int:Id>/edit/', methods=['POST', 'GET'])
+@bp.route('/<int:Id>/edit/', methods=['POST'])
 @login_required
 def edit(Id):
     form = customerForm()

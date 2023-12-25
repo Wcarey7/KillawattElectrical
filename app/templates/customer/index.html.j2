@@ -82,6 +82,9 @@
     </form> 
 </div>
 
+<div>
+searching for: {{search_tag}}
+</div>
 
 {# Customer results table #}
 <div class="customer-search-table">
@@ -149,7 +152,7 @@
     'use strict'
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-        const forms = document.querySelectorAll('.needs-validation')
+        const forms = document.querySelectorAll('.needs-validation');
         let formValid = true;
 
         // Loop over forms, call validate functions, and prevent submission if needed.
@@ -158,14 +161,14 @@
             emailValidate();
 
             if(!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
+                event.preventDefault();
+                event.stopPropagation();
                 formValid = false;
-            }
-            form.classList.add('was-validated')
-        })
+            };
+            form.classList.add('was-validated');
+        });
         return formValid;
-    })
+    });
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +195,7 @@
                     });
                 };
             });
-        })
+        });
     });
 
 

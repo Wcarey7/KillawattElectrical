@@ -49,7 +49,7 @@
     'use strict'
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-        const forms = document.querySelectorAll('.needs-validation')
+        const forms = document.querySelectorAll('.needs-validation');
 
         // Loop over forms, call validate functions, and prevent submission if needed.
         Array.from(forms).forEach(form => {
@@ -58,14 +58,14 @@
                 usernameValidate();
 
                 if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
+                    event.preventDefault();
+                    event.stopPropagation();
+                };
 
-                form.classList.add('was-validated')
+                form.classList.add('was-validated');
             }, false)
         })
-    })()
+    })();
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,11 +78,11 @@
 
         if(!isValid) {
             username.setCustomValidity('Invalid');
-            username.nextElementSibling.textContent = 'Username is too short'
-        }
-        else {
+            username.nextElementSibling.textContent = 'Username is too short';
+        } else {
             username.setCustomValidity('');
-        }
+        };
+
         return isValid;
     }
 
@@ -100,15 +100,16 @@
         const isValid = email.value.length === 0 || emailRegExp.test(email.value);
         if(!isValid) {
             email.setCustomValidity('Invalid');
-            email.nextElementSibling.textContent = 'Not a valid email format'
-        }
-        else {
+            email.nextElementSibling.textContent = 'Not a valid email format';
+        } else {
             email.setCustomValidity('');
-        }
+        };
+
         return isValid;
     }
+
     $( '#email' ).on( 'keyup change', function( event ) {
-        emailValidate()
+        emailValidate();
     });
 
 </script>
