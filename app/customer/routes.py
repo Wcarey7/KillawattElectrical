@@ -65,10 +65,22 @@ def add_customer():
 @bp.route('/<int:Id>/', methods=['POST', 'GET'])
 @login_required
 def detail(Id):
+    form = customerForm()
     customer = db.get_or_404(Customer, Id)
+
+    if request.method == 'GET':
+        # Pre-fill forms
+        form.name.data = customer.name
+        form.street.data = customer.addresses[0].street
+        form.city.data = customer.addresses[0].city
+        form.state.data = customer.addresses[0].state
+        form.zip.data = customer.addresses[0].zip
+        form.phone_number.data = customer.phone_numbers[0].phone_number
+        form.email.data = customer.emails[0].email
 
     return render_template('customer/customer_navbar.html.j2',
                            customer=customer,
+                           form=form,
                            username=current_user.username,
                            )
 
@@ -84,7 +96,7 @@ def delete_customer(Id):
 
 
 # Edit route within the customer detail view
-@bp.route('/<int:Id>/edit/', methods=['POST', 'GET'])
+@bp.route('/<int:Id>/edit/', methods=['POST'])
 @login_required
 def edit(Id):
     form = customerForm()
@@ -102,29 +114,13 @@ def edit(Id):
         db.session.add(customer)
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('customer.detail', Id=customer.id))
-
-    elif request.method == 'GET':
-        # Pre-fill forms
-        form.name.data = customer.name
-        form.street.data = customer.addresses[0].street
-        form.city.data = customer.addresses[0].city
-        form.state.data = customer.addresses[0].state
-        form.zip.data = customer.addresses[0].zip
-        form.phone_number.data = customer.phone_numbers[0].phone_number
-        form.email.data = customer.emails[0].email
-
-    return render_template('customer/edit_customer.html.j2',
-                           form=form,
-                           customer=customer,
-                           username=current_user.username,
-                           )
+        return jsonify(status='200 OK')
 
 
 @bp.route('/search', methods=['POST', 'GET'])
 @login_required
 def search():
-    if 'search_tag' in session:
+    if 'search_tag' in session and request.method != 'POST':
         search_tag = session['search_tag']  # Perist search item across pagination.
     else:
         search_tag = request.form['search_tag']

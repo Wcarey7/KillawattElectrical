@@ -63,11 +63,11 @@
 
         if(!isValid) {
             phone_num.setCustomValidity('Invalid');
-            phone_num.nextElementSibling.textContent = 'Phone Number is too short.'
-        }
-        else {
+            phone_num.nextElementSibling.textContent = 'Phone Number is too short.';
+        } else {
             phone_num.setCustomValidity('');
-        }
+        };
+
         return isValid;
     }
 
@@ -83,24 +83,26 @@
         /^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         const isValid = email.value.length === 0 || emailRegExp.test(email.value);
+
         if(!isValid) {
             email.setCustomValidity('Invalid');
-            email.nextElementSibling.textContent = 'Not a valid email format'
-        }
-        else {
+            email.nextElementSibling.textContent = 'Not a valid email format';
+        } else {
             email.setCustomValidity('');
-        }
+        };
+
         return isValid;
     }
-    $( '#email' ).on( 'keyup change', function( event ) {
-        emailValidate()
+
+    $( '#email' ).on( 'keyup change', function(event) {
+        emailValidate();
     });
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Format phone number as user types: (XXX)XXX-XXXX
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $( '#phone_number' ).on( 'keyup change', function( event ) {
+    $( '#phone_number' ).on( 'keyup change', function(event) {
 
         // '/\D/' Matches any character that is not a digit.
         // 'g' global match modifier. Finds all matches not just the first.
@@ -109,8 +111,9 @@
         // Do nothing if backspace, left and right arrow keys are pressed.
         if(event.which != 8 && event.which != 37 && event.which != 39) {
             $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
-        }
-        phoneNumberValidate()
+        };
+
+        phoneNumberValidate();
     });
 
 </script>
