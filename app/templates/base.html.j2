@@ -56,20 +56,20 @@
           });
         </script>
         
-        {# Dismiss flashed message after a set amount of time. #}
-        <script>
-          window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
-              $(this).remove(); 
-            });
-          }, 3000);
-        </script>
-
         {# Allow modal to be draggable #}
         <script>
           $(".modal").draggable({
             handle: ".modal-header"
           });
+        </script>
+
+        {# Toast Notifications #}
+        <script>  
+          const toast = document.getElementById('toastNotify');
+          const toastNotification = bootstrap.Toast.getOrCreateInstance(toast);
+          if(toast) {
+              toastNotification.show();
+          }
         </script>
 
       </div>{# innerParentContent #}
