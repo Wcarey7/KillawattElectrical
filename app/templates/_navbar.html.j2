@@ -1,27 +1,51 @@
 {% block navbar %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow mb-4">
-  <div class="container-fluid">
-      <a class="navbar-brand mx-auto" href="{{ url_for('home.index') }}">Kill-A-Watt Electrical Inc.</a>
-    <div class="navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item" ><a class="nav-link" href="{{ url_for('customer.index') }}">Customers</a>
-      </ul>
+<header class="header-global navbar-header">
+  <nav id="navbar-main" aria-label="Primary navigation" class="navbar navbar-main navbar-expand-lg shadow mb-4">
+    <div class="container-fluid position-relative">
+      <a class="navbar-brand me-md-5" href="{{ url_for('home.index') }}">
+        Kill-A-Watt Electrical Inc.
+      </a>
+      <!-- Hamburger button -->
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_global"
+        aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse collapse" id="navbar_global">
+        <ul class="navbar-nav me-auto align-items-md-left">
+          <li class="nav-item">
+            <a href="{{ url_for('customer.index') }}" class="nav-link" id="customersNavLink">
+              Customers
+            </a>
+          </li>
+        </ul>
+        <!-- "Right" side of navbar -->
+        <ul class="navbar-nav align-items-md-left justify-content-end">
+          <div class="align-items-center">
+            {% if current_user.is_authenticated %}
+            <div class="nav-item d-none d-lg-inline pe-1">
+              {{ 'Logged in as: %s' % username.replace(current_user.username,"<b>{}</b>"
+                    .format(current_user.username)) |safe }}
+            </div>
+            <a class="nav-link nav-item d-lg-inline px-lg-1"
+              href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
+            <a class="nav-link nav-item d-lg-inline px-lg-1" href="{{ url_for('auth.logout') }}">Log Out</a>
+            {% else %}
+            <a class="nav-link nav-item d-lg-inline px-lg-1" href="{{ url_for('auth.register') }}">Register</a>
+            <a class="nav-link nav-item d-lg-inline px-lg-1" href="{{ url_for('auth.login') }}">Log In</a>
+            {% endif %}
+
+            <label>
+              <i class="bi bi-moon nav-item nav-link d-lg-inline ps-lg-1" style="color:black;" id="theme-indicator"></i>
+              <input type="checkbox" id="theme-switch" class="d-none">
+            </label>
+
+          </div>
+        </ul>
+      </div>
     </div>
-    <ul class="navbar-nav justify-content-end" >
-      {% if current_user.is_authenticated %}
-        <li class="nav-item nav-link">
-          {{ 'Logged in as: %s' % username.replace(current_user.username,"<b>{}</b>"
-            .format(current_user.username)) |safe }}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('user_profile.user', username=current_user.username) }}">Profile</a>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
-      {% else %}
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
-      {% endif %}
-    </ul>
-  </div>
-</nav>
+  </nav>
+</header>
 
 {% endblock %}

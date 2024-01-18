@@ -14,12 +14,6 @@
   box-shadow: 3px 5px 9px 5px darkgrey;
 }
 
-.navbar-brand {
-  padding-top: 0px;
-  padding-bottom: 3px;
-  padding-right: 285px;
-}
-
 .wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
