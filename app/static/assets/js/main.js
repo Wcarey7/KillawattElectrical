@@ -50,7 +50,15 @@ $(document).on('click', '.saveButton', function(event) {
     let isValid = validateForm();
 
     if(isValid == true) {
-        $.post(urlEditCustomer, data = $('#editCustomerForm').serialize(), function (data) {
+        $.ajax({
+            method: 'POST',
+            url: urlEditCustomer,
+            data: data = $('#editCustomerForm').serialize(),
+            beforeSend: function(jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        })
+        .done(function(data) {
             if(data.status == '200 OK') {
                 location.reload();
                 for (const field of fields) {
