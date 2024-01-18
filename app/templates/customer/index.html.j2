@@ -138,112 +138,11 @@
 
 </div> {# End of display grid wrapper #}
 
-
-<script>
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    (validateForm = () => {
-    'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-        const forms = document.querySelectorAll('.needs-validation');
-        let formValid = true;
-
-        // Loop over forms, call validate functions, and prevent submission if needed.
-        Array.from(forms).forEach(form => {
-            phoneNumberValidate();
-            emailValidate();
-
-            if(!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                formValid = false;
-            };
-            form.classList.add('was-validated');
-        });
-        return formValid;
-    });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Load new customer form in a modal
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-     $('#newCustomerBtn').on('click', function () {
-        // Route specified in button attribute "data-route".
-        const url = $(this).data('route');
-
-        $.get(url, function (data) {
-            $('#newCustomerModal .modal-content').html(data);
-            $('#newCustomerModal').modal('toggle');
-
-            $('#customerFormButton').on('click', function (event) {
-                event.preventDefault();
-                let isValid = validateForm();
-
-                if(isValid == true) {
-                    $.post(url, data = $('#newCustomerModalForm').serialize(), function (data) {
-                        if(data.status == '200 OK') {
-                            $('#newCustomerModal').modal('hide');
-                            location.replace({{request.full_path|tojson}});
-                        };
-                    });
-                };
-            });
-        });
-    });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Delete customer modal confirmation
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    let rowIndex = $('tr').length;
-    let currentBaseUrl = {{ request.base_url|tojson }};
-    let currentArgs = {{ request.args|tojson }};
-    let currentPage = currentArgs['page'];
-    let pageNum = currentPage-1;
-    let prevPageUrl = `${currentBaseUrl}?page=${pageNum}&search_tag=`;
-
-    $('#deleteBtnTD button').on('click', function () {
-        // Route specified in button attribute "data-deleting".
-        const url = $(this).data('deleting');
-
-        $('#deleteCustomerModalBtn').on('click', function (event) {
-            $.post(url, function (data) {
-                if(data.status == '200 OK') {
-                    $('#deleteCustomerModal').modal('hide');
-                    if(rowIndex > 2 || currentPage == 1 || currentPage === undefined) {
-                        location.replace({{request.full_path|tojson}});
-                    } else {
-                        location.replace(prevPageUrl);
-                    };  
-                };
-            });
-        });
-    });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Keep user input text in search field
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    let thisUrl = {{ request.base_url|tojson }};
-    if(!thisUrl.toLowerCase().includes('search')) {
-        sessionStorage.removeItem('text');
-    };
-
-    let savedInputText = sessionStorage.getItem('text');
-    document.getElementById('search_tag').value = savedInputText;
-
-    $('#searchButton').on('click', function () {
-        let inputText = document.getElementById('search_tag').value;
-        sessionStorage.setItem('text', inputText);
-    });
-
-    $('#resetSearchButton').on('click', function () {
-        sessionStorage.removeItem('text');
-    });
-
-</script>
-
 {% endblock %}
+
+
+<!-- Page specific Javascripts -->
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='assets/js/inputValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock extra_js %}
