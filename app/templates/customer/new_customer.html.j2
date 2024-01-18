@@ -1,119 +1,57 @@
 {% from "macros.html.j2" import render_field %}
 
 
-    <div class="modal-header">
-        <h1 class="modal-title" id="modalLabel">New Customer</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
+<div class="modal-header">
+    <h1 class="modal-title" id="modalLabel">New Customer</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 
-    <form action="" method="POST" class="needs-validation" id="newCustomerModalForm" novalidate>
-        <div class="modal-body mt-3">
+<form action="" method="POST" class="needs-validation" id="newCustomerModalForm" novalidate>
+    <div class="modal-body mt-3">
 
-            {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}
 
-            <div class="mb-3">
-                {{ render_field(form.name)}}
-            </div>
-
-            <div class="mb-3">
-                {{ render_field(form.street)}}
-            </div>
-
-            <div class="mb-3">
-                {{ render_field(form.city)}}
-            </div>
-
-            <div class="mb-3">
-                {{ render_field(form.state, class="form-select")}}
-            </div>
-
-            <div class="mb-3">
-                {{ render_field(form.zip)}}
-            </div>
-
-            <div class="mb-3">
-                {{ render_field(form.phone_number, maxlength="13")}}
-            </div>
-
-            <div class="mb-4">
-                {{ render_field(form.email)}}
-            </div>
-
-            <div class="d-grid gap-2 mb-3">
-                {{ form.submit(class="btn btn-primary") }}    
-            </div>
-
-            <div class="d-grid gap-2 mb-3">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </div> 
-
+        <div class="mb-3">
+            {{ render_field(form.name)}}
         </div>
-    </form>
 
+        <div class="mb-3">
+            {{ render_field(form.street)}}
+        </div>
 
-<script>
+        <div class="mb-3">
+            {{ render_field(form.city)}}
+        </div>
 
+        <div class="mb-3">
+            {{ render_field(form.state, class="form-select")}}
+        </div>
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Make sure length of phone number is 13 characters.
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    function phoneNumberValidate() {
-        const phone_num = document.getElementById('phone_number');
-        const isValid = phone_num.value.length === 13;
+        <div class="mb-3">
+            {{ render_field(form.zip)}}
+        </div>
 
-        if(!isValid) {
-            phone_num.setCustomValidity('Invalid');
-            phone_num.nextElementSibling.textContent = 'Phone Number is too short.';
-        } else {
-            phone_num.setCustomValidity('');
-        };
+        <div class="mb-3">
+            {{ render_field(form.phone_number, maxlength="13")}}
+        </div>
 
-        return isValid;
-    }
+        <div class="mb-4">
+            {{ render_field(form.email)}}
+        </div>
 
+        <div class="d-grid gap-2 mb-3">
+            {{ form.submit(class="btn btn-primary") }}    
+        </div>
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Make sure the entered email address is a vaild email format
-    // emailRegExp source: https://www.w3resource.com/javascript/form/email-validation.php
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    function emailValidate() {
-        const email = document.getElementById('email');
+        <div class="d-grid gap-2 mb-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div> 
 
-        const emailRegExp =
-        /^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    </div>
+</form>
 
-        const isValid = email.value.length === 0 || emailRegExp.test(email.value);
-
-        if(!isValid) {
-            email.setCustomValidity('Invalid');
-            email.nextElementSibling.textContent = 'Not a valid email format';
-        } else {
-            email.setCustomValidity('');
-        };
-
-        return isValid;
-    }
-
-    $( '#email' ).on( 'keyup change', function(event) {
-        emailValidate();
-    });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Format phone number as user types: (XXX)XXX-XXXX
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $( '#phone_number' ).on( 'keyup change', function(event) {
-
-        // '/\D/' Matches any character that is not a digit.
-        // 'g' global match modifier. Finds all matches not just the first.
-        var num = $(this).val().replace(/\D/g,''); 
-
-        // Do nothing if backspace, left and right arrow keys are pressed.
-        if(event.which != 8 && event.which != 37 && event.which != 39) {
-            $(this).val('(' + num.substring(0,3) + ')' + num.substring(3,6) + '-' + num.substring(6,10));
-        };
-
-        phoneNumberValidate();
-    });
-
-</script>
+<!-- Page specific Javascripts -->
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='assets/js/inputValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock extra_js %}

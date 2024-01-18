@@ -11,7 +11,7 @@
                 <h5>Login</h5>
             </div>
             <div class="card-body">
-                <form action="" method="POST" class="needs-validation" novalidate>
+                <form action="" method="POST" class="needs-validation" id="loginForm" novalidate>
                     {{ form.hidden_tag() }}
 
                     <div class="mb-3">
@@ -38,30 +38,11 @@
 </div>
 
 
-<script>
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bootstrap JavaScript styling for disabling form submissions if there are invalid fields.
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    (() => {
-    'use strict'
-
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to.
-    const forms = document.querySelectorAll('.needs-validation');
-
-    // Loop over forms, call validate functions, and prevent submission if needed.
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        };
-
-        form.classList.add('was-validated');
-        }, false)
-    })
-    })();
-
-</script>
-
 {% endblock %}
+
+
+<!-- Page specific Javascripts -->
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='assets/js/inputValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock extra_js %}

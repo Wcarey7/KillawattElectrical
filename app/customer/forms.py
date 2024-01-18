@@ -21,6 +21,6 @@ class customerForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     state = SelectField('State', choices=select_field_choices(), validators=[DataRequired()])
     zip = StringField('Zip', validators=[DataRequired()])
-    phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=13, max=13)])
+    phone_number = TelField('Phone Number', id='phoneNumber', validators=[DataRequired(), Length(min=13, max=13)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Submit', id='customerFormButton')
