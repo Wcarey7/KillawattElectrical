@@ -36,11 +36,32 @@
             <a class="nav-link nav-item d-lg-inline px-lg-1" href="{{ url_for('auth.login') }}">Log In</a>
             {% endif %}
 
-            <label>
-              <i class="bi bi-moon nav-item nav-link d-lg-inline ps-lg-1" style="color:black;" id="theme-indicator"></i>
-              <input type="checkbox" id="theme-switch" class="d-none">
-            </label>
-
+            <!-- Theme icon dropdown to switch light and dark mode -->
+            <div class="d-lg-inline nav-item text-decoration-none ps-lg-1 dropdown color-modes">
+              <button
+                class="btn btn-link bi bi-sun nav-item nav-link d-lg-inline ps-lg-1 dropdown-toggle d-flex align-items-center"
+                id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end p-1 mt-2" aria-labelledby="bd-theme"
+                style="--bs-dropdown-min-width: 8rem;">
+                <li>
+                  <button type="button" class="bi bi-sun dropdown-item d-flex align-items-center"
+                    data-bs-theme-value="light">
+                    <div class="ms-2">
+                      Light
+                    </div>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="bi bi-moon dropdown-item d-flex align-items-center"
+                    data-bs-theme-value="dark">
+                    <div class="ms-2">
+                      Dark
+                    </div>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </ul>
       </div>
