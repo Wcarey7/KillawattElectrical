@@ -1,0 +1,72 @@
+[data-bs-theme="dark"] {
+  background-color: #082032;
+  color: white !important; 
+}
+
+[data-bs-theme="dark"] .innerParentContent {
+  background-color: #082032; 
+}
+
+[data-bs-theme="dark"], [data-bs-theme="dark"] .navbar-brand {
+  background-color: #2C394B; 
+}
+
+[data-bs-theme="dark"] .nav-link:hover {
+  color: darkgrey; 
+}
+
+[data-bs-theme="dark"] .navbar-brand:hover {
+  color: darkgrey; 
+}
+
+[data-bs-theme="dark"] .navbar-header  {
+  background-color: #2C394B; 
+}
+
+[data-bs-theme="dark"] .icon, [data-bs-theme="dark"] a, 
+[data-bs-theme="dark"] span, [data-bs-theme="dark"] p, [data-bs-theme="dark"],
+[data-bs-theme="dark"] .input-group .input-group-text, [data-bs-theme="dark"] a, 
+[data-bs-theme="dark"] dropdown-toggle {
+  color: white; 
+}
+
+[data-bs-theme="dark"] .dropdown .dropdown-menu {
+  background-color: #2C394B; 
+}
+
+[data-bs-theme="dark"] .dropdown.show:before {
+  color: #2C394B; 
+}
+
+[data-bs-theme="dark"] .dropdown .dropdown-menu li:hover a {
+  color: white; 
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .input-group-append {
+  background-color: #082032cc;
+  border-color: #2C394B !important;
+  color: white; 
+}
+
+[data-bs-theme="dark"] .form-select {
+  background-color: #082032;
+  border-color: #2C394B !important; 
+}
+
+[data-bs-theme="dark"] .form-control:disabled {
+  background-color: #212529; 
+}
+
+/* ===  Override browser default input field color on autofill === */
+[data-bs-theme="dark"] input:-webkit-autofill,
+[data-bs-theme="dark"] input:-webkit-autofill:hover, 
+[data-bs-theme="dark"] input:-webkit-autofill:focus,
+[data-bs-theme="dark"] textarea:-webkit-autofill,
+[data-bs-theme="dark"] textarea:-webkit-autofill:hover,
+[data-bs-theme="dark"] textarea:-webkit-autofill:focus,
+[data-bs-theme="dark"] select:-webkit-autofill,
+[data-bs-theme="dark"] select:-webkit-autofill:hover,
+[data-bs-theme="dark"] select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #082032 inset;
+}
