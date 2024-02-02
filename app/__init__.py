@@ -19,6 +19,14 @@ def create_app(config_class):
 
     app.config.from_object(config[config_class])
 
+    # Convert session lifetime to a number(milliseconds).
+    @app.context_processor
+    def add_session_config():
+        return {
+            'PERMANENT_SESSION_LIFETIME_MS': (
+                app.permanent_session_lifetime.seconds * 1000),
+        }
+
     ###################################################
     #### Init Extensions
     ###################################################
