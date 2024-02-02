@@ -18,6 +18,8 @@
         <main class="container">
           {{ render_flash_message() }}
 
+          {% include "includes/_modals.html" %}
+
           {% block content %}
           {% endblock %}
         </main>
