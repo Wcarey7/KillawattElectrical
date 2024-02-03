@@ -36,30 +36,6 @@
 </div>
 
 
-{# Delete customer modal #}
-<div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h1 class="modal-title" id="modalLabel">Delete Customer Confirmation</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        Are you sure you would like to delete this customer?
-      </div>
-
-      <div class="modal-footer mx-auto">
-        <button id="deleteCustomerModalBtn" type="button" class="btn btn-primary">Confirm</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
 {# Search bar and button #}
 <div class="search-input-field">
     <form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>

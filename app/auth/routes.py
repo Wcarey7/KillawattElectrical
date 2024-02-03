@@ -1,5 +1,5 @@
-from flask import render_template, request, url_for, redirect, flash, session
-from flask_login import login_user, logout_user, current_user
+from flask import render_template, request, url_for, redirect, flash, session, jsonify
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
 from app import db
 from app.auth import bp
@@ -7,7 +7,7 @@ from app.models.user import User
 from app.auth.forms import LoginForm, RegistrationForm
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home.index'))
@@ -30,7 +30,7 @@ def before_request():
     session.modified = True
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home.index'))
@@ -59,7 +59,22 @@ def login():
     return render_template('auth/login.html.j2', form=form)
 
 
-@bp.route('/logout')
+@bp.route('/logout/')
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('home.index'))
+    flash('You are now logged out')
+    return redirect(url_for('auth.login'))
+
+
+@bp.route('/session-timed-out/')
+def logged_out():
+    logout_user()
+    flash('Your session has expired, please login again')
+    return redirect(url_for('auth.login'))
+
+
+@bp.route('/ping/', methods=['POST'])
+def ping():
+    session.modified = True
+    return jsonify(status='200 OK')
