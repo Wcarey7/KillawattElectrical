@@ -10,4 +10,6 @@ def index():
     else:
         current_user.username = "Guest"
 
-    return render_template('home/index.html.j2', username=current_user.username)
+    return render_template('home/index.html.j2',
+                           username=current_user.username,
+                           )
