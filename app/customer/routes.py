@@ -1,5 +1,5 @@
 from flask import render_template, current_app, request, url_for, redirect, flash, session, jsonify
-from flask_login import login_required, current_user
+from flask_login import login_required
 from app import db
 from app.customer import bp
 from app.models.customer import Customer, Telephone, Email
@@ -25,7 +25,6 @@ def index():
     return render_template('customer/index.html.j2',
                            customers=customers,
                            endpoint=endpoint,
-                           username=current_user.username,
                            )
 
 
@@ -57,7 +56,6 @@ def add_customer():
     return render_template('customer/new_customer.html.j2',
                            form=form,
                            Customer=Customer,
-                           username=current_user.username,
                            )
 
 
@@ -81,7 +79,6 @@ def detail(Id):
     return render_template('customer/customer_navbar.html.j2',
                            customer=customer,
                            form=form,
-                           username=current_user.username,
                            )
 
 
@@ -138,5 +135,4 @@ def search():
     return render_template('customer/index.html.j2',
                            customers=customers,
                            endpoint=endpoint,
-                           username=current_user.username,
                            )

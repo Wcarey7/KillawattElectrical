@@ -25,7 +25,7 @@
           <div class="align-items-center">
             {% if current_user.is_authenticated %}
             <div class="nav-item d-none d-lg-inline pe-1">
-              {{ 'Logged in as: %s' % username.replace(current_user.username,"<b>{}</b>"
+              {{ 'Logged in as: %s' % current_user.username.replace(current_user.username,"<b>{}</b>"
                     .format(current_user.username)) |safe }}
             </div>
             <a class="nav-link nav-item d-lg-inline px-lg-1"
