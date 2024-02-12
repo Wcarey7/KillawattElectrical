@@ -11,6 +11,7 @@ from app.extensions import moment
 from app.extensions import csrf
 from app.extensions import session
 from app.extensions import seeder
+from app.extensions import admin
 from app.models.user import User
 
 
@@ -38,6 +39,7 @@ def create_app(config_class):
     csrf.init_app(app)
     session.init_app(app)
     seeder.init_app(app, db)
+    admin.init_app(app)
 
     ###################################################
     #### Login Manager
@@ -65,6 +67,9 @@ def create_app(config_class):
 
     from app.user_profile import bp as user_profile_bp
     app.register_blueprint(user_profile_bp, url_prefix='/user')
+
+    from app.admin import bp as admin_bp
+    app.register_blueprint(admin_bp, url_prefix='/admin')
 
     ###################################################
     #### Error Logging to File - For Production
