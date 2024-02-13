@@ -1,0 +1,37 @@
+{% extends 'base.html.j2' %}
+{% import 'admin/layout.html' as layout with context -%}
+
+
+{% block content %}
+
+
+{% block brand %}
+<span id="adminBrand">
+  <h2 id="brand" class="text-center">{{ admin_view.name }}</h2>
+</span>
+{% endblock %}
+
+{% block page_body %}
+<span id="adminPageBody">
+  {% block main_menu %}
+  <div class="container-fluid">
+    <div class="row" id="navPillRow">
+        <ul class="nav nav-pills justify-content-center">
+        {{ layout.menu() }}
+        </ul>
+
+          {% set render_ctx = h.resolve_ctx() %}
+
+    </div>
+  </div>
+  {% endblock %}
+</span>
+{% endblock %}
+
+{% block body %}
+<span id="adminBody">
+</span>
+{% endblock %}
+
+
+{% endblock content %}

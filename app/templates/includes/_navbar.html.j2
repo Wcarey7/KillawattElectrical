@@ -14,15 +14,28 @@
 
       <div class="navbar-collapse collapse" id="navbar_global">
         <ul class="navbar-nav me-auto align-items-md-left">
-          <li class="nav-item">
+          <li class="nav-item me-2">
             <a href="{{ url_for('customer.index') }}" class="nav-link" id="customersNavLink">
               Customers
             </a>
           </li>
+          <li class="nav-item me-2">
+            <a href="#" class="nav-link" id="reportsNavLink">
+              Reports
+            </a>
+          </li>
+          {% if current_user.is_authenticated and current_user.security_permissions == "Admin" %}
+          <li class="nav-item me-2">
+            <a href="{{ url_for('admin.index') }}" class="nav-link" id="adminNavLink">
+              Admin
+            </a>
+          </li>
+          {% endif %}
         </ul>
         <!-- "Right" side of navbar -->
         <ul class="navbar-nav align-items-md-left justify-content-end">
-          <div class="align-items-center">
+        <div class="align-items-center">
+
             {% if current_user.is_authenticated %}
             <div class="nav-item d-none d-lg-inline pe-1">
               {{ 'Logged in as: %s' % current_user.username.replace(current_user.username,"<b>{}</b>"

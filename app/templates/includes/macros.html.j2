@@ -12,6 +12,18 @@
 {% endmacro%}
 
 
+{# Admin User Fields #}
+{% macro render_admin_field(field) %}
+    <div class="form-group">
+        <label for="{{ field.name }}" class="control-label">{{ field.label.text }} </label>
+        {{ field(class="form-control", **kwargs)|safe }}
+        <div class="invalid-feedback">
+            Please provide a valid {{field.name}}.
+        </div>
+    </div>
+{% endmacro%}
+
+
 {# Render flash() messages to top of page #}
 {% macro render_flash_message() %}
     {% with messages = get_flashed_messages() %}

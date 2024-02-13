@@ -1,0 +1,43 @@
+{% extends 'admin/model/create.html' %}
+{% import 'admin/lib.html' as lib with context %}
+{% from "includes/macros.html.j2" import render_admin_field %}
+
+
+{% block content %}
+
+
+{% block page_body %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+
+  {% block navlinks %}
+  {{ super() }}
+  {% endblock %}
+
+  {% block create_form %}
+
+    <form action="" method="POST" class="admin-form needs-validation" id="admin-form" enctype="multipart/form-data" role="form" novalidate>
+      <fieldset>
+        {{ form.hidden_tag() }}
+
+        {{ render_admin_field(form.username)}}
+
+        {{ render_admin_field(form.password)}}
+
+        {{ render_admin_field(form.email)}}
+
+        {{ render_admin_field(form.security_permissions)}}
+
+        {{ lib.render_form_buttons(return_url, is_modal) }}
+      </fieldset>
+    </form>
+
+  {% endblock %}
+
+<script src="{{ url_for('static', filename='assets/js/inputValidation.js') }}"></script>
+{% endblock %}
+
+
+{% endblock content %}
