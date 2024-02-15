@@ -9,10 +9,6 @@
 <script src="{{ url_for('static', filename='assets/js/baseScripts.js') }}"></script>
 
 {% if current_user.is_authenticated %}
-{{ PERMANENT_SESSION_LIFETIME_MS|tojson|safe }}
 <script type="text/javascript"> let configSessionLifetime = JSON.parse('{{ PERMANENT_SESSION_LIFETIME_MS }}'); </script>
 <script src="{{ url_for('static', filename='assets/js/sessionMonitor.js') }}"></script>
 {% endif %}
-
-<!-- Date/Time formatting -->
-{{ moment.include_moment() }}

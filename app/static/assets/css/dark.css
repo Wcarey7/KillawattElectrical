@@ -58,6 +58,14 @@
   background-color: #212529; 
 }
 
+[data-bs-theme="dark"] .admin-form label+input,
+[data-bs-theme="dark"] .admin-form label+select {
+  background-color: #2C394B;
+  border-color: black !important;
+  color: white; 
+}
+
+
 /* ===  Override browser default input field color on autofill === */
 [data-bs-theme="dark"] input:-webkit-autofill,
 [data-bs-theme="dark"] input:-webkit-autofill:hover, 

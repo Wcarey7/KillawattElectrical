@@ -1,0 +1,18 @@
+{% extends 'admin/model/list.html' %}
+{% import 'admin/layout.html' as layout with context -%}
+
+
+{% block content %}
+
+
+{% block page_body %}
+{{ super() }}
+{% endblock %}
+
+<div class="container text-center">
+    <h1>Admin Dashboard Home</h1>
+    <a class="btn btn-primary mt-5" href="/"><i class="bi bi-chevron-left align-middle"></i> Back</a>
+</div>
+
+
+{% endblock content %}

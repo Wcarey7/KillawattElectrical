@@ -1,0 +1,68 @@
+<!---- This file overrides Flask-Admin's row_actions.html -------------->
+<!---- Replaces glyphicons with bootstrap icons and the delete action now has a confirmation modal -------------->
+
+{% import 'admin/lib.html' as lib with context %}
+
+{% macro link(action, url, icon_class=None) %}
+<a class="icon" href="{{ url }}" title="{{ action.title or '' }}">
+  <span class="{{ icon_class or action.icon_class }}"></span>
+</a>
+{% endmacro %}
+
+{% macro view_row(action, row_id, row) %}
+  {{ link(action, get_url('.details_view', id=row_id, url=return_url), 'bi bi-eye-fill') }}
+{% endmacro %}
+
+{% macro view_row_popup(action, row_id, row) %}
+  {{ lib.add_modal_button(url=get_url('.details_view', id=row_id, url=return_url, modal=True), title=action.title, content='<span class="bi bi-eye-fill"></span>') }}
+{% endmacro %}
+
+{% macro edit_row(action, row_id, row) %}
+  {{ link(action, get_url('.edit_view', id=row_id, url=return_url), 'bi bi-pencil') }}
+{% endmacro %}
+
+{% macro edit_row_popup(action, row_id, row) %}
+  {{ lib.add_modal_button(url=get_url('.edit_view', id=row_id, url=return_url, modal=True), title=action.title, content='<span class="bi bi-pencil"></span>') }}
+{% endmacro %}
+
+{% macro delete_row(action, row_id, row) %}
+<form class="icon" id="deleteForm" method="POST" action="{{ get_url('.delete_view') }}">
+  {{ delete_form.id(value=get_pk_value(row)) }}
+  {{ delete_form.url(value=return_url) }}
+  {% if delete_form.csrf_token %}
+  {{ delete_form.csrf_token }}
+  {% elif csrf_token %}
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  {% endif %}
+
+  <!-------------- Delete User confirmation modal -------------->
+  <button type="button" class="icon" id="deleteBtn" data-bs-toggle="modal"
+    data-bs-target="#deleteUserModal{{ row.id }}">
+    <span class="bi bi-trash3"></span>
+  </button>
+
+  <div class="modal fade" id="deleteUserModal{{ row.id }}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h1 class="modal-title" id="modalLabel">Delete User Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          Are you sure you would like to delete this user?
+        </div>
+  
+        <div class="modal-footer mx-auto">
+          <button id="deleteUserModalBtn" type="submit" class="btn btn-primary">Confirm</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+</form>
+
+{% endmacro %}
