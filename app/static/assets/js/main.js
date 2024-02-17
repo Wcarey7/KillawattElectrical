@@ -126,11 +126,12 @@ $('#deleteBtnTD button').on('click', function () {
         .done(function(data) {
             if(data.status == '200 OK') {
                 $('#deleteCustomerModal').modal('hide');
-                if(rowIndex > 2 || currentPage == 1 || currentPage === undefined) {
-                    location.replace(document.location);
-                } else {
+                if(rowIndex == 2 && currentPage >= 2) {
                     location.replace(prevPageUrl);
-                };  
+                }
+                else {
+                    location.replace(document.location);
+                }; 
             };
         });
     });
