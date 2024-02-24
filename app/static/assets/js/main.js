@@ -12,6 +12,7 @@ cancelButton = document.getElementById('closeButton');
 saveButton = document.getElementById('editButton');
 
 urlEditCustomer = $('#editButton').data('edit');
+thisRoutePrevPage = $('#closeButton').data('prev');
 
 $('#editButton').on('click', function(event) {
     event.stopPropagation();
@@ -40,7 +41,7 @@ $('#closeButton').on('click', function() {
             field.disabled = true;
         }
     } else {
-        history.back();
+        location.replace(thisRoutePrevPage);
     };
 });
 
@@ -131,7 +132,7 @@ $('#deleteBtnTD button').on('click', function () {
                 }
                 else {
                     location.replace(document.location);
-                }; 
+                };
             };
         });
     });
@@ -141,23 +142,22 @@ $('#deleteBtnTD button').on('click', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Keep user input text in search field across pages.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-thisPageUrl = currentBaseUrl;
-if(!thisPageUrl.toLowerCase().includes('search')) {
-    sessionStorage.removeItem('text');
-};
-
-savedInputText = sessionStorage.getItem('text');
+if(!document.URL.match(/search/) && !document.URL.match(/customer\/\d+/)) {
+    sessionStorage.removeItem('searchText');
+}
+   
+savedInputText = sessionStorage.getItem('searchText');
 if(searchTagValue = document.getElementById('search_tag')) {
     searchTagValue.value = savedInputText;
 };
 
 $('#searchButton').on('click', function () {
     let inputText = document.getElementById('search_tag').value;
-    sessionStorage.setItem('text', inputText);
+    sessionStorage.setItem('searchText', inputText);
 });
 
 $('#resetSearchButton').on('click', function () {
-    sessionStorage.removeItem('text');
+    sessionStorage.removeItem('searchText');
 });
 
 

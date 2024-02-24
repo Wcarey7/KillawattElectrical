@@ -42,13 +42,13 @@
     </div>
     {# End Row #}
     </div>
-
-    <div class="container text-center mt-5">
-        <button type="button" class="btn btn-primary" id="editButton" data-edit="{{ url_for('customer.edit', Id=customer.id)}}">Edit</button>
-        <button type="button" class="btn btn-primary" id="closeButton">Close</button>
-    </div>
 </form>
 
+<div class="container text-center mt-5">
+    <button type="button" class="btn btn-primary" id="editButton" form="editCustomerForm"
+        data-edit="{{ url_for('customer.edit', Id=customer.id)}}">Edit</button>
+    <button type="button" class="btn btn-primary" id="closeButton" data-prev="{{thisRoutePrevPage}}">Close</button>
+</div>
 
 {% endblock %}
 
