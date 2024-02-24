@@ -26,21 +26,33 @@
         </div>
         </div>
     </div>
-    {# Second card #}
+    <!-- Second card -->
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header text-center">
                 <h5><b>Contact</b></h5>
             </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ render_field(form.phone_number, maxlength="13", disabled="true")}}</li>
-                <li class="list-group-item">{{ render_field(form.email, disabled="true")}}</li>
-            </ul>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ render_field(form.phone_number, maxlength="13", disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.email, disabled="true")}}</li>
+                </ul>
+            </div>
         </div>
+
+        <div class="card mt-3">
+            <div class="card-header text-center">
+                <h5><b>Created On</b></h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ moment(customer.create_date).format('LLL') }}</li>
+                </ul>
+            </div>
         </div>
+
     </div>
-    {# End Row #}
+    <!-- End Row -->
     </div>
 </form>
 
