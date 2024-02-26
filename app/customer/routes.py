@@ -12,6 +12,7 @@ from app.customer.forms import customerForm
 def index():
     # Reset search query.
     session.pop('search_tag', default=None)
+    session['thisRoutePrevPage'] = request.url
 
     page = request.args.get('page', 1, type=int)
     customers = db.paginate(db.select(Customer),
@@ -65,6 +66,7 @@ def add_customer():
 def detail(Id):
     form = customerForm()
     customer = db.get_or_404(Customer, Id)
+    thisRoutePrevPage = session.get('thisRoutePrevPage')
 
     if request.method == 'GET':
         # Pre-fill forms
@@ -79,6 +81,7 @@ def detail(Id):
     return render_template('customer/customer_navbar.html.j2',
                            customer=customer,
                            form=form,
+                           thisRoutePrevPage=thisRoutePrevPage,
                            )
 
 
@@ -117,6 +120,9 @@ def edit(Id):
 @bp.route('/search', methods=['POST', 'GET'])
 @login_required
 def search():
+    session['thisRoutePrevPage'] = request.url
+    thisRoutePrevPage = session.get('thisRoutePrevPage')
+
     if 'search_tag' in session and request.method != 'POST':
         search_tag = session['search_tag']  # Perist search item across pagination.
     else:
@@ -135,4 +141,5 @@ def search():
     return render_template('customer/index.html.j2',
                            customers=customers,
                            endpoint=endpoint,
+                           thisRoutePrevPage=thisRoutePrevPage,
                            )

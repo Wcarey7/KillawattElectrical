@@ -1,7 +1,7 @@
-from typing import TYPE_CHECKING
-from typing import List
+from typing import TYPE_CHECKING, List
+from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey, DateTime
 from app import db
 
 if TYPE_CHECKING:
@@ -12,6 +12,7 @@ class Customer(db.Model):
     __tablename__ = "customer"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
+    create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
 
     addresses: Mapped[List["Address"]] = relationship("Address", back_populates="customer", cascade="all, delete")
     phone_numbers: Mapped[List["Telephone"]] = relationship("Telephone", back_populates="customer", cascade="all, delete")
