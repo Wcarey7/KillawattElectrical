@@ -40,19 +40,24 @@ $('#registerForm, #loginForm, #admin-form').on('submit', function (event) {
 // Make sure length of phone number is 13 characters.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 function phoneNumberValidate() {
-    if(!document.getElementById('phoneNumber')) {
+    if(!document.getElementsByTagName('tel')) {
         return;
     }
 
-    const phoneNumValidate = document.getElementById('phoneNumber');
-    const isValid = phoneNumValidate.value.length === 13;
+    let isValid;
+    const typeTels = $('input[type="tel"]');
 
-    if(!isValid) {
-        phoneNumValidate.setCustomValidity('Invalid');
-        phoneNumValidate.nextElementSibling.textContent = 'Phone Number is too short.';
-    } else {
-        phoneNumValidate.setCustomValidity('');
-    };
+    for (const typeTel of typeTels) {
+        const phoneNumValidate = typeTel;
+        isValid = phoneNumValidate.value.length === 13;
+
+        if(!isValid) {
+            phoneNumValidate.setCustomValidity('Invalid');
+            phoneNumValidate.nextElementSibling.textContent = 'Phone Number is too short.';
+        } else {
+            phoneNumValidate.setCustomValidity('');
+        };
+    }
 
     return isValid;
 }
@@ -85,24 +90,27 @@ function usernameValidate() {
 // emailRegExp source: https://www.w3resource.com/javascript/form/email-validation.php
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 function emailValidate() {
-    if(!document.getElementById('email')) {
+    if(!document.getElementsByTagName('email')) {
         return;
     }
 
-    const email = document.getElementById('email');
+    let isValid;
+    const typeEmails = $('input[type="email"]');
 
     const emailRegExp =
     /^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    const isValid = email.value.length === 0 || emailRegExp.test(email.value);
+    for(const typeEmail of typeEmails) {
+        const email = typeEmail;
+        isValid = email.value.length === 0 || emailRegExp.test(email.value);
 
-    if(!isValid) {
-        email.setCustomValidity('Invalid');
-        email.nextElementSibling.textContent = 'Not a valid email format';
-    } else {
-        email.setCustomValidity('');
-    };
-
+        if(!isValid) {
+            email.setCustomValidity('Invalid');
+            email.nextElementSibling.textContent = 'Not a valid email format';
+        } else {
+            email.setCustomValidity('');
+        };
+    }
     return isValid;
 }
 

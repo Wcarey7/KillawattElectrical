@@ -164,18 +164,20 @@ $('#resetSearchButton').on('click', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Format phone number as user types: (XXX)XXX-XXXX
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-$('#phoneNumber').on('keyup change', function(event) {
+$(document).on('keyup change', 'input[type="tel"]', function(event) {
+    const typeTels = $('input[type="tel"]');
+    
+    for (const typeTel of typeTels) {
+        // '/\D/' Matches any character that is not a digit.
+        // 'g' global match modifier. Finds all matches not just the first.
+        let numKey = $(typeTel).val().replace(/\D/g,''); 
 
-    // '/\D/' Matches any character that is not a digit.
-    // 'g' global match modifier. Finds all matches not just the first.
-    let numKey = $(this).val().replace(/\D/g,''); 
-
-    // Do nothing if backspace, left and right arrow keys are pressed.
-    if(event.which != 8 && event.which != 37 && event.which != 39) {
-        $(this).val('(' + numKey.substring(0,3) + ')' + numKey.substring(3,6) + '-' + numKey.substring(6,10));
-    };
-
+        // Do nothing if backspace, left and right arrow keys are pressed.
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
+            $(typeTel).val('(' + numKey.substring(0,3) + ')' + numKey.substring(3,6) + '-' + numKey.substring(6,10));
+        };
     phoneNumberValidate();
+    }
 });
 
 
@@ -183,9 +185,13 @@ $('#phoneNumber').on('keyup change', function(event) {
 // Format phone number when input field is pre-filled with data: (XXX)XXX-XXXX
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 (function () {
-    if(document.getElementById('phoneNumber')) {
-        const phoneNum = document.getElementById('phoneNumber').value;
-        const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
-        document.getElementById('phoneNumber').value = phoneNumFormatted;
+    if(document.getElementsByTagName('tel')) {
+        const typeTels = $('input[type="tel"]');
+        for (const typeTel of typeTels) {
+            const phoneNum = typeTel.value;
+            const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
+            typeTel.value = phoneNumFormatted;
+        }
     }
 })();
+
