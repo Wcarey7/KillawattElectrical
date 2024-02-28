@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, List
 from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, ForeignKey, DateTime
+from sqlalchemy import Integer, String, ForeignKey, DateTime, event
 from app import db
 
 if TYPE_CHECKING:
@@ -33,13 +33,6 @@ class Telephone(db.Model):
     def __repr__(self):
         return f"<Telephone id: {self.id!r}, phone_number: {self.phone_number!r}, customer_id: {self.customer_id!r}>"
 
-    # Strip paranthesis and dashes.
-    def format_set_phone_number(self, phone_num):
-        char_to_remove = ["(", ")", "-"]
-        for char in char_to_remove:
-            phone_num = phone_num.replace(char, "")
-        self.phone_number = phone_num
-
 
 class Email(db.Model):
     __tablename__ = "email"
@@ -51,3 +44,13 @@ class Email(db.Model):
 
     def __repr__(self):
         return f"<Email id: {self.id!r}, email: {self.email!r}, customer_id: {self.customer_id!r}>"
+
+
+# Strip paranthesis and dashes.
+@event.listens_for(Telephone.phone_number, 'set', retval=True)
+def format_phone_number(target, value, oldvalue, initiator):
+    if value is not None:
+        char_to_remove = ["(", ")", "-"]
+        for char in char_to_remove:
+            value = value.replace(char, "")
+    return value

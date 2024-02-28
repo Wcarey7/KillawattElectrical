@@ -15,6 +15,13 @@ def select_field_choices():
     return choices
 
 
+def select_to_add_choices():
+    choices = [("", ""),
+               ("otherPhone", "Other Phone"),
+               ("otherEmail", "Other Email")]
+    return choices
+
+
 class customerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     street = StringField('Street', validators=[DataRequired()])
@@ -24,3 +31,9 @@ class customerForm(FlaskForm):
     phone_number = TelField('Phone Number', id='phoneNumber', validators=[DataRequired(), Length(min=13, max=13)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Submit', id='customerFormButton')
+
+
+class addContactInfoForm(FlaskForm):
+    select_to_add = SelectField('Create Contact', choices=select_to_add_choices())
+    other_phone_number = TelField('Other Phone', id='otherPhone', validators=[DataRequired(), Length(min=13, max=13)])
+    other_email = EmailField('Other Email', id="otherEmail", validators=[DataRequired(), Email()])
