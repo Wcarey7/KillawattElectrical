@@ -26,7 +26,7 @@
         </div>
         </div>
     </div>
-    <!-- Second card -->
+    {# Second card #}
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header text-center">
@@ -36,6 +36,13 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">{{ render_field(form.phone_number, maxlength="13", disabled="true")}}</li>
                     <li class="list-group-item">{{ render_field(form.email, disabled="true")}}</li>
+                    {% if addContactForm.other_phone_number.data %}
+                    <li class="list-group-item">{{ render_field(addContactForm.other_phone_number, maxlength="13", disabled="true")}}</li>
+                    {% endif %}
+                    {% if addContactForm.other_email.data %}
+                    <li class="list-group-item">{{ render_field(addContactForm.other_email, disabled="true")}}</li>
+                    {% endif %}
+                    <li class="list-group-item" id="selectContact">{{ render_field(addContactForm.select_to_add, disabled="true")}}</li>
                 </ul>
             </div>
         </div>
@@ -52,7 +59,7 @@
         </div>
 
     </div>
-    <!-- End Row -->
+    {# End Row #}
     </div>
 </form>
 

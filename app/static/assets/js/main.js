@@ -20,6 +20,7 @@ $('#editButton').on('click', function(event) {
     $('#editButton').addClass('saveButton');
     $('#closeButton').addClass('cancelButton');
     $('#state').addClass('form-select');
+    $('#select_to_add').addClass('form-select');
     
     cancelButton.textContent = 'Cancel';
     saveButton.textContent = 'Save';
@@ -49,7 +50,7 @@ $('#closeButton').on('click', function() {
 $(document).on('click', '.saveButton', function(event) {
     event.preventDefault();
     let isValid = validateForm();
-
+    // TODO: Create function. if other_phone or other_email input field is empty disable validation and then delete from database and fields.
     if(isValid == true) {
         $.ajax({
             method: 'POST',
@@ -68,6 +69,83 @@ $(document).on('click', '.saveButton', function(event) {
             };
         });
     };
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Add email and phone input field on customer summary page
+////////////////////////////////////////////////////////////////////////////////////////////////////
+$(document).ready(function() {
+    // The dropdown field is only enabled after the edit button is clicked.
+    $('#select_to_add').on('change', function() {
+        let inputFieldName;
+        let inputFieldLabel;
+        let inputFieldID;
+        let inputFieldType;
+        let inputMaxLength = "255";
+        let inputMinLength = "";
+
+        let currentElement = document.getElementById('selectContact');
+
+        let newlistGroupItem = document.createElement('li');
+        $(newlistGroupItem).addClass('list-group-item');
+
+        selectElement = document.querySelector('#select_to_add');
+        inputFieldValue = selectElement.value;
+
+        if(inputFieldValue == "") {
+            return;
+        }
+
+        if(inputFieldValue == 'otherPhone') {
+            inputFieldName = "other_phone_number";
+            inputFieldID = "otherPhone";
+            inputFieldLabel = "Other Phone";
+            inputFieldType = "tel";
+            inputMaxLength = "13";
+            inputMinLength = "13";
+        } else {
+            inputFieldName = "other_email";
+            inputFieldID = "otherEmail";
+            inputFieldLabel = "Other Email";
+            inputFieldType = "email";
+        };
+
+        // Check if input field already exists
+        let existingInput = document.getElementById(inputFieldID);
+        if (existingInput) {
+            return;
+        }
+
+        $(currentElement).before(newlistGroupItem);
+        $(newlistGroupItem).prepend(
+            '<div class="row mb-3">' +
+                '<label for=' + `"${inputFieldValue}"` + 'class="col-sm-4 col-form-label">' + `${inputFieldLabel}` + '</label>' +
+                '<div class="col-sm-8">' +
+                    '<input id=' + `"${inputFieldID}"` +  'name=' + `"${inputFieldName}"` +
+                        'maxlength=' + `"${inputMaxLength}"` + 'minlength=' + `"${inputMinLength}"` +
+                        'type=' + `"${inputFieldType}"` + 'class="form-control" required>' +
+                    '</input>' +
+                    '<div class="invalid-feedback">' +
+                        'Please provide a valid.' + `${inputFieldValue}` +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+
+        selectElement.value = ""; // After a selection is made reset the select field to be blank.
+        disableSelectOption(inputFieldValue); // Disable corresponding select option.
+    });
+
+    function disableSelectOption(value) {
+        $('#select_to_add option[value="' + value + '"]').prop('disabled', true);
+    }
+
+    // Disable select options on page load if corresponding input fields already exist
+    $('#editCustomerForm input').each(function() {
+        let inputFieldID = $(this).attr('id');
+        disableSelectOption(inputFieldID);
+    });
 });
 
 
@@ -164,18 +242,20 @@ $('#resetSearchButton').on('click', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Format phone number as user types: (XXX)XXX-XXXX
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-$('#phoneNumber').on('keyup change', function(event) {
+$(document).on('keyup change', 'input[type="tel"]', function(event) {
+    const typeTels = $('input[type="tel"]');
+    
+    for (const typeTel of typeTels) {
+        // '/\D/' Matches any character that is not a digit.
+        // 'g' global match modifier. Finds all matches not just the first.
+        let numKey = $(typeTel).val().replace(/\D/g,''); 
 
-    // '/\D/' Matches any character that is not a digit.
-    // 'g' global match modifier. Finds all matches not just the first.
-    let numKey = $(this).val().replace(/\D/g,''); 
-
-    // Do nothing if backspace, left and right arrow keys are pressed.
-    if(event.which != 8 && event.which != 37 && event.which != 39) {
-        $(this).val('(' + numKey.substring(0,3) + ')' + numKey.substring(3,6) + '-' + numKey.substring(6,10));
-    };
-
+        // Do nothing if backspace, left and right arrow keys are pressed.
+        if(event.which != 8 && event.which != 37 && event.which != 39) {
+            $(typeTel).val('(' + numKey.substring(0,3) + ')' + numKey.substring(3,6) + '-' + numKey.substring(6,10));
+        };
     phoneNumberValidate();
+    }
 });
 
 
@@ -183,9 +263,12 @@ $('#phoneNumber').on('keyup change', function(event) {
 // Format phone number when input field is pre-filled with data: (XXX)XXX-XXXX
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 (function () {
-    if(document.getElementById('phoneNumber')) {
-        const phoneNum = document.getElementById('phoneNumber').value;
-        const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
-        document.getElementById('phoneNumber').value = phoneNumFormatted;
+    if(document.getElementsByTagName('tel')) {
+        const typeTels = $('input[type="tel"]');
+        for (const typeTel of typeTels) {
+            const phoneNum = typeTel.value;
+            const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
+            typeTel.value = phoneNumFormatted;
+        }
     }
 })();
