@@ -1,15 +1,15 @@
-from app import db
+from datetime import datetime, timezone
+from flask import render_template, request, session, jsonify
+from flask_login import login_required, current_user
 from app.user_profile import bp
 from app.models.user import User
-from datetime import datetime
-from flask import render_template
-from flask_login import login_required, current_user
+from app import db
 
 
 @bp.before_request
 def before_request():
     if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
+        current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
 
 
@@ -20,3 +20,11 @@ def user(username):
     return render_template('user_profile/user_profile.html.j2',
                            user=user,
                            )
+
+
+@bp.route('/set_timezone/', methods=['POST', 'GET'])
+def set_timezone():
+    timezone = request.form['timezone']
+    session['timezone'] = timezone
+    session.modified = True
+    return jsonify(status='200 OK')
