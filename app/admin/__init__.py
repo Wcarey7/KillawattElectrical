@@ -3,9 +3,9 @@ from flask_login import current_user
 from datetime import datetime
 from flask import url_for, redirect, flash
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.model import typefmt
 from app.models.user import User
 from app.admin.forms import adminUserForm
+from app.utilities.utilities import format_date_local
 from app import db
 from app import admin
 
@@ -38,13 +38,10 @@ class userAdminView(ModelView):
         flash('Please login as admin to access this page')
         return redirect(url_for('auth.login'))
 
-    def date_format(view, value, name):
-        return value.strftime('%m-%d-%Y %I:%M %p')
-
-    COLUMN_DEFAULT_FORMATTERS = dict(typefmt.BASE_FORMATTERS)
-    COLUMN_DEFAULT_FORMATTERS.update({datetime: date_format})
-
-    column_type_formatters = COLUMN_DEFAULT_FORMATTERS
+    # Override default formatters
+    column_type_formatters = {
+        datetime: format_date_local,
+    }
 
 
 admin.add_view(userAdminView(User, db.session, name='Users', endpoint='users'))

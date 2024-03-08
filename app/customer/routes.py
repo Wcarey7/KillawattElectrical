@@ -2,6 +2,7 @@ from flask import render_template, current_app, request, url_for, redirect, flas
 from flask_login import login_required
 from app import db
 from app.customer import bp
+from app.utilities.utilities import format_date_local
 from app.models.customer import Customer, Telephone, Email
 from app.models.address import Address
 from app.customer.forms import customerForm, addContactInfoForm
@@ -82,11 +83,14 @@ def detail(Id):
         if (len(customer.emails) > 1):
             addContactForm.other_email.data = customer.emails[1].email
 
+    customer_create_date = format_date_local('', customer.create_date, '')
+
     return render_template('customer/customer_navbar.html.j2',
                            customer=customer,
                            form=form,
                            addContactForm=addContactForm,
                            thisRoutePrevPage=thisRoutePrevPage,
+                           customer_create_date=customer_create_date,
                            )
 
 

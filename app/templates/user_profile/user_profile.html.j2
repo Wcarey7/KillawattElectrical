@@ -16,9 +16,9 @@
       <li class="list-group-item"><b>User:</b> {{ user.username }}</li>
       <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
       <li class="list-group-item"><b>Security Permissions:</b> {{ user.security_permissions }}</li>
-      <li class="list-group-item"><b>User Create Date:</b> {{ moment(user.create_date).format('LLL') }}</li>
+      <li class="list-group-item"><b>User Create Date:</b> {{ user_create_date }}</li>
       <li class="list-group-item">
-        {% if user.last_seen %}<b>Last seen on:</b> {{ moment(user.last_seen).format('LLL') }}{% endif %}
+        {% if user.last_seen %}<b>Last seen on:</b> {{user_last_seen }}{% endif %}
       </li>
     </ul>
   </div>
