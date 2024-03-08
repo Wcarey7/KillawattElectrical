@@ -8,7 +8,7 @@ from app.models.user import User
 
 def select_field_choices():
     choices = [('Admin', 'Admin'),
-               ('regularUser', 'Regular User'),
+               ('Regular User', 'Regular User'),
                ]
     return choices
 

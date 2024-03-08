@@ -1,0 +1,12 @@
+{% extends "base.html.j2" %}
+
+
+{% block content %}
+
+<div class="container text-center mb-5 mt-5">
+    <h1>Error 400: Bad Request</h1>
+    <p>Could be the CSRF session token is missing or expired. Please login again.</p>
+    <a href="{{ url_for('auth.login') }}">Back to Login</a>
+</div>
+
+{% endblock %}
