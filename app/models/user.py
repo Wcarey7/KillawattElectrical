@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, String, DateTime, event
+from sqlalchemy import Integer, String, DateTime, event, CheckConstraint
 from app import db
 
 
@@ -15,6 +15,13 @@ class User(UserMixin, db.Model):
     security_permissions: Mapped[str] = mapped_column(String(255), default="Admin")
     create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     last_seen: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    __table_args__ = (
+        CheckConstraint(
+            security_permissions.in_(["Admin", "Regular User"]),
+            name='check_valid_security_permissions'
+        ),
+    )
 
     def __repr__(self):
         return (f"<User id: {self.id!r}, "
