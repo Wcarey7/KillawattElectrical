@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// Edit button and close button
+// Edit - Close - Save - Cancel buttons within the customer summary page
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 inputs = document.getElementsByTagName('input');
 selects = document.getElementsByTagName('select');
@@ -33,8 +33,80 @@ $('#editButton').on('click', function(event) {
 });
 
 
+$(document).on('click', '.saveButton', function(event) {
+    event.preventDefault();
+
+    let otherPhoneFieldRemoved = false;
+    let otherEmailFieldRemoved = false;
+    let deleteOtherContactInfo = false;
+
+    // Check if "other_phone" input is empty, remove if empty
+    let otherPhoneInput = document.getElementById('otherPhone');
+    if (otherPhoneInput && otherPhoneInput.value.trim() === '') {
+        otherPhoneInput.parentNode.parentNode.parentNode.remove();
+        otherPhoneFieldRemoved = true;
+    }
+
+    // Check if "other_email" input is empty, remove if empty
+    let otherEmailInput = document.getElementById('otherEmail');
+    if (otherEmailInput && otherEmailInput.value.trim() === '') {
+        otherEmailInput.parentNode.parentNode.parentNode.remove();
+        otherEmailFieldRemoved = true;
+    }
+
+    let isValid = validateForm();
+    if (isValid == true) {
+        let formData = $('#editCustomerForm').serialize();
+        let otherformData = $('#otherCustomerForm').serialize();
+
+        if (otherformData) {
+            formData += '&' + otherformData;
+        }
+
+        if (otherPhoneFieldRemoved || otherEmailFieldRemoved) {
+            deleteOtherContactInfo = true;
+            formData += '&deleteOtherContactInfo=' + deleteOtherContactInfo;
+
+            if (otherPhoneFieldRemoved) {
+                let otherPhone = '';
+                formData += '&otherPhone=' + otherPhone;
+            }
+            if (otherEmailFieldRemoved) {
+                let otherEmail = '';
+                formData += '&otherEmail=' + otherEmail;
+            }
+        };
+
+        $.ajax({
+            method: 'POST',
+            url: urlEditCustomer,
+            data: formData,
+            beforeSend: function(jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        })
+        .done(function(data) {
+            if (data.status == '200 OK') {
+                // Set True to force reload without cache in Firefox.
+                location.reload(true);
+                for (const field of fields) {
+                    field.disabled = true;
+                };
+            } else {
+                cancelOrClose()
+            };
+        });
+    };
+});
+
+
 $('#closeButton').on('click', function() {
-    if($('#closeButton').hasClass('cancelButton')) {
+    cancelOrClose()
+});
+
+
+function cancelOrClose() {
+    if ($('#closeButton').hasClass('cancelButton')) {
         // Refresh page to get original field values. 
         // Set True to force reload without cache in Firefox.
         location.reload(true);
@@ -44,32 +116,7 @@ $('#closeButton').on('click', function() {
     } else {
         location.replace(thisRoutePrevPage);
     };
-});
-
-
-$(document).on('click', '.saveButton', function(event) {
-    event.preventDefault();
-    let isValid = validateForm();
-    // TODO: Create function. if other_phone or other_email input field is empty disable validation and then delete from database and fields.
-    if(isValid == true) {
-        $.ajax({
-            method: 'POST',
-            url: urlEditCustomer,
-            data: data = $('#editCustomerForm').serialize(),
-            beforeSend: function(jqXHR) {
-                jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
-            }
-        })
-        .done(function(data) {
-            if(data.status == '200 OK') {
-                location.reload();
-                for (const field of fields) {
-                    field.disabled = true;
-                }
-            };
-        });
-    };
-});
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,15 +131,13 @@ $(document).ready(function() {
         let inputFieldType;
         let inputMaxLength = "255";
         let inputMinLength = "";
-
+        
         let currentElement = document.getElementById('selectContact');
+        let otherCustomerFormUL = document.getElementById('otherCustomerFormUL');
+        let selectElement = document.querySelector('#select_to_add');
+        let inputFieldValue = selectElement.value;
 
-        let newlistGroupItem = document.createElement('li');
-        $(newlistGroupItem).addClass('list-group-item');
-
-        selectElement = document.querySelector('#select_to_add');
-        inputFieldValue = selectElement.value;
-
+        // Don't allow the blank option to be selectable.
         if(inputFieldValue == "") {
             return;
         }
@@ -103,7 +148,7 @@ $(document).ready(function() {
             inputFieldLabel = "Other Phone";
             inputFieldType = "tel";
             inputMaxLength = "13";
-            inputMinLength = "13";
+            inputMinLength = "";
         } else {
             inputFieldName = "other_email";
             inputFieldID = "otherEmail";
@@ -117,32 +162,36 @@ $(document).ready(function() {
             return;
         }
 
-        $(currentElement).before(newlistGroupItem);
-        $(newlistGroupItem).prepend(
-            '<div class="row mb-3">' +
-                '<label for=' + `"${inputFieldValue}"` + 'class="col-sm-4 col-form-label">' + `${inputFieldLabel}` + '</label>' +
-                '<div class="col-sm-8">' +
-                    '<input id=' + `"${inputFieldID}"` +  'name=' + `"${inputFieldName}"` +
-                        'maxlength=' + `"${inputMaxLength}"` + 'minlength=' + `"${inputMinLength}"` +
-                        'type=' + `"${inputFieldType}"` + 'class="form-control" required>' +
-                    '</input>' +
-                    '<div class="invalid-feedback">' +
-                        'Please provide a valid.' + `${inputFieldValue}` +
+        if (otherCustomerFormUL) {
+            $(currentElement).before(
+                '<li class="list-group-item">' +
+                    '<div class="row my-2">' +
+                        '<label for=' + `"${inputFieldValue}"` + 'class="col-sm-4 col-form-label">' + 
+                            `${inputFieldLabel}` + '</label>' +
+                        '<div class="col-sm-8">' +
+                            '<input id=' + `"${inputFieldID}"` +  'name=' + `"${inputFieldName}"` +
+                                'maxlength=' + `"${inputMaxLength}"` + 'minlength=' + `"${inputMinLength}"` +
+                                'type=' + `"${inputFieldType}"` + 'class="form-control">' +
+                            '</input>' +
+                            '<div class="invalid-feedback">' +
+                                'Please provide a valid ' + `${inputFieldValue}` +
+                            '</div>' +
+                        '</div>' +
                     '</div>' +
-                '</div>' +
-            '</div>'
-        );
+                '</li>'
+            );
 
+            disableSelectOption(inputFieldValue); // Disable corresponding select option.
+        }
         selectElement.value = ""; // After a selection is made reset the select field to be blank.
-        disableSelectOption(inputFieldValue); // Disable corresponding select option.
     });
 
     function disableSelectOption(value) {
         $('#select_to_add option[value="' + value + '"]').prop('disabled', true);
     }
 
-    // Disable select options on page load if corresponding input fields already exist
-    $('#editCustomerForm input').each(function() {
+    // Disable select options on page load if corresponding input fields already exist.
+    $('#otherCustomerForm input').each(function() {
         let inputFieldID = $(this).attr('id');
         disableSelectOption(inputFieldID);
     });
@@ -211,6 +260,8 @@ $('#deleteBtnTD button').on('click', function () {
                 else {
                     location.replace(document.location);
                 };
+            } else {
+                location.reload();
             };
         });
     });
@@ -241,34 +292,45 @@ $('#resetSearchButton').on('click', function () {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Format phone number as user types: (XXX)XXX-XXXX
+// Parenthesis dashes are removed when committed to the DB via an event attribute in the Model.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-$(document).on('keyup change', 'input[type="tel"]', function(event) {
-    const typeTels = $('input[type="tel"]');
-    
-    for (const typeTel of typeTels) {
-        // '/\D/' Matches any character that is not a digit.
-        // 'g' global match modifier. Finds all matches not just the first.
-        let numKey = $(typeTel).val().replace(/\D/g,''); 
+function formatPhoneNumber(input, event) {
+    if (input.value !== '') {
+        let numKey = input.value.replace(/\D/g, ''); // Remove non-numeric characters
 
         // Do nothing if backspace, left and right arrow keys are pressed.
         if(event.which != 8 && event.which != 37 && event.which != 39) {
-            $(typeTel).val('(' + numKey.substring(0,3) + ')' + numKey.substring(3,6) + '-' + numKey.substring(6,10));
-        };
-    phoneNumberValidate();
+            let formattedNumber = '(' + numKey.substring(0, 3) + ')' + numKey.substring(3, 6) + '-' + numKey.substring(6, 10);
+            input.value = formattedNumber;
+        }
     }
+}
+
+// Event listener for input event to format phone number
+$(document).on('keyup change', 'input[type="tel"]', function(event) {
+    formatPhoneNumber(this, event);
+    phoneNumberValidate();
 });
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Format phone number when input field is pre-filled with data: (XXX)XXX-XXXX
+// When retrieved from the DB phone numbers don't have Parenthesis and dashes.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 (function () {
     if(document.getElementsByTagName('tel')) {
         const typeTels = $('input[type="tel"]');
         for (const typeTel of typeTels) {
-            const phoneNum = typeTel.value;
-            const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
-            typeTel.value = phoneNumFormatted;
+            const phoneNum = typeTel.value.trim();
+            if (typeTel.value.trim() !== '') {
+                const phoneNumFormatted = phoneNum.replace(/(\d{3})(\d{3})(\d{4})/, '($1)$2-$3');
+                typeTel.value = phoneNumFormatted;
+            }
         }
     }
 })();
+
+// Event listener for blur event to validate phone number
+$(document).on('blur', 'input[type="tel"]', function() {
+    phoneNumberValidate();
+});

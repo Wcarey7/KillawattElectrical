@@ -25,10 +25,10 @@ class Customer(db.Model):
 class Telephone(db.Model):
     __tablename__ = "telephone"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    phone_number: Mapped[Optional[str]] = mapped_column(String(255))
+    phone_number: Mapped[str] = mapped_column(String(255))
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
-    customer: Mapped[Optional["Customer"]] = relationship("Customer", back_populates="phone_numbers")
+    customer: Mapped["Customer"] = relationship("Customer", back_populates="phone_numbers")
 
     def __repr__(self):
         return f"<Telephone id: {self.id!r}, phone_number: {self.phone_number!r}, customer_id: {self.customer_id!r}>"
@@ -37,10 +37,10 @@ class Telephone(db.Model):
 class Email(db.Model):
     __tablename__ = "email"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[Optional[str]] = mapped_column(String(255))
+    email: Mapped[str] = mapped_column(String(255))
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id", ondelete="CASCADE"))
 
-    customer: Mapped[Optional["Customer"]] = relationship("Customer", back_populates="emails")
+    customer: Mapped["Customer"] = relationship("Customer", back_populates="emails")
 
     def __repr__(self):
         return f"<Email id: {self.id!r}, email: {self.email!r}, customer_id: {self.customer_id!r}>"
