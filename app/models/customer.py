@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, ForeignKey, DateTime, event
@@ -14,9 +14,9 @@ class Customer(db.Model):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
 
-    addresses: Mapped[List["Address"]] = relationship("Address", back_populates="customer", cascade="all, delete")
-    phone_numbers: Mapped[List["Telephone"]] = relationship("Telephone", back_populates="customer", cascade="all, delete")
-    emails: Mapped[List["Email"]] = relationship("Email", back_populates="customer", cascade="all, delete")
+    addresses: Mapped[List["Address"]] = relationship("Address", back_populates="customer", cascade="all, delete-orphan")
+    phone_numbers: Mapped[List["Telephone"]] = relationship("Telephone", back_populates="customer", cascade="all, delete-orphan")
+    emails: Mapped[List["Email"]] = relationship("Email", back_populates="customer", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Customer id: {self.id!r}, name: {self.name!r}>"

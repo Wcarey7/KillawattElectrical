@@ -12,15 +12,14 @@
         phoneNumberValidate();
         emailValidate();
         usernameValidate();
-
-        if(!form.checkValidity()) {
+    
+        if (!form.checkValidity()) {
             formValid = false;
-        };
+        }
         form.classList.add('was-validated');
     });
     return formValid;
 });
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Validate login and registration forms
@@ -40,27 +39,33 @@ $('#registerForm, #loginForm, #admin-form').on('submit', function (event) {
 // Make sure length of phone number is 13 characters.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 function phoneNumberValidate() {
-    if(!document.getElementsByTagName('tel')) {
-        return;
-    }
-
-    let isValid;
-    const typeTels = $('input[type="tel"]');
-
-    for (const typeTel of typeTels) {
-        const phoneNumValidate = typeTel;
-        isValid = phoneNumValidate.value.length === 13;
-
-        if(!isValid) {
-            phoneNumValidate.setCustomValidity('Invalid');
-            phoneNumValidate.nextElementSibling.textContent = 'Phone Number is too short.';
+    let otherPhoneInput = document.getElementById('otherPhone');
+    if (otherPhoneInput) {
+        let phoneNumber = otherPhoneInput.value.trim();
+        let phoneRegex = /^\(\d{3}\)\d{3}-\d{4}$/;
+        
+        if (!phoneRegex.test(phoneNumber) && phoneNumber !== '') {
+            otherPhoneInput.setCustomValidity("Invalid");
+            otherPhoneInput.nextElementSibling.textContent = 'Phone Number is too short.'
         } else {
-            phoneNumValidate.setCustomValidity('');
-        };
-    }
+            otherPhoneInput.setCustomValidity('');
+        }
+    };
 
-    return isValid;
+    // Check all other tel inputs
+    let telInputs = document.querySelectorAll('input[type="tel"]');
+    telInputs.forEach(input => {
+        if (input.id !== 'otherPhone') {
+            if(input.value.trim().length !== 13) {
+                input.setCustomValidity('Invalid');
+                input.nextElementSibling.textContent = 'Phone Number is too short.'
+            } else {
+                input.setCustomValidity('');
+            }
+        };
+    });
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Make sure length of the username is at least 2 characters.
@@ -68,7 +73,7 @@ function phoneNumberValidate() {
 function usernameValidate() {
     if(!document.getElementById('username')) {
         return;
-    }
+    };
 
     const username = document.getElementById('username');
     const minLength = 2;
@@ -92,7 +97,7 @@ function usernameValidate() {
 function emailValidate() {
     if(!document.getElementsByTagName('email')) {
         return;
-    }
+    };
 
     let isValid;
     const typeEmails = $('input[type="email"]');

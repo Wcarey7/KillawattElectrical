@@ -8,41 +8,21 @@
 </div>
 
 
-<form action="" method="POST" class="needs-validation" id="editCustomerForm" novalidate>
-    <div class="row mt-5">
+
+<div class="row mt-5">
     <div class="col-sm-6 mb-3 mb-sm-0">
+        <form action="" method="POST" class="needs-validation" id="editCustomerForm" novalidate>
         <div class="card">
             <div class="card-header text-center">
                 <h5><b>Name & Address</b></h5>
             </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ render_field(form.name, disabled="true")}}</li>
-                <li class="list-group-item">{{ render_field(form.street, disabled="true")}}</li>
-                <li class="list-group-item">{{ render_field(form.city, disabled="true")}}</li>
-                <li class="list-group-item">{{ render_field(form.state, disabled="true")}}</li>
-                <li class="list-group-item">{{ render_field(form.zip, disabled="true")}}</li>
-            </ul>
-        </div>
-        </div>
-    </div>
-    {# Second card #}
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header text-center">
-                <h5><b>Contact</b></h5>
-            </div>
-            <div class="card-body">
+            <div class="card-body py-1">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{ render_field(form.phone_number, maxlength="13", disabled="true")}}</li>
-                    <li class="list-group-item">{{ render_field(form.email, disabled="true")}}</li>
-                    {% if addContactForm.other_phone_number.data %}
-                    <li class="list-group-item">{{ render_field(addContactForm.other_phone_number, maxlength="13", disabled="true")}}</li>
-                    {% endif %}
-                    {% if addContactForm.other_email.data %}
-                    <li class="list-group-item">{{ render_field(addContactForm.other_email, disabled="true")}}</li>
-                    {% endif %}
-                    <li class="list-group-item" id="selectContact">{{ render_field(addContactForm.select_to_add, disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.name, disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.street, disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.city, disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.state, disabled="true")}}</li>
+                    <li class="list-group-item">{{ render_field(form.zip, disabled="true")}}</li>
                 </ul>
             </div>
         </div>
@@ -51,20 +31,60 @@
             <div class="card-header text-center">
                 <h5><b>Created On</b></h5>
             </div>
-            <div class="card-body">
+            <div class="card-body py-1">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">{{ customer_create_date }}</li>
                 </ul>
             </div>
         </div>
+    </div>
+
+    <!-- Second column -->
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h5><b>Contact</b></h5>
+            </div>
+            <div class="card-body py-1">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {{ render_field(form.phone_number, maxlength="13", disabled="true")}}
+                    </li>
+                    <li class="list-group-item">{{ render_field(form.email, disabled="true")}}</li>
+                </ul>
+            </div>
+        </div>
+        </form>
+
+        <form action="" method="POST" class="needs-validation" id="otherCustomerForm" novalidate>
+        <div class="card mt-3">
+            <div class="card-header text-center">
+                <h5><b>Other Contact</b></h5>
+            </div>
+            <div class="card-body py-1">
+                <ul class="list-group list-group-flush" id="otherCustomerFormUL">
+                    {% if addContactForm.other_phone_number.data %}
+                    <li class="list-group-item">
+                        {{ render_field(addContactForm.other_phone_number, maxlength="13", disabled="true")}}
+                    </li>
+                    {% endif %}
+                    {% if addContactForm.other_email.data %}
+                    <li class="list-group-item">{{ render_field(addContactForm.other_email, disabled="true")}}</li>
+                    {% endif %}
+                    <li class="list-group-item" id="selectContact">
+                        {{ render_field(addContactForm.select_to_add, disabled="true")}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </form>
 
     </div>
-    {# End Row #}
-    </div>
-</form>
+</div><!-- End of first row -->
+
 
 <div class="container text-center mt-5">
-    <button type="button" class="btn btn-primary" id="editButton" form="editCustomerForm"
+    <button type="button" class="btn btn-primary" id="editButton" form="editCustomerForm otherCustomerForm"
         data-edit="{{ url_for('customer.edit', Id=customer.id)}}">Edit</button>
     <button type="button" class="btn btn-primary" id="closeButton" data-prev="{{thisRoutePrevPage}}">Close</button>
 </div>
