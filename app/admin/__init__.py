@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, session
 from flask_login import current_user
 from datetime import datetime
 from flask import url_for, redirect, flash
@@ -28,7 +28,7 @@ class userAdminView(ModelView):
     column_exclude_list = ('password')
 
     form = adminUserForm
-    form_excluded_columns = ('create_date', 'last_seen')
+    form_excluded_columns = ('create_date', 'last_seen', 'memos')
 
     def is_accessible(self):
         if current_user.security_permissions == 'Admin':
