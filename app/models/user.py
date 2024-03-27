@@ -1,9 +1,13 @@
 from flask_login import UserMixin
-from datetime import datetime
+from typing import TYPE_CHECKING, List, Optional
+from datetime import datetime, timezone
 from werkzeug.security import check_password_hash, generate_password_hash
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, DateTime, event, CheckConstraint
 from app import db
+
+if TYPE_CHECKING:
+    from app.models.customer import Memo
 
 
 class User(UserMixin, db.Model):
@@ -13,8 +17,10 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(255), index=True, unique=True)
     security_permissions: Mapped[str] = mapped_column(String(255), default="Admin")
-    create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
-    last_seen: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    last_seen: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+
+    memos: Mapped[Optional[List["Memo"]]] = relationship("Memo", back_populates="user")
 
     __table_args__ = (
         CheckConstraint(

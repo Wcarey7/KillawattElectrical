@@ -1,32 +1,60 @@
+{% from "includes/macros.html.j2" import render_field %}
+
+
 {% block content %}
 
-<div class="container text-center mb-5 mt-5">
-    <span class="title"><h1>{% block title %} Memos {% endblock %}</h1></span>
-</div>
+
+<div class="memo-grid-wrapper">
+
+    <div class="memo-page-title container text-center mt-5">
+        <span class="title">
+            <h1>{% block title %} Memos {% endblock %}</h1>
+        </span>
+    </div>
 
 
-<div class="content">
-    <table class="table table-striped table-hover table-bordered">
-        <thead>
-            <tr class="text-left">
-                <th>Memos</th>
-            </tr>
-        </thead>
-        <tbody id="customers">
+    <div class="scrollableTableDiv">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
                 <tr class="text-center">
-                    <td> Placeholder Memo</td>
+                    <th>Memo Create Date</th>
+                    <th>User</th>
+                    <th>Memo Content</th>
                 </tr>
-                <tr class="text-center">
-                    <td> Placeholder Memo 2</td>
+            </thead>
+            <tbody id="customers">
+                {% for memo in memos %}
+                <tr class="text-center align-middle">
+                    {% set create_date = format_date_local('', memo[0].create_date, '') %}
+                    <td>{{ create_date }}</td>
+                    <td>{{ memo[1].username }}</td>
+                    <td class="memo-content-td">{{ memo[0].memo_content }}</td>
                 </tr>
-                <tr class="text-center">
-                    <td> Placeholder Memo 3</td>
-                </tr>
-                <tr class="text-center">
-                    <td> Placeholder Memo 4</td>
-                </tr>
-        </tbody>
-    </table>
-</div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <form action="" method="POST" class="create-memo-form" id="createMemoForm" novalidate>
+        <div class="mb-3 memoFormDiv">
+            {{ form.hidden_tag() }}
+            {{ render_field(createNewMemoForm.memo_content) }}
+        </div>
+    </form>
+
+
+    <div class="memo-submit-btn">
+        <button type="button" class="btn btn-primary" form="create-memo-form"
+            data-memo="{{ url_for('customer.create_new_memo', Id=customer.id)}}" id="newMemoFormButton">Submit
+        </button>
+    </div>
+
+    <div class="memo-close-button container text-center mt-5">
+        <button type="button" class="btn btn-primary closeButton" id="memoCloseButton"
+            data-prev="{{thisRoutePrevPage}}">Close</button>
+    </div>
+
+</div> <!-- End of display grid wrapper -->
+
 
 {% endblock %}

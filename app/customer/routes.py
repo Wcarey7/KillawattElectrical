@@ -1,11 +1,13 @@
-from flask import render_template, current_app, request, url_for, redirect, flash, session, jsonify
-from flask_login import login_required
+from flask import render_template, current_app, request, g, flash, session, jsonify
+from flask_login import current_user, login_required
+from datetime import datetime, timezone
 from app import db
 from app.customer import bp
 from app.utilities.utilities import format_date_local
-from app.models.customer import Customer, Telephone, Email
+from app.models.customer import Customer, Telephone, Email, Memo
 from app.models.address import Address
-from app.customer.forms import customerForm, addContactInfoForm
+from app.models.user import User
+from app.customer.forms import customerForm, addContactInfoForm, addMemoForm
 
 
 ##############################################################################################################
@@ -41,15 +43,23 @@ def index():
 def add_customer():
     form = customerForm()
     if form.validate_on_submit():
-        new_customer = Customer(name=form.name.data)
+        new_customer = Customer(name=form.name.data,
+                                related_username=current_user.username,
+                                create_date=datetime.now(timezone.utc),
+                                )
         new_address = Address(street=form.street.data,
                               city=form.city.data,
                               state=form.state.data,
                               zip=form.zip.data,
+                              related_username=current_user.username,
                               )
 
-        new_phone = Telephone(phone_number=form.phone_number.data)
-        new_email = Email(email=form.email.data)
+        new_phone = Telephone(phone_number=form.phone_number.data,
+                              related_username=current_user.username,
+                              )
+        new_email = Email(email=form.email.data,
+                          related_username=current_user.username,
+                          )
 
         new_customer.addresses.append(new_address)
         new_customer.phone_numbers.append(new_phone)
@@ -74,7 +84,14 @@ def add_customer():
 def detail(Id):
     form = customerForm()
     addContactForm = addContactInfoForm()
+    createNewMemoForm = addMemoForm()
     customer = db.get_or_404(Customer, Id)
+
+    memos = db.session.execute(db.select(Memo, User)
+                               .join(Memo.user)
+                               .where(Memo.customer_id == Id)
+                               .order_by(Memo.create_date.desc())).all()
+
     thisRoutePrevPage = session.get('thisRoutePrevPage')
 
     if request.method == 'GET':
@@ -97,8 +114,11 @@ def detail(Id):
                            customer=customer,
                            form=form,
                            addContactForm=addContactForm,
+                           createNewMemoForm=createNewMemoForm,
                            thisRoutePrevPage=thisRoutePrevPage,
-                           customer_create_date=customer_create_date
+                           customer_create_date=customer_create_date,
+                           memos=memos,
+                           format_date_local=format_date_local,
                            )
 
 
@@ -109,40 +129,56 @@ def detail(Id):
 @login_required
 def edit(Id):
     form = customerForm()
-    customer = db.get_or_404(Customer, Id)
     addContactForm = addContactInfoForm()
+    customer = db.get_or_404(Customer, Id)
+    username = current_user.username
 
     if form.validate_on_submit():
         if customer.name != form.name.data:
             customer.name = form.name.data
+            customer.related_username = username
         if customer.addresses[0].street != form.street.data:
             customer.addresses[0].street = form.street.data
+            customer.addresses[0].related_username = username
         if customer.addresses[0].city != form.city.data:
             customer.addresses[0].city = form.city.data
+            customer.addresses[0].related_username = username
         if customer.addresses[0].state != form.state.data:
             customer.addresses[0].state = form.state.data
+            customer.addresses[0].related_username = username
         if customer.addresses[0].zip != form.zip.data:
             customer.addresses[0].zip = form.zip.data
+            customer.addresses[0].related_username = username
         if customer.phone_numbers[0].phone_number != form.phone_number.data:
             customer.phone_numbers[0].phone_number = form.phone_number.data
+            customer.phone_numbers[0].related_username = username
         if customer.emails[0].email != form.email.data:
             customer.emails[0].email = form.email.data
+            customer.emails[0].related_username = username
 
-        # add/edit other_phone.
+        # Add/edit other_phone.
         if (len(customer.phone_numbers) <= 1 and request.form.get('other_phone_number')):
-            addOtherPhone = Telephone(phone_number=request.form.get('other_phone_number'))
+            addOtherPhone = Telephone(phone_number=request.form.get('other_phone_number'),
+                                      related_username=current_user.username,
+                                      )
             customer.phone_numbers.append(addOtherPhone)
+
         if (len(customer.phone_numbers) > 1):
             if customer.phone_numbers[1].phone_number != addContactForm.other_phone_number.data:
                 customer.phone_numbers[1].phone_number = addContactForm.other_phone_number.data
+                customer.phone_numbers[1].related_username = username
 
-        # add/edit other_email.
+        # Add/edit other_email.
         if (len(customer.emails) <= 1 and request.form.get('other_email')):
-            addOtherEmail = Email(email=request.form.get('other_email'))
+            addOtherEmail = Email(email=request.form.get('other_email'),
+                                  related_username=current_user.username,
+                                  )
             customer.emails.append(addOtherEmail)
+
         if (len(customer.emails) > 1):
             if customer.emails[1].email != addContactForm.other_email.data:
                 customer.emails[1].email = addContactForm.other_email.data
+                customer.emails[1].related_username = username
 
         # Handle deletion of other contact info
         if 'deleteOtherContactInfo' in request.form and request.form['deleteOtherContactInfo'] == 'true':
@@ -213,3 +249,28 @@ def search():
                            endpoint=endpoint,
                            thisRoutePrevPage=thisRoutePrevPage,
                            )
+
+
+##############################################################################################################
+#### Create new memo
+##############################################################################################################
+@bp.route('/<int:Id>/create_new_memo/', methods=['POST'])
+@login_required
+def create_new_memo(Id):
+    createNewMemoForm = addMemoForm()
+
+    if request.method == 'POST':
+        new_memo = Memo(memo_content=createNewMemoForm.memo_content.data,
+                        create_date=datetime.now(timezone.utc),
+                        related_username=current_user.username,
+                        customer_id=Id,
+                        user_id=current_user.id,
+                        )
+
+        db.session.add(new_memo)
+        db.session.commit()
+        flash('Memo added successfully')
+        return jsonify(status='200 OK', message='Memo added successfully')
+
+    flash('Memo creation failed')
+    return jsonify(status='400 Bad Request', message='Memo creation failed')

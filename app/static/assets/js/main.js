@@ -12,16 +12,16 @@ cancelButton = document.getElementById('closeButton');
 saveButton = document.getElementById('editButton');
 
 urlEditCustomer = $('#editButton').data('edit');
-thisRoutePrevPage = $('#closeButton').data('prev');
+thisRoutePrevPage = $('.closeButton').data('prev');
 
-$('#editButton').on('click', function(event) {
+$('#editButton').on('click', function (event) {
     event.stopPropagation();
 
     $('#editButton').addClass('saveButton');
     $('#closeButton').addClass('cancelButton');
     $('#state').addClass('form-select');
     $('#select_to_add').addClass('form-select');
-    
+
     cancelButton.textContent = 'Cancel';
     saveButton.textContent = 'Save';
 
@@ -33,7 +33,7 @@ $('#editButton').on('click', function(event) {
 });
 
 
-$(document).on('click', '.saveButton', function(event) {
+$(document).on('click', '.saveButton', function (event) {
     event.preventDefault();
 
     let otherPhoneFieldRemoved = false;
@@ -81,32 +81,34 @@ $(document).on('click', '.saveButton', function(event) {
             method: 'POST',
             url: urlEditCustomer,
             data: formData,
-            beforeSend: function(jqXHR) {
+            beforeSend: function (jqXHR) {
                 jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
             }
         })
-        .done(function(data) {
-            if (data.status == '200 OK') {
-                // Set True to force reload without cache in Firefox.
-                location.reload(true);
-                for (const field of fields) {
-                    field.disabled = true;
+            .done(function (data) {
+                if (data.status == '200 OK') {
+                    // Set True to force reload without cache in Firefox.
+                    location.reload(true);
+                    for (const field of fields) {
+                        field.disabled = true;
+                    };
+                } else {
+                    cancelOrClose()
                 };
-            } else {
-                cancelOrClose()
-            };
-        });
+            });
     };
 });
 
 
-$('#closeButton').on('click', function() {
-    cancelOrClose()
+$(document).ready(function () {
+    $('.closeButton').on('click', function () {
+        cancelOrClose()
+    })
 });
 
 
 function cancelOrClose() {
-    if ($('#closeButton').hasClass('cancelButton')) {
+    if ($('.closeButton').hasClass('cancelButton')) {
         // Refresh page to get original field values. 
         // Set True to force reload without cache in Firefox.
         location.reload(true);
@@ -122,27 +124,27 @@ function cancelOrClose() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Add email and phone input field on customer summary page
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-$(document).ready(function() {
+$(document).ready(function () {
     // The dropdown field is only enabled after the edit button is clicked.
-    $('#select_to_add').on('change', function() {
+    $('#select_to_add').on('change', function () {
         let inputFieldName;
         let inputFieldLabel;
         let inputFieldID;
         let inputFieldType;
         let inputMaxLength = "255";
         let inputMinLength = "";
-        
+
         let currentElement = document.getElementById('selectContact');
         let otherCustomerFormUL = document.getElementById('otherCustomerFormUL');
         let selectElement = document.querySelector('#select_to_add');
         let inputFieldValue = selectElement.value;
 
         // Don't allow the blank option to be selectable.
-        if(inputFieldValue == "") {
+        if (inputFieldValue == "") {
             return;
         }
 
-        if(inputFieldValue == 'otherPhone') {
+        if (inputFieldValue == 'otherPhone') {
             inputFieldName = "other_phone_number";
             inputFieldID = "otherPhone";
             inputFieldLabel = "Other Phone";
@@ -191,7 +193,7 @@ $(document).ready(function() {
     }
 
     // Disable select options on page load if corresponding input fields already exist.
-    $('#otherCustomerForm input').each(function() {
+    $('#otherCustomerForm input').each(function () {
         let inputFieldID = $(this).attr('id');
         disableSelectOption(inputFieldID);
     });
@@ -213,9 +215,9 @@ $('#newCustomerBtn').on('click', function () {
             event.preventDefault();
             let isValid = validateForm();
 
-            if(isValid == true) {
+            if (isValid == true) {
                 $.post(urlNewCustomer, data = $('#newCustomerModalForm').serialize(), function (data) {
-                    if(data.status == '200 OK') {
+                    if (data.status == '200 OK') {
                         $('#newCustomerModal').modal('hide');
                         location.replace(document.location);
                     };
@@ -236,7 +238,7 @@ originUrl = loc.origin;
 currentBaseUrl = originUrl.concat(loc.pathname);
 params = new URLSearchParams(loc.search);
 currentPage = params.get("page");
-pageNum = currentPage-1;
+pageNum = currentPage - 1;
 prevPageUrl = `${currentBaseUrl}?page=${pageNum}&search_tag=`;
 
 $('#deleteBtnTD button').on('click', function () {
@@ -247,36 +249,36 @@ $('#deleteBtnTD button').on('click', function () {
         $.ajax({
             method: 'POST',
             url: urlDeleteCustomer,
-            beforeSend: function(jqXHR) {
+            beforeSend: function (jqXHR) {
                 jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
             }
         })
-        .done(function(data) {
-            if(data.status == '200 OK') {
-                $('#deleteCustomerModal').modal('hide');
-                if(rowIndex == 2 && currentPage >= 2) {
-                    location.replace(prevPageUrl);
-                }
-                else {
-                    location.replace(document.location);
+            .done(function (data) {
+                if (data.status == '200 OK') {
+                    $('#deleteCustomerModal').modal('hide');
+                    if (rowIndex == 2 && currentPage >= 2) {
+                        location.replace(prevPageUrl);
+                    }
+                    else {
+                        location.replace(document.location);
+                    };
+                } else {
+                    location.reload();
                 };
-            } else {
-                location.reload();
-            };
-        });
+            });
     });
-}); 
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Keep user input text in search field across pages.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!document.URL.match(/search/) && !document.URL.match(/customer\/\d+/)) {
+if (!document.URL.match(/search/) && !document.URL.match(/customer\/\d+/)) {
     sessionStorage.removeItem('searchText');
 }
-   
+
 savedInputText = sessionStorage.getItem('searchText');
-if(searchTagValue = document.getElementById('search_tag')) {
+if (searchTagValue = document.getElementById('search_tag')) {
     searchTagValue.value = savedInputText;
 };
 
@@ -299,7 +301,7 @@ function formatPhoneNumber(input, event) {
         let numKey = input.value.replace(/\D/g, ''); // Remove non-numeric characters
 
         // Do nothing if backspace, left and right arrow keys are pressed.
-        if(event.which != 8 && event.which != 37 && event.which != 39) {
+        if (event.which != 8 && event.which != 37 && event.which != 39) {
             let formattedNumber = '(' + numKey.substring(0, 3) + ')' + numKey.substring(3, 6) + '-' + numKey.substring(6, 10);
             input.value = formattedNumber;
         }
@@ -307,7 +309,7 @@ function formatPhoneNumber(input, event) {
 }
 
 // Event listener for input event to format phone number
-$(document).on('keyup change', 'input[type="tel"]', function(event) {
+$(document).on('keyup change', 'input[type="tel"]', function (event) {
     formatPhoneNumber(this, event);
     phoneNumberValidate();
 });
@@ -318,7 +320,7 @@ $(document).on('keyup change', 'input[type="tel"]', function(event) {
 // When retrieved from the DB phone numbers don't have Parenthesis and dashes.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 (function () {
-    if(document.getElementsByTagName('tel')) {
+    if (document.getElementsByTagName('tel')) {
         const typeTels = $('input[type="tel"]');
         for (const typeTel of typeTels) {
             const phoneNum = typeTel.value.trim();
@@ -331,6 +333,42 @@ $(document).on('keyup change', 'input[type="tel"]', function(event) {
 })();
 
 // Event listener for blur event to validate phone number
-$(document).on('blur', 'input[type="tel"]', function() {
+$(document).on('blur', 'input[type="tel"]', function () {
     phoneNumberValidate();
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Add new memo
+////////////////////////////////////////////////////////////////////////////////////////////////////
+$(document).ready(function () {
+    $('#newMemoFormButton').on('click', function () {
+        let memoContent = $('#createMemoForm').serialize();
+        const urlMemo = $('#newMemoFormButton').data('memo');
+
+        $.ajax({
+            method: 'POST',
+            url: urlMemo,
+            data: memoContent,
+            beforeSend: function (jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        })
+            .done(function (data) {
+                if (data.status == '200 OK') {
+                    localStorage.setItem('lastTab', '#nav-memos');
+                    location.reload(true);
+                };
+            });
+    });
+});
+
+
+$(goBackToMemoTab = function () {
+    let lastTab = localStorage.getItem('lastTab');
+
+    if (lastTab) {
+        $('[data-bs-target="' + lastTab + '"]').tab('show');
+        localStorage.setItem('lastTab', '');
+    }
 });
