@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TelField, SelectField, EmailField
+from wtforms import StringField, SubmitField, TelField, SelectField, EmailField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -27,7 +27,7 @@ class customerForm(FlaskForm):
     street = StringField('Street', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
     state = SelectField('State', choices=select_field_choices_state(), validators=[DataRequired()])
-    zip = StringField('Zip', validators=[DataRequired()])
+    zip = IntegerField('Zip', validators=[DataRequired()])
     phone_number = TelField('Phone Number', id='phoneNumber', name='Phone Number', validators=[DataRequired(), Length(min=13, max=13)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Submit', id='customerFormButton')
@@ -37,3 +37,7 @@ class addContactInfoForm(FlaskForm):
     select_to_add = SelectField('Create Contact', choices=select_to_add_contact_choices())
     other_phone_number = TelField('Other Phone', id='otherPhone', validators=[DataRequired(), Length(max=13)])
     other_email = EmailField('Other Email', id="otherEmail", validators=[DataRequired(), Email()])
+
+
+class addMemoForm(FlaskForm):
+    memo_content = TextAreaField('Memo Content', id='memoContent', validators=[DataRequired(), Length(min=1)])
