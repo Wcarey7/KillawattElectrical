@@ -3,6 +3,7 @@ from config import config
 from logging.handlers import RotatingFileHandler
 import logging
 import os
+from app.utilities.history_meta import versioned_session
 from app.extensions import db
 from app.extensions import login_manager
 from app.extensions import migrate
@@ -41,6 +42,7 @@ def create_app(config_class):
     seeder.init_app(app, db)
     admin.init_app(app)
 
+    versioned_session(db.session)
     ###################################################
     #### Login Manager
     ###################################################
