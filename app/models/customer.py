@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, List, Optional
 from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, Text, ForeignKey, DateTime, event
+from app.utilities.history_meta import Versioned
 from app import db
 
 if TYPE_CHECKING:
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from app.models.user import User
 
 
-class Customer(db.Model):
+class Customer(Versioned, db.Model):
     __tablename__ = "customer"
     use_mapper_versioning = True  # Creates a version_id column through the Versioned mixin.
 
@@ -30,7 +31,7 @@ class Customer(db.Model):
                 f"create_date: {self.create_date!r}> ")
 
 
-class Telephone(db.Model):
+class Telephone(Versioned, db.Model):
     __tablename__ = "telephone"
     use_mapper_versioning = True  # Creates a version_id column through the Versioned mixin.
 
@@ -58,7 +59,7 @@ def format_phone_number(target, value, oldvalue, initiator):
     return value
 
 
-class Email(db.Model):
+class Email(Versioned, db.Model):
     __tablename__ = "email"
     use_mapper_versioning = True  # Creates a version_id column through the Versioned mixin.
 
