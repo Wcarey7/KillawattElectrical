@@ -1,0 +1,47 @@
+{% block content %}
+
+
+<div class="container text-center mb-5 mt-5">
+    <span class="title"><h1>{% block title %} Audit Log {% endblock %}</h1></span>
+</div>
+
+
+<div class="scrollableTableDiv">
+    <table class="table table-striped table-hover table-bordered fixed-header-table">
+        <thead class="sticky-header">
+            <tr class="text-center">
+                <th>Modified On</th>
+                <th>Username</th>
+                <th>Version</th>
+                <th>Action/Field</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody id="auditLog">
+        {% for audit_log in audit_logs %}
+                <tr class="text-center">
+                    {% set modified_on = format_date_local('', audit_log.modified_on, '') %}
+                    <td>{{ modified_on }}</td>
+                    <td>{{ audit_log.username }}</td>
+                    <td>{{ audit_log.version }}</td>
+                    <td>{{ audit_log.transaction_type }} / {{ audit_log.model }}</td>
+                    {% if audit_log.model == "Telephone" %}
+                    {% set audit_log_formatted_phone = format_phone_number(audit_log.details) %}
+                    <td>{{ audit_log_formatted_phone }}</td>
+                    {% else %}
+                    <td>{{ audit_log.details }}</td>
+                    {% endif %}
+                </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div class="container text-center mt-5">
+    <button type="button" class="btn btn-primary closeButton" id="auditCloseButton"
+        data-prev="{{thisRoutePrevPage}}">Close</button>
+</div>
+
+
+{% endblock content %}

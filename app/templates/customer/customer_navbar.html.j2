@@ -4,19 +4,27 @@
 {% block content %}
 
 <div class="container text-center mb-5 mt-5">
-    <span class="title"><h1>{% block title %} ID: {{ customer.id }} -  {{ customer.name }} {% endblock %}</h1></span>
+  <span class="title">
+    <h1>{% block title %} ID: {{ customer.id }} - {{ customer.name }} {% endblock %}</h1>
+  </span>
 </div>
 
 
 <nav>
   <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-    <button class="nav-link active" id="nav-summary-tab" data-bs-toggle="tab" data-bs-target="#nav-summary" type="button" role="tab" aria-controls="nav-summary" aria-selected="true">Summary</button>
-    <button class="nav-link" id="nav-memos-tab" data-bs-toggle="tab" data-bs-target="#nav-memos" type="button" role="tab" aria-controls="nav-memos" aria-selected="false">Memos</button>
-    <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">Documents</button>
+    <button class="nav-link active" id="nav-summary-tab" data-bs-toggle="tab" data-bs-target="#nav-summary"
+      type="button" role="tab" aria-controls="nav-summary" aria-selected="true">Summary</button>
+    <button class="nav-link" id="nav-memos-tab" data-bs-toggle="tab" data-bs-target="#nav-memos" type="button"
+      role="tab" aria-controls="nav-memos" aria-selected="false">Memos</button>
+    <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button"
+      role="tab" aria-controls="nav-documents" aria-selected="false">Documents</button>
+    <button class="nav-link" id="nav-auditLog-tab" data-bs-toggle="tab" data-bs-target="#nav-auditLog" type="button"
+      role="tab" aria-controls="nav-auditLog" aria-selected="false">Audit Log</button>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab" tabindex="0">
+  <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab"
+    tabindex="0">
     {% include "customer/_summary.html.j2" %}
   </div>
 
@@ -26,6 +34,10 @@
 
   <div class="tab-pane fade" id="nav-documents" role="tabpanel" aria-labelledby="nav-documents-tab" tabindex="0">
     {% include "customer/_documents.html.j2" %}
+  </div>
+
+  <div class="tab-pane fade" id="nav-auditLog" role="tabpanel" aria-labelledby="nav-auditLog-tab" tabindex="0">
+    {% include "customer/_audit_log.html.j2" %}
   </div>
 </div>
 
