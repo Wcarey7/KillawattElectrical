@@ -136,6 +136,10 @@ footer {
   word-break: break-word;
 }
 
+/*======================================*/
+/*=== Audit Log table ===*/
+/*======================================*/
+/* Also used on Memo table*/
 .scrollableTableDiv {
   overflow-y: auto;
   overflow-x: hidden;

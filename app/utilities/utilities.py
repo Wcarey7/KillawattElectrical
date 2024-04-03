@@ -8,7 +8,6 @@ import pytz
 #### Example: user_last_seen = format_date_local('', user.last_seen, '')
 ##############################################################################################################
 def format_date_local(view, value, name):
-    print(value)
     if value is None:
         return ""
 
@@ -20,3 +19,16 @@ def format_date_local(view, value, name):
 
     localized_dt = value.replace(tzinfo=pytz.utc).astimezone(local_tz)
     return localized_dt.strftime('%m-%d-%Y %I:%M %p')
+
+
+##############################################################################################################
+#### Custom formatter for phone number as (XXX)XXX-XXXX
+##############################################################################################################
+def format_phone_number(phone_number):
+    # Remove any non-digit characters
+    digits = ''.join(filter(str.isdigit, phone_number))
+
+    # Format the number as (XXX)XXX-XXXX
+    formatted_number = f"({digits[0:3]}){digits[3:6]}-{digits[6:]}"
+
+    return formatted_number
