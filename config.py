@@ -18,6 +18,10 @@ class Config(object):
     SQLALCHEMY_ECHO = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev'
     CUSTOMERS_PER_PAGE = 5
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+    ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD')
+    ELASTICSEARCH_USERNAME = os.environ.get('ELASTICSEARCH_USERNAME')
+    ELASTICSEARCH_CACERT = os.environ.get('ELASTICSEARCH_CACERT')
 
 
 class TestConfig(Config):
