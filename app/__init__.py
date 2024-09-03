@@ -14,12 +14,31 @@ from app.extensions import session
 from app.extensions import seeder
 from app.extensions import admin
 from app.models.user import User
+from elasticsearch import Elasticsearch
 
 
 def create_app(config_class):
     app = Flask(__name__)
 
     app.config.from_object(config[config_class])
+
+    # app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']], ca_certs=[app.config['ELASTICSEARCH_CACERT']], basic_auth=('elastic', "[app.config['ELASTICSEARCH_PASSWORD']]")) \
+    #     if app.config['ELASTICSEARCH_URL'] else None
+
+    app.elasticsearch = Elasticsearch(
+        app.config['ELASTICSEARCH_URL'],
+        ca_certs=app.config['ELASTICSEARCH_CACERT'],
+        basic_auth=(app.config['ELASTICSEARCH_USERNAME'], app.config['ELASTICSEARCH_PASSWORD'])
+    ) \
+        if app.config['ELASTICSEARCH_URL'] else None
+
+    print(app.config['ELASTICSEARCH_URL'])
+    # if not app.elasticsearch:
+    if not app.elasticsearch:
+        print('no')
+    else:
+        print('yes')
+        print(app.elasticsearch.info())
 
     # Convert session lifetime to a number(milliseconds).
     @app.context_processor
@@ -72,6 +91,9 @@ def create_app(config_class):
 
     from app.admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix='/admin')
+
+    from app.search import bp as search_bp
+    app.register_blueprint(search_bp, url_prefix='/search')
 
     ###################################################
     #### Error Logging to File - For Production
