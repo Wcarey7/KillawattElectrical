@@ -12,16 +12,18 @@ def checkForElasticsearch():
     # if not Elasticsearch:
         print('current_app DOES NOT WORK!')
     else:
+        myes = Elasticsearch
         print('current_app WORKS!')
-        current_app.elasticsearch.info()
+        print('my es info: ' + str(current_app.elasticsearch.info()))
         # Elasticsearch.info()
+        # print('my es info 1: '+ str(myes.info()))
 
 @bp.route('/')
 @login_required
 def index():
     # Elasticsearch.index(index='my_index', id=1, document={'text': 'this is a test'})
 
-    return render_template('base.html.j2')
+    return render_template('search/index.html.j2')
 
 # def index():
 #     Elasticsearch.index(index='my_index', id=1, document={'text': 'this is a test'})

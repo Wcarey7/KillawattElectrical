@@ -18,7 +18,7 @@
 
 {# New customer button. Activates modal #}
 <div class="new-customer-button">
-    <button type="button" class="btn btn-primary" data-route="{{ url_for('customer.add_customer')}}" 
+    <button type="button" class="btn btn-primary" data-route="" 
         id="newCustomerBtn" data-bs-target="#newCustomerModal">New Customer
     </button>
 </div> 
@@ -38,7 +38,7 @@
 
 {# Search bar and button #}
 <div class="search-input-field">
-    <form action="{{ url_for('customer.search', search_tag='search_tag') }}" method="POST" class="row mb-3" novalidate>
+    <form action="" method="POST" class="row mb-3" novalidate>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="col-sm-4 mb-3">
             <div class="input-group">
@@ -51,7 +51,7 @@
         </div>
 
         <div class="col-sm-4 mb-3">
-            <a href="{{ url_for('customer.index')}}">
+            <a href="">
                 <button type="button" class="btn btn-primary" id="resetSearchButton">Reset Search</button>
             </a>
         </div>
@@ -74,31 +74,25 @@
             </tr>
         </thead>
      <tbody>
-            {% for customer in customers.items %}
+            
                 <tr class="text-center align-middle">
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.addresses[0].street }}</td>
-                    <td>{{ customer.addresses[0].city }}</td>
-                    <td>{{ customer.addresses[0].state }}</td>
-                    <td>{{ customer.addresses[0].zip }}</td>
+                    <td></td>
 
                     <td id="viewBtnTD">
-                        <a href="{{ url_for('customer.detail', Id=customer.id)}}">
+                        <a href="">
                             <button type="button" id="viewCustomerBtn" class="btn btn-primary">View</button>
                         </a>
                     </td>
 
                     <td id="deleteBtnTD">
                         <button type="button" class="btn btn-secondary" 
-                            data-deleting="{{ url_for('customer.delete_customer', Id=customer.id)}}" 
+                            data-deleting="" 
                             id="deleteCustomerBtn" data-bs-toggle="modal" 
                             data-bs-target="#deleteCustomerModal">Delete
                         </button>
                     </td>
 
                 </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -108,7 +102,6 @@
 <div class="pagination-table">
     <ul class="pagination justify-content-center">
         {# Endpoint passed in from route. Either, 'customer.index' or 'customer.search'. #}
-        {{ render_pagination(customers, endpoint )}}
     </ul>
 </div>
 

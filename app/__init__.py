@@ -34,11 +34,11 @@ def create_app(config_class):
 
     print(app.config['ELASTICSEARCH_URL'])
     # if not app.elasticsearch:
-    if not app.elasticsearch:
-        print('no')
-    else:
-        print('yes')
-        print(app.elasticsearch.info())
+    # if not app.elasticsearch:
+    #     print('no')
+    # else:
+    #     print('yes')
+    #     print(app.elasticsearch.info())
 
     # Convert session lifetime to a number(milliseconds).
     @app.context_processor
