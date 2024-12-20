@@ -8,6 +8,7 @@ from app.models.customer import Customer, Telephone, Email, Memo
 from app.models.address import Address
 from app.models.user import User
 from app.customer.forms import customerForm, addContactInfoForm, addMemoForm
+from app.search.es_search import addToIndex
 
 
 ##############################################################################################################
@@ -67,6 +68,7 @@ def add_customer():
 
         db.session.add(new_customer)
         db.session.commit()
+        addToIndex('my_id', 'my_index', form.name.data)
         flash('New Customer Added')
         return jsonify(status='200 OK', message='Customer add successful')
 

@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 class Customer(Versioned, db.Model):
     __tablename__ = "customer"
+    __searchable__ = ['name']
     use_mapper_versioning = True  # Creates a version_id column through the Versioned mixin.
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

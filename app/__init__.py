@@ -22,9 +22,6 @@ def create_app(config_class):
 
     app.config.from_object(config[config_class])
 
-    # app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']], ca_certs=[app.config['ELASTICSEARCH_CACERT']], basic_auth=('elastic', "[app.config['ELASTICSEARCH_PASSWORD']]")) \
-    #     if app.config['ELASTICSEARCH_URL'] else None
-
     app.elasticsearch = Elasticsearch(
         app.config['ELASTICSEARCH_URL'],
         ca_certs=app.config['ELASTICSEARCH_CACERT'],
@@ -32,13 +29,10 @@ def create_app(config_class):
     ) \
         if app.config['ELASTICSEARCH_URL'] else None
 
-    print(app.config['ELASTICSEARCH_URL'])
-    # if not app.elasticsearch:
-    # if not app.elasticsearch:
-    #     print('no')
-    # else:
-    #     print('yes')
-    #     print(app.elasticsearch.info())
+    if app.elasticsearch.ping:
+        print("Connected!!")
+    else:
+        print("Not connected!!")
 
     # Convert session lifetime to a number(milliseconds).
     @app.context_processor
